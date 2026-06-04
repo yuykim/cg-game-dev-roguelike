@@ -13,6 +13,10 @@ const INVINCIBLE_AFTER_HIT = 1.2
 const COYOTE_TIME = 0.11
 const JUMP_BUFFER_TIME = 0.12
 const ROLL_TRAIL_INTERVAL = 0.045
+const HURT_DURATION = 0.22
+const DAMAGE_FLASH_DURATION = 0.24
+const HIT_KNOCKBACK = 7
+const STARTING_HP = 10
 
 export class Player {
   constructor(scene, input) {
@@ -47,10 +51,13 @@ export class Player {
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
 
-    this.maxHp = 3
+    this.maxHp = STARTING_HP
     this.hp = this.maxHp
     this.isInvincible = false
     this.invincibleTimer = 0
+    this.isDead = false
+    this.hurtTimer = 0
+    this.damageFlashTimer = 0
 
     this.sprite = new SpriteAnimator(scene)
     this.events = []
@@ -110,6 +117,12 @@ export class Player {
     this.attackId = 0
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
+    this.isDead = false
+    this.hurtTimer = 0
+    this.damageFlashTimer = 0
+    this.isInvincible = false
+    this.invincibleTimer = 0
+    this.sprite.setTint(0xffffff)
 
     if (restoreHp) this.hp = this.maxHp
 
@@ -120,14 +133,33 @@ export class Player {
     const wasGrounded = this.isGrounded
     const previousVy = this.vy
 
-    this._tickInvincibility(dt)
-    this._tickJumpHelpers(dt)
-    this._handleAttack(dt)
-    this._handleRoll(dt)
+    if (this.isDead) {
+      this._applyGravity(dt)
+      this.vx *= 1 - Math.min(1, 8 * dt)
+      this.x += this.vx * dt
+      this._resolveX(platforms)
+      this.y += this.vy * dt
+      this._resolveY(platforms)
+      this.syncVisual(dt)
+      return
+    }
 
-    if (!this.isRolling) {
+    this._tickInvincibility(dt)
+    this._tickDamageFeedback(dt)
+    this._tickHurt(dt)
+
+    if (this.hurtTimer <= 0) {
+      this._tickJumpHelpers(dt)
+      this._handleAttack(dt)
+      this._handleRoll(dt)
+    }
+
+    if (!this.isRolling && this.hurtTimer <= 0) {
       this._applyGravity(dt)
       this._handleHorizontal()
+    } else if (this.hurtTimer > 0) {
+      this._applyGravity(dt)
+      this.vx *= 1 - Math.min(1, 7 * dt)
     }
 
     this.x += this.vx * dt
@@ -140,7 +172,7 @@ export class Player {
       this._emit('land', { impact: Math.min(1, Math.abs(previousVy) / 22) })
     }
 
-    this._handleBufferedJump()
+    if (this.hurtTimer <= 0) this._handleBufferedJump()
     this.syncVisual(dt)
   }
 
@@ -170,6 +202,9 @@ export class Player {
       hp: this.hp,
       isInvincible: this.isInvincible,
       invincibleTimer: this.invincibleTimer,
+      isDead: this.isDead,
+      hurtTimer: this.hurtTimer,
+      damageFlashTimer: this.damageFlashTimer,
     }
   }
 
@@ -178,13 +213,37 @@ export class Player {
     this.syncVisual(0)
   }
 
-  takeDamage() {
-    if (this.isInvincible) return false
+  takeDamage(amount = 1, sourceX = null) {
+    if (this.isDead || this.isInvincible) return false
 
-    this.hp = Math.max(0, this.hp - 1)
+    const previousHp = this.hp
+    const damageDir = sourceX == null
+      ? -this.facingDir
+      : Math.sign(this.x - sourceX) || -this.facingDir
+    const damage = Math.max(1, Math.round(amount))
+    this.hp = Math.max(0, this.hp - damage)
     this.isInvincible = true
     this.invincibleTimer = INVINCIBLE_AFTER_HIT
-    this._emit('damage')
+    this.damageFlashTimer = DAMAGE_FLASH_DURATION
+    this.hurtTimer = HURT_DURATION
+    this.isRolling = false
+    this.rollTimer = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this.vx = damageDir * HIT_KNOCKBACK * Math.min(1.45, 0.85 + damage * 0.15)
+    this.vy = Math.max(this.vy, 3.5 + damage * 0.55)
+    this._emit('damage', { amount: damage, dir: damageDir, hp: this.hp })
+
+    if (this.hp <= 0 && previousHp > 0) {
+      this.isDead = true
+      this.hurtTimer = 0
+      this.isInvincible = false
+      this.invincibleTimer = 0
+      this.vx = damageDir * (HIT_KNOCKBACK * 0.65)
+      this.vy = Math.max(this.vy, 5)
+      this._emit('death', { dir: damageDir })
+    }
+
     return true
   }
 
@@ -197,15 +256,23 @@ export class Player {
 
   syncVisual(dt) {
     const state = this._getAnimationState()
-    const flashing = this.isInvincible && Math.floor(performance.now() / 80) % 2 === 0
+    const invincibleFlash =
+      !this.isDead &&
+      this.isInvincible &&
+      this.damageFlashTimer <= 0 &&
+      Math.floor(performance.now() / 80) % 2 === 0
+    const damageFlash =
+      this.damageFlashTimer > 0 &&
+      Math.floor(performance.now() / 45) % 2 === 0
 
     this.sprite.setTransform(
       this.x,
       this.y,
       this.facingDir,
       this.height,
-      flashing ? 0.35 : 1,
+      invincibleFlash ? 0.35 : 1,
     )
+    this.sprite.setTint(damageFlash ? 0xff3344 : 0xffffff)
     this.sprite.play(state, dt)
   }
 
@@ -394,7 +461,17 @@ export class Player {
     if (this.invincibleTimer <= 0) this.isInvincible = false
   }
 
+  _tickDamageFeedback(dt) {
+    this.damageFlashTimer = Math.max(0, this.damageFlashTimer - dt)
+  }
+
+  _tickHurt(dt) {
+    this.hurtTimer = Math.max(0, this.hurtTimer - dt)
+  }
+
   _getAnimationState() {
+    if (this.isDead) return 'dead'
+    if (this.hurtTimer > 0) return 'hurt'
     if (this.isRolling) return 'roll'
 
     const wallSliding =

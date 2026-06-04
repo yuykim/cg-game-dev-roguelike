@@ -1,12 +1,14 @@
 import * as THREE from 'three'
 
-const STATE_DEFS = {
+const DEFAULT_STATES = {
   idle: { sequence: 'Idle', fps: 7, loop: true },
   run: { sequence: 'Run', fps: 12, loop: true },
   jumpRise: { sequence: 'JumpRise', fps: 1, loop: true },
   jumpFall: { sequence: 'JumpFall', fps: 1, loop: true },
   roll: { sequence: 'Roll', fps: 18, loop: false },
   wallSlide: { sequence: 'WallSlide', fps: 10, loop: true },
+  hurt: { sequence: 'Knockback', fps: 18, loop: false },
+  dead: { sequence: 'Die', fps: 13, loop: false },
   attack1: { sequence: 'Combat/PunchA', fps: 16, loop: false },
   attack2: { sequence: 'Combat/PunchB', fps: 16, loop: false },
   attack3: { sequence: 'Combat/PunchC', fps: 16, loop: false },
@@ -23,6 +25,7 @@ export class SpriteAnimator {
     this.defaultOpacity = options.opacity ?? 1
     this.z = options.z ?? 0.82
     this.renderOrder = options.renderOrder ?? 10
+    this.states = options.states ?? DEFAULT_STATES
 
     this.sequences = {}
     this.afterimages = []
@@ -62,7 +65,7 @@ export class SpriteAnimator {
       const manifest = await response.json()
 
       await Promise.all(
-        Object.entries(STATE_DEFS).map(async ([state, def]) => {
+        Object.entries(this.states).map(async ([state, def]) => {
           const files = manifest.sequences?.[def.sequence]
           if (!files?.length) return
 
@@ -150,6 +153,21 @@ export class SpriteAnimator {
 
   setVisible(visible) {
     this.group.visible = visible
+  }
+
+  setTint(hex) {
+    this.material.color.setHex(hex)
+  }
+
+  dispose() {
+    for (const afterimage of this.afterimages) {
+      this.scene.remove(afterimage.mesh)
+      afterimage.mesh.material.dispose()
+    }
+    this.afterimages = []
+    this.scene.remove(this.group)
+    this.mesh.geometry.dispose()
+    this.material.dispose()
   }
 
   spawnAfterimage() {
