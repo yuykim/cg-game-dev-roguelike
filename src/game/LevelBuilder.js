@@ -1,6 +1,8 @@
 import { Platform } from '../obstacles/Platform.js'
 import { Hazard } from '../obstacles/Hazard.js'
 import { ExitGate } from '../obstacles/ExitGate.js'
+import { Button } from '../obstacles/Button.js'
+import { Door } from '../obstacles/Door.js'
 import { TILE_SIZE } from './levels.js'
 
 export function buildLevel(scene, level) {
@@ -10,6 +12,8 @@ export function buildLevel(scene, level) {
   const platforms = []
   const hazards = []
   const breakables = []
+  const buttons = []
+  const doors = []
   let spawn = { x: 0, y: 2 }
   let exit = null
 
@@ -52,12 +56,20 @@ export function buildLevel(scene, level) {
       const x = tileX(col + 0.5, width)
       const y = tileY(rowIndex, height)
 
-      if (char === 'B') {
-        const block = new Platform(scene, x, y, TILE_SIZE, TILE_SIZE, 0xb87438, {
+      if (char === 'B' || char === 'X') {
+        const reinforced = char === 'X'
+        const block = new Platform(scene, x, y, TILE_SIZE, TILE_SIZE, reinforced ? 0xd46a33 : 0xb87438, {
           breakable: true,
+          hitsToBreak: reinforced ? 2 : 1,
         })
         platforms.push(block)
         breakables.push(block)
+      } else if (char === 'p' || char === 'g') {
+        buttons.push(new Button(scene, x, y, { ghostOnly: char === 'g' }))
+      } else if (char === 'D') {
+        const door = new Door(scene, x, y + 0.5)
+        doors.push(door)
+        platforms.push(door)
       } else if (char === 'S') {
         spawn = { x, y: y + 0.1 }
       } else if (char === 'E') {
@@ -80,6 +92,8 @@ export function buildLevel(scene, level) {
     platforms,
     hazards,
     breakables,
+    buttons,
+    doors,
     exit,
     spawn,
     width,

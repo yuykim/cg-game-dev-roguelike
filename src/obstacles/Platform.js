@@ -8,6 +8,8 @@ export class Platform {
     this.w = w
     this.h = h
     this.breakable = options.breakable ?? false
+    this.maxHits = options.hitsToBreak ?? 1
+    this.hitsRemaining = this.maxHits
     this.destroyed = false
     this.motion = options.motion ?? null
     this.baseX = x
@@ -21,7 +23,7 @@ export class Platform {
     const mat = new THREE.MeshLambertMaterial({
       color,
       transparent: this.breakable,
-      opacity: this.breakable ? 0.88 : 1,
+      opacity: this.breakable ? 0.9 : 1,
     })
     this.mesh = new THREE.Mesh(geo, mat)
     this.mesh.position.set(x, y, 0)
@@ -57,6 +59,20 @@ export class Platform {
     this.setDestroyed(true)
   }
 
+  hit() {
+    if (!this.breakable || this.destroyed) return false
+
+    this.hitsRemaining -= 1
+    this.mesh.material.opacity = this.hitsRemaining > 1 ? 0.56 : 0.9
+
+    if (this.hitsRemaining <= 0) {
+      this.destroy()
+      return true
+    }
+
+    return false
+  }
+
   setDestroyed(destroyed) {
     if (!this.breakable && destroyed) return
     if (this.destroyed === destroyed) return
@@ -74,6 +90,7 @@ export class Platform {
       dx: this.dx,
       dy: this.dy,
       destroyed: this.destroyed,
+      hitsRemaining: this.hitsRemaining,
     }
   }
 
@@ -84,7 +101,9 @@ export class Platform {
     this.prevY = snapshot.prevY
     this.dx = snapshot.dx
     this.dy = snapshot.dy
+    this.hitsRemaining = snapshot.hitsRemaining ?? this.maxHits
     this.setDestroyed(snapshot.destroyed)
+    this.mesh.material.opacity = this.breakable && this.hitsRemaining > 1 ? 0.56 : 0.9
     this.mesh.position.set(this.x, this.y, 0)
   }
 

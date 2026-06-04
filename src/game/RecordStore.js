@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'rewind-runner-records-v1'
+const STORAGE_KEY = 'time-echo-runner-records-v1'
 
 export class RecordStore {
   constructor() {
@@ -13,20 +13,21 @@ export class RecordStore {
     return this.records.totalBest ?? null
   }
 
-  saveLevelBest(levelId, seconds, playerName) {
+  saveLevelBest(levelId, seconds, playerName, hits = 0) {
     const previous = this.records.levels[levelId]
     if (previous?.time != null && previous.time <= seconds) return false
 
     this.records.levels[levelId] = {
       time: seconds,
       name: normalizeName(playerName),
+      hits,
       savedAt: new Date().toISOString(),
     }
     this._save()
     return true
   }
 
-  saveTotalBest(seconds, playerName) {
+  saveTotalBest(seconds, playerName, hits = 0) {
     if (this.records.totalBest?.time != null && this.records.totalBest.time <= seconds) {
       return false
     }
@@ -34,6 +35,7 @@ export class RecordStore {
     this.records.totalBest = {
       time: seconds,
       name: normalizeName(playerName),
+      hits,
       savedAt: new Date().toISOString(),
     }
     this._save()
@@ -83,13 +85,14 @@ function normalizeRecord(value) {
   if (value == null) return null
 
   if (typeof value === 'number') {
-    return { time: value, name: 'PLAYER', savedAt: null }
+    return { time: value, name: 'PLAYER', hits: 0, savedAt: null }
   }
 
   if (typeof value === 'object' && typeof value.time === 'number') {
     return {
       time: value.time,
       name: normalizeName(value.name),
+      hits: value.hits ?? 0,
       savedAt: value.savedAt ?? null,
     }
   }
@@ -101,4 +104,3 @@ function normalizeName(name) {
   const clean = String(name ?? '').trim().slice(0, 12)
   return clean || 'PLAYER'
 }
-

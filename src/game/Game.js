@@ -1,14 +1,12 @@
 import * as THREE from 'three'
 import { InputManager } from './InputManager.js'
 import { Player, overlaps } from './Player.js'
+import { Ghost } from './Ghost.js'
 import { Camera } from './Camera.js'
-import { LEVELS } from './levels.js'
+import { ECHO_DELAY_SECONDS, LEVELS } from './levels.js'
 import { buildLevel } from './LevelBuilder.js'
 import { RecordStore } from './RecordStore.js'
 import { UI } from './UI.js'
-
-const MAX_REWIND_SECONDS = 5
-const REWIND_REFILL_RATE = 0.55
 
 export class Game {
   constructor() {
@@ -45,14 +43,16 @@ export class Game {
     })
 
     this.player = new Player(this.scene, this.input)
+    this.ghost = new Ghost(this.scene)
     this.levelObjects = null
     this.currentLevelIndex = 0
     this.playerName = 'PLAYER'
     this.state = 'start'
     this.runTime = 0
     this.levelTime = 0
-    this.history = []
-    this.rewindEnergy = MAX_REWIND_SECONDS
+    this.hitCount = 0
+    this.levelHitCount = 0
+    this.echoBuffer = []
     this.elapsed = 0
 
     this._loadLevel(0)
@@ -67,14 +67,13 @@ export class Game {
   }
 
   startRun(playerName = 'PLAYER') {
-    document.body.classList.remove('is-rewinding')
     this.playerName = playerName.trim().slice(0, 12) || 'PLAYER'
     this.state = 'playing'
     this.currentLevelIndex = 0
     this.runTime = 0
     this.levelTime = 0
-    this.history = []
-    this.rewindEnergy = MAX_REWIND_SECONDS
+    this.hitCount = 0
+    this.levelHitCount = 0
     this.player.hp = this.player.maxHp
     this._loadLevel(0)
     this.ui.showPlaying(this.playerName)
@@ -111,11 +110,11 @@ export class Game {
     this._disposeLevel()
 
     this.currentLevelIndex = index
-    const level = LEVELS[index]
-    this.levelObjects = buildLevel(this.scene, level)
+    this.levelObjects = buildLevel(this.scene, LEVELS[index])
     this.levelTime = 0
-    this.history = []
-    this.rewindEnergy = MAX_REWIND_SECONDS
+    this.levelHitCount = 0
+    this.echoBuffer = []
+    this.ghost.reset()
     this.player.setSpawn(this.levelObjects.spawn.x, this.levelObjects.spawn.y)
   }
 
@@ -124,6 +123,7 @@ export class Game {
 
     for (const platform of this.levelObjects.platforms) platform.dispose()
     for (const hazard of this.levelObjects.hazards) hazard.dispose()
+    for (const button of this.levelObjects.buttons) button.dispose()
     this.levelObjects.exit?.dispose()
     this.levelObjects = null
   }
@@ -137,8 +137,6 @@ export class Game {
 
     if (this.state === 'playing') {
       this._updatePlaying(dt)
-    } else {
-      document.body.classList.remove('is-rewinding')
     }
 
     this.followCamera.update(this.player.x, this.player.y, dt)
@@ -152,23 +150,7 @@ export class Game {
       return
     }
 
-    const isRewinding =
-      this.input.rewind && this.history.length > 0 && this.rewindEnergy > 0
-
-    if (isRewinding) {
-      document.body.classList.add('is-rewinding')
-      this.followCamera.shake(0.025, 0.05)
-      this._rewind(dt)
-    } else {
-      document.body.classList.remove('is-rewinding')
-      this._recordSnapshot()
-      this._simulate(dt)
-      this.rewindEnergy = Math.min(
-        MAX_REWIND_SECONDS,
-        this.rewindEnergy + dt * REWIND_REFILL_RATE,
-      )
-    }
-
+    this._simulate(dt)
     this._updateHud()
   }
 
@@ -180,55 +162,68 @@ export class Game {
     for (const hazard of this.levelObjects.hazards) hazard.update(this.elapsed)
     this.levelObjects.exit?.update(this.elapsed)
 
+    const delayedSnapshot = this._getDelayedSnapshot()
+    this.ghost.update(dt, delayedSnapshot, this.levelObjects.hazards)
+
     this._carryPlayerWithMovingPlatforms()
     this.player.update(dt, this.levelObjects.platforms)
-    this._breakWallsFromAttack()
+    this._recordEchoSnapshot()
+
+    this._updateButtonsAndDoors()
+    this._breakWallsFromActor(this.player)
+    this._breakWallsFromActor(this.ghost)
     this._checkHazards()
     this._checkDeathPlane()
     this._checkExit()
     this._handlePlayerEvents()
   }
 
-  _recordSnapshot() {
-    this.history.push({
+  _recordEchoSnapshot() {
+    this.echoBuffer.push({
+      time: this.runTime,
       player: this.player.captureSnapshot(),
-      runTime: this.runTime,
-      levelTime: this.levelTime,
-      platforms: this.levelObjects.platforms.map((platform) => platform.captureSnapshot()),
-      hazards: this.levelObjects.hazards.map((hazard) => hazard.captureSnapshot()),
     })
 
-    const maxFrames = Math.ceil(MAX_REWIND_SECONDS * 60)
-    if (this.history.length > maxFrames) this.history.shift()
+    const maxAge = ECHO_DELAY_SECONDS + 0.35
+    while (this.echoBuffer.length > 0 && this.runTime - this.echoBuffer[0].time > maxAge) {
+      this.echoBuffer.shift()
+    }
   }
 
-  _rewind(dt) {
-    const snapshot = this.history.pop()
-    if (!snapshot) return
+  _getDelayedSnapshot() {
+    const targetTime = this.runTime - ECHO_DELAY_SECONDS
+    if (targetTime <= 0 || this.echoBuffer.length === 0) return null
 
-    this.rewindEnergy = Math.max(0, this.rewindEnergy - dt)
-    this.runTime = snapshot.runTime
-    this.levelTime = snapshot.levelTime
-    this.player.applySnapshot(snapshot.player)
+    let best = this.echoBuffer[0]
+    for (const sample of this.echoBuffer) {
+      if (sample.time > targetTime) break
+      best = sample
+    }
 
-    snapshot.platforms.forEach((platformSnapshot, index) => {
-      this.levelObjects.platforms[index]?.applySnapshot(platformSnapshot)
-    })
-    snapshot.hazards.forEach((hazardSnapshot, index) => {
-      this.levelObjects.hazards[index]?.applySnapshot(hazardSnapshot)
-    })
+    return best.player
   }
 
-  _breakWallsFromAttack() {
-    if (!this.player.isAttacking || !this.player.consumeAttackHit()) return
+  _updateButtonsAndDoors() {
+    for (const button of this.levelObjects.buttons) {
+      button.update(this.player, this.ghost)
+    }
+
+    const anyPressed = this.levelObjects.buttons.some((button) => button.pressed)
+    for (const door of this.levelObjects.doors) {
+      door.setOpen(anyPressed)
+    }
+  }
+
+  _breakWallsFromActor(actor) {
+    if (!actor.isAttacking || !actor.consumeAttackHit()) return
 
     for (const block of this.levelObjects.breakables) {
       if (block.destroyed) continue
-      if (overlaps(this.player.attackBounds, block.bounds)) {
-        block.destroy()
-        this.followCamera.shake(0.16, 0.16)
-        return
-      }
+      if (!overlaps(actor.attackBounds, block.bounds)) continue
+
+      const destroyed = block.hit()
+      this.followCamera.shake(destroyed ? 0.16 : 0.08, 0.16)
+      return
     }
   }
 
@@ -238,6 +233,8 @@ export class Game {
       if (!overlaps(this.player.bounds, hazard.bounds)) continue
 
       if (this.player.takeDamage()) {
+        this.hitCount += 1
+        this.levelHitCount += 1
         this._respawnAfterHit()
       }
       return
@@ -247,12 +244,16 @@ export class Game {
   _checkDeathPlane() {
     if (this.player.y > this.levelObjects.deathY) return
 
-    this.player.takeDamage()
+    if (this.player.takeDamage()) {
+      this.hitCount += 1
+      this.levelHitCount += 1
+    }
     this._respawnAfterHit()
   }
 
   _respawnAfterHit() {
-    this.history = []
+    this.echoBuffer = []
+    this.ghost.reset()
 
     if (this.player.hp <= 0) {
       this._restartLevel()
@@ -271,7 +272,7 @@ export class Game {
     if (!overlaps(this.player.bounds, this.levelObjects.exit.bounds)) return
 
     const level = LEVELS[this.currentLevelIndex]
-    this.records.saveLevelBest(level.id, this.levelTime, this.playerName)
+    this.records.saveLevelBest(level.id, this.levelTime, this.playerName, this.levelHitCount)
 
     if (this.currentLevelIndex < LEVELS.length - 1) {
       this._loadLevel(this.currentLevelIndex + 1)
@@ -282,8 +283,7 @@ export class Game {
   }
 
   _completeRun() {
-    document.body.classList.remove('is-rewinding')
-    this.records.saveTotalBest(this.runTime, this.playerName)
+    this.records.saveTotalBest(this.runTime, this.playerName, this.hitCount)
     this.state = 'end'
     this.ui.showEnd({
       playerName: this.playerName,
@@ -335,7 +335,6 @@ export class Game {
   }
 
   _updateHud() {
-    const level = LEVELS[this.currentLevelIndex]
     this.ui.updateHud({
       playerName: this.playerName,
       mapsLeft: LEVELS.length - this.currentLevelIndex,
@@ -343,7 +342,9 @@ export class Game {
       mapTime: this.levelTime,
       hp: this.player.hp,
       maxHp: this.player.maxHp,
-      rewindRatio: this.rewindEnergy / MAX_REWIND_SECONDS,
+      echoStatus: this.ghost.status,
+      echoDelay: ECHO_DELAY_SECONDS,
+      hitCount: this.hitCount,
     })
   }
 
@@ -353,3 +354,4 @@ export class Game {
     this.renderer.setSize(window.innerWidth, window.innerHeight)
   }
 }
+

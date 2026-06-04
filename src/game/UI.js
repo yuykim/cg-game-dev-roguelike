@@ -33,18 +33,27 @@ export class UI {
           <div class="hp" data-hp></div>
         </div>
         <div class="hud-card meter">
-          <span class="label">REWIND</span>
-          <div class="bar"><i data-rewind-bar></i></div>
+          <span class="label">ECHO</span>
+          <strong data-echo-status>RECORDING</strong>
+        </div>
+        <div class="hud-card">
+          <span class="label">DELAY</span>
+          <strong data-echo-delay>2.5s</strong>
+        </div>
+        <div class="hud-card">
+          <span class="label">HITS</span>
+          <strong data-hit-count>0</strong>
         </div>
       </div>
 
       <section class="screen" data-start-screen>
         <div class="panel">
-          <p class="eyebrow">2.5D TIME PLATFORMER</p>
-          <h1>REWIND RUNNER</h1>
+          <p class="eyebrow">2.5D ECHO PLATFORMER</p>
+          <h1>TIME ECHO RUNNER</h1>
           <p class="summary">
-            A 2D sprite runner inside 15 ASCII-built 3D test chambers.
-            Roll, wall-kick, break orange walls, and rewind failed attempts.
+            A 2D sprite runner inside ASCII-built 3D test chambers.
+            Your echo repeats what you did 2.5 seconds ago. Use it to hold buttons,
+            open doors, and land follow-up attacks.
           </p>
           <label class="name-field">
             <span>Runner name</span>
@@ -56,7 +65,6 @@ export class UI {
             <span>Shift Roll</span>
             <span>Ctrl/S Roll</span>
             <span>J Attack</span>
-            <span>Q Rewind</span>
             <span>R Restart</span>
           </div>
           <div class="actions">
@@ -101,7 +109,9 @@ export class UI {
     this.runTime = this.root.querySelector('[data-run-time]')
     this.mapTime = this.root.querySelector('[data-map-time]')
     this.hp = this.root.querySelector('[data-hp]')
-    this.rewindBar = this.root.querySelector('[data-rewind-bar]')
+    this.echoStatus = this.root.querySelector('[data-echo-status]')
+    this.echoDelay = this.root.querySelector('[data-echo-delay]')
+    this.hitCount = this.root.querySelector('[data-hit-count]')
     this.finalName = this.root.querySelector('[data-final-name]')
     this.finalTime = this.root.querySelector('[data-final-time]')
     this.finalBest = this.root.querySelector('[data-final-best]')
@@ -160,12 +170,14 @@ export class UI {
       .join('')
   }
 
-  updateHud({ playerName, mapsLeft, runTime, mapTime, hp, maxHp, rewindRatio }) {
+  updateHud({ playerName, mapsLeft, runTime, mapTime, hp, maxHp, echoStatus, echoDelay, hitCount }) {
     this.playerName.textContent = playerName
     this.mapsLeft.textContent = String(mapsLeft)
     this.runTime.textContent = formatTime(runTime)
     this.mapTime.textContent = formatTime(mapTime)
-    this.rewindBar.style.width = `${Math.max(0, Math.min(1, rewindRatio)) * 100}%`
+    this.echoStatus.textContent = echoStatus
+    this.echoDelay.textContent = `${echoDelay.toFixed(1)}s`
+    this.hitCount.textContent = String(hitCount)
     this._renderHp(hp, maxHp)
   }
 
@@ -183,5 +195,5 @@ export class UI {
 
 function formatRecord(record) {
   if (!record) return '--:--.--'
-  return `${formatTime(record.time)} ${record.name}`
+  return `${formatTime(record.time)} ${record.name} ${record.hits ?? 0}H`
 }

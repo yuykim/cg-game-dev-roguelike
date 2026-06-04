@@ -7,7 +7,9 @@ const STATE_DEFS = {
   jumpFall: { sequence: 'JumpFall', fps: 1, loop: true },
   roll: { sequence: 'Roll', fps: 18, loop: false },
   wallSlide: { sequence: 'WallSlide', fps: 10, loop: true },
-  attack: { sequence: 'Combat/PunchA', fps: 16, loop: false },
+  attack1: { sequence: 'Combat/PunchA', fps: 16, loop: false },
+  attack2: { sequence: 'Combat/PunchB', fps: 16, loop: false },
+  attack3: { sequence: 'Combat/PunchC', fps: 16, loop: false },
 }
 
 export class SpriteAnimator {
@@ -17,6 +19,10 @@ export class SpriteAnimator {
     this.pixelsPerUnit = options.pixelsPerUnit ?? 32
     this.frameWidth = options.frameWidth ?? 96
     this.frameHeight = options.frameHeight ?? 84
+    this.tint = options.tint ?? 0xffffff
+    this.defaultOpacity = options.opacity ?? 1
+    this.z = options.z ?? 0.82
+    this.renderOrder = options.renderOrder ?? 10
 
     this.sequences = {}
     this.afterimages = []
@@ -31,6 +37,8 @@ export class SpriteAnimator {
       alphaTest: 0.01,
       depthWrite: false,
       side: THREE.DoubleSide,
+      color: this.tint,
+      opacity: this.defaultOpacity,
     })
 
     const geometry = new THREE.PlaneGeometry(
@@ -39,7 +47,7 @@ export class SpriteAnimator {
     )
 
     this.mesh = new THREE.Mesh(geometry, this.material)
-    this.mesh.renderOrder = 10
+    this.mesh.renderOrder = this.renderOrder
 
     this.group = new THREE.Group()
     this.group.add(this.mesh)
@@ -135,9 +143,13 @@ export class SpriteAnimator {
     const visualHeight = this.frameHeight / this.pixelsPerUnit
     const groundAlignedY = y - collisionHeight / 2 + visualHeight / 2
 
-    this.group.position.set(x, groundAlignedY, 0.82)
+    this.group.position.set(x, groundAlignedY, this.z)
     this.group.scale.x = facingDir >= 0 ? 1 : -1
     this.material.opacity = opacity
+  }
+
+  setVisible(visible) {
+    this.group.visible = visible
   }
 
   spawnAfterimage() {

@@ -8,6 +8,7 @@ const WALL_SLIDE_SPEED = -2
 const ROLL_SPEED = 20
 const ROLL_DURATION = 0.18
 const ATTACK_DURATION = 0.32
+const ATTACK_COMBO_WINDOW = 0.42
 const INVINCIBLE_AFTER_HIT = 1.2
 const COYOTE_TIME = 0.11
 const JUMP_BUFFER_TIME = 0.12
@@ -40,6 +41,9 @@ export class Player {
 
     this.attackTimer = 0
     this.attackHasHit = false
+    this.attackComboStep = 1
+    this.attackComboWindow = 0
+    this.attackId = 0
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
 
@@ -101,6 +105,9 @@ export class Player {
     this.rollTrailTimer = 0
     this.attackTimer = 0
     this.attackHasHit = false
+    this.attackComboStep = 1
+    this.attackComboWindow = 0
+    this.attackId = 0
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
 
@@ -154,6 +161,10 @@ export class Player {
       rollTrailTimer: this.rollTrailTimer,
       attackTimer: this.attackTimer,
       attackHasHit: this.attackHasHit,
+      attackComboStep: this.attackComboStep,
+      attackComboWindow: this.attackComboWindow,
+      attackId: this.attackId,
+      animationState: this._getAnimationState(),
       jumpBufferTimer: this.jumpBufferTimer,
       coyoteTimer: this.coyoteTimer,
       hp: this.hp,
@@ -303,10 +314,17 @@ export class Player {
       if (this.attackTimer === 0) this.attackHasHit = false
     }
 
+    this.attackComboWindow = Math.max(0, this.attackComboWindow - dt)
+
     if (!this.input.attack || this.isRolling) return
 
+    this.attackComboStep = this.attackComboWindow > 0
+      ? (this.attackComboStep % 3) + 1
+      : 1
     this.attackTimer = ATTACK_DURATION
+    this.attackComboWindow = ATTACK_COMBO_WINDOW
     this.attackHasHit = false
+    this.attackId += 1
     this._emit('attack')
   }
 
@@ -385,7 +403,7 @@ export class Player {
       this.vy < 0
 
     if (wallSliding) return 'wallSlide'
-    if (this.attackTimer > 0) return 'attack'
+    if (this.attackTimer > 0) return `attack${this.attackComboStep}`
     if (!this.isGrounded) return this.vy >= 0 ? 'jumpRise' : 'jumpFall'
     if (Math.abs(this.vx) > 0.1) return 'run'
 

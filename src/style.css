@@ -31,42 +31,6 @@ canvas {
   transition: filter 0.08s linear, transform 0.08s linear;
 }
 
-body.is-rewinding canvas {
-  filter: hue-rotate(150deg) saturate(1.65) brightness(1.18) contrast(1.08);
-  transform: scale(1.012);
-}
-
-body.is-rewinding::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  background:
-    radial-gradient(circle at 45% 50%, rgba(105, 231, 255, 0.22), transparent 34%),
-    repeating-linear-gradient(
-      0deg,
-      rgba(105, 231, 255, 0.16) 0,
-      rgba(105, 231, 255, 0.16) 1px,
-      transparent 1px,
-      transparent 7px
-    );
-  animation: rewind-scan 0.16s steps(2) infinite;
-}
-
-@keyframes rewind-scan {
-  from {
-    transform: translateY(-4px) skewX(-1deg);
-    opacity: 0.55;
-  }
-
-  to {
-    transform: translateY(4px) skewX(1deg);
-    opacity: 0.9;
-  }
-}
-
 button,
 input {
   font: inherit;
@@ -109,7 +73,7 @@ button.ghost {
   left: 18px;
   right: 18px;
   display: grid;
-  grid-template-columns: 1.4fr 0.9fr 1fr 1fr 1.2fr 1.1fr;
+  grid-template-columns: 1.25fr 0.8fr 0.95fr 0.95fr 1fr 1.1fr 0.7fr 0.6fr;
   gap: 10px;
   pointer-events: none;
 }
