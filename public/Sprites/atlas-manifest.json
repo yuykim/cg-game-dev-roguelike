@@ -1,0 +1,51 @@
+{
+  "basePath": "/Sprites/",
+  "textureDefaults": {
+    "filter": "nearest",
+    "wrap": "clamp-to-edge",
+    "mipmaps": false,
+    "premultipliedAlpha": false
+  },
+  "atlases": {
+    "FXSheet": {
+      "image": "FXSheet.png",
+      "json": "FXSheet.json"
+    },
+    "PlayerSheet": {
+      "image": "PlayerSheet.png",
+      "json": "PlayerSheet.json"
+    },
+    "PlayerFishingSheet": {
+      "image": "PlayerFishingSheet.png",
+      "json": "PlayerFishingSheet.json"
+    },
+    "WeaponsSheet": {
+      "image": "WeaponsSheet.png",
+      "json": "WeaponsSheet.json"
+    },
+    "PlayerCombatSheet": {
+      "split": true,
+      "index": "PlayerCombatSheet.web.json",
+      "parts": [
+        {
+          "key": "part0",
+          "image": "PlayerCombatSheet.part0.png",
+          "json": "PlayerCombatSheet.part0.json",
+          "size": {
+            "w": 960,
+            "h": 4032
+          }
+        },
+        {
+          "key": "part1",
+          "image": "PlayerCombatSheet.part1.png",
+          "json": "PlayerCombatSheet.part1.json",
+          "size": {
+            "w": 960,
+            "h": 336
+          }
+        }
+      ]
+    }
+  }
+}

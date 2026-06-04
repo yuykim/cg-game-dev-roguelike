@@ -1,0 +1,6604 @@
+{
+  "source": "PlayerCombatSheet",
+  "note": "Split for WebGL max texture compatibility. Load the part listed on each frame.",
+  "parts": [
+    {
+      "key": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "size": {
+        "w": 960,
+        "h": 4032
+      }
+    },
+    {
+      "key": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "size": {
+        "w": 960,
+        "h": 336
+      }
+    }
+  ],
+  "frames": {
+    "PlayerCombat 0.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 1.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 2.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 3.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 4.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 5.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 6.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 7.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 8.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 9.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 10.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 11.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 12.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 13.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 14.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 15.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 16.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 17.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 18.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 19.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 20.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 21.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 22.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 23.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 24.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 25.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 26.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 27.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 28.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 29.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 30.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 31.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 32.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 33.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 34.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 35.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 36.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 336,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 37.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 38.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 39.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 40.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 41.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 42.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 420,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 43.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 44.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 45.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 46.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 47.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 48.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 504,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 49.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 50.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 51.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 52.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 53.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 54.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 55.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 56.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 588,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 57.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 58.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 59.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 60.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 61.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 62.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 63.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 64.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 672,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 65.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 66.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 67.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 68.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 69.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 70.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 756,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 71.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 840,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 72.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 840,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 73.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 840,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 74.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 840,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 75.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 840,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 76.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 924,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 77.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 924,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 78.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 924,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 79.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 924,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 80.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 924,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 81.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 82.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 83.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 84.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 85.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 86.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 87.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 88.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 1008,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 89.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1092,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 90.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1092,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 91.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1092,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 92.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1092,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 93.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1092,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 94.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1176,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 95.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1260,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 96.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1344,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 97.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1428,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 98.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1428,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 99.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1428,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 100.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1428,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 101.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 102.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 103.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 104.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 105.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 106.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 1512,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 107.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 108.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 109.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 110.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 111.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 112.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 1596,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 113.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 114.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 115.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 116.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 117.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 118.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 1680,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 119.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 120.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 121.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 122.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 123.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 124.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 1764,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 125.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1848,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 126.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 1848,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 127.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 1848,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 50,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 128.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 1848,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 129.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 1848,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 130.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 1932,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 131.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2016,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 132.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2016,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 133.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2016,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 134.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 135.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 136.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 137.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 138.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 139.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 140.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 141.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 142.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 768,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 143.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 864,
+        "y": 2100,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 144.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 145.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 146.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 147.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 148.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 149.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 150.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 151.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 152.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 768,
+        "y": 2184,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 153.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 154.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 155.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 156.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 157.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 158.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 159.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 160.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 2268,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 161.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 162.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 163.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 164.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 165.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 166.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 167.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 168.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 169.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 768,
+        "y": 2352,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 170.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 171.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 172.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 173.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 174.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 175.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2436,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 176.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2520,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 177.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2520,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 178.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2520,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 179.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2520,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 180.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 181.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 182.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 183.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 184.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 185.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 186.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2604,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 187.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2688,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 188.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2688,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 189.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2688,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 190.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2772,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 191.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2772,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 192.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2772,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 193.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 194.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 195.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 196.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 197.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 198.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 199.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2856,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 150,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 200.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 201.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 202.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 203.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 204.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 205.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 206.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 207.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 2940,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 208.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 209.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 210.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 211.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 212.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 213.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 214.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 215.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 3024,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 216.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 217.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 218.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 219.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 220.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 221.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 222.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 223.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 3108,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 224.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 225.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 226.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 227.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 228.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 229.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 230.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 231.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 3192,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 232.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3276,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 233.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3360,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 234.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3360,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 235.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3360,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 236.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3360,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 237.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3360,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 238.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3444,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 239.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3444,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 240.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3444,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 241.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3444,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 242.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3444,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 243.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 244.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 245.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 246.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 247.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 248.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 249.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 250.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 672,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 251.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 768,
+        "y": 3528,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 252.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 253.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 254.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 255.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 256.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 257.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3612,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 258.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 259.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 260.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 261.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 262.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 263.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3696,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 264.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 265.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 266.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 267.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 268.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 269.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3780,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 100,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 270.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3864,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 60,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 271.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3864,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 60,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 272.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3864,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 60,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 273.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3864,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 60,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 274.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3864,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 60,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 275.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 0,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 276.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 96,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 277.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 192,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 278.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 288,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 279.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 384,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 280.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 480,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 281.aseprite": {
+      "part": "part0",
+      "image": "PlayerCombatSheet.part0.png",
+      "json": "PlayerCombatSheet.part0.json",
+      "frame": {
+        "x": 576,
+        "y": 3948,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 282.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 283.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 96,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 284.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 192,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 285.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 288,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 286.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 0,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 287.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 96,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 288.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 192,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 289.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 288,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 290.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 384,
+        "y": 84,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 291.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 0,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 292.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 96,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 293.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 192,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 294.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 288,
+        "y": 168,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 70,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 295.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 0,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 296.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 96,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 297.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 192,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    },
+    "PlayerCombat 298.aseprite": {
+      "part": "part1",
+      "image": "PlayerCombatSheet.part1.png",
+      "json": "PlayerCombatSheet.part1.json",
+      "frame": {
+        "x": 288,
+        "y": 252,
+        "w": 96,
+        "h": 84
+      },
+      "duration": 80,
+      "sourceSize": {
+        "w": 96,
+        "h": 84
+      },
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 96,
+        "h": 84
+      }
+    }
+  }
+}
