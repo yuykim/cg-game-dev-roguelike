@@ -5,7 +5,6 @@ const STATE_DEFS = {
   run: { sequence: 'Run', fps: 12, loop: true },
   jumpRise: { sequence: 'JumpRise', fps: 1, loop: true },
   jumpFall: { sequence: 'JumpFall', fps: 1, loop: true },
-  dash: { sequence: 'Dash', fps: 22, loop: false },
   roll: { sequence: 'Roll', fps: 18, loop: false },
   wallSlide: { sequence: 'WallSlide', fps: 10, loop: true },
   attack: { sequence: 'Combat/PunchA', fps: 16, loop: false },
@@ -13,12 +12,14 @@ const STATE_DEFS = {
 
 export class SpriteAnimator {
   constructor(scene, options = {}) {
+    this.scene = scene
     this.basePath = options.basePath ?? '/Sprites/'
     this.pixelsPerUnit = options.pixelsPerUnit ?? 32
     this.frameWidth = options.frameWidth ?? 96
     this.frameHeight = options.frameHeight ?? 84
 
     this.sequences = {}
+    this.afterimages = []
     this.currentState = 'idle'
     this.frameIndex = 0
     this.frameTime = 0
@@ -97,6 +98,8 @@ export class SpriteAnimator {
   }
 
   play(state, dt, force = false) {
+    this._updateAfterimages(dt)
+
     if (!this.ready) return
 
     const nextState = this.sequences[state] ? state : 'idle'
@@ -137,6 +140,44 @@ export class SpriteAnimator {
     this.material.opacity = opacity
   }
 
+  spawnAfterimage() {
+    if (!this.ready || !this.material.map) return
+
+    const material = new THREE.MeshBasicMaterial({
+      map: this.material.map,
+      transparent: true,
+      opacity: 0.42,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      color: 0x7ce8ff,
+      blending: THREE.AdditiveBlending,
+    })
+    const mesh = new THREE.Mesh(this.mesh.geometry, material)
+
+    mesh.position.copy(this.group.position)
+    mesh.scale.copy(this.group.scale)
+    mesh.renderOrder = 9
+    this.scene.add(mesh)
+    this.afterimages.push({ mesh, life: 0.22, maxLife: 0.22 })
+  }
+
+  _updateAfterimages(dt) {
+    for (let index = this.afterimages.length - 1; index >= 0; index -= 1) {
+      const afterimage = this.afterimages[index]
+      afterimage.life -= dt
+
+      const ratio = Math.max(0, afterimage.life / afterimage.maxLife)
+      afterimage.mesh.material.opacity = 0.42 * ratio
+      afterimage.mesh.scale.multiplyScalar(1 + dt * 0.8)
+
+      if (afterimage.life > 0) continue
+
+      this.scene.remove(afterimage.mesh)
+      afterimage.mesh.material.dispose()
+      this.afterimages.splice(index, 1)
+    }
+  }
+
   _applyFrame() {
     const sequence = this.sequences[this.currentState]
     const texture = sequence?.textures[this.frameIndex]
@@ -146,4 +187,3 @@ export class SpriteAnimator {
     this.material.needsUpdate = true
   }
 }
-

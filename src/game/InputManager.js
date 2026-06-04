@@ -26,8 +26,16 @@ export class InputManager {
   get left()  { return this.isDown('KeyA') || this.isDown('ArrowLeft') }
   get right() { return this.isDown('KeyD') || this.isDown('ArrowRight') }
   get jump()  { return this.isJustPressed('Space') }
-  get dash()  { return this.isJustPressed('ShiftLeft') || this.isJustPressed('ShiftRight') }
-  get roll()  { return this.isJustPressed('ControlLeft') || this.isJustPressed('ControlRight') || this.isJustPressed('KeyS') }
+  get roll()  {
+    return (
+      this.isJustPressed('ShiftLeft') ||
+      this.isJustPressed('ShiftRight') ||
+      this.isJustPressed('ControlLeft') ||
+      this.isJustPressed('ControlRight') ||
+      this.isJustPressed('KeyS')
+    )
+  }
   get attack(){ return this.isJustPressed('KeyJ') }
   get rewind(){ return this.isDown('KeyQ') }
+  get restart(){ return this.isJustPressed('KeyR') }
 }

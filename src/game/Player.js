@@ -5,12 +5,13 @@ const MOVE_SPEED = 8
 const JUMP_FORCE = 14
 const MAX_FALL = -22
 const WALL_SLIDE_SPEED = -2
-const DASH_SPEED = 20
-const DASH_DURATION = 0.14
-const ROLL_SPEED = 11
-const ROLL_DURATION = 0.38
+const ROLL_SPEED = 20
+const ROLL_DURATION = 0.18
 const ATTACK_DURATION = 0.32
 const INVINCIBLE_AFTER_HIT = 1.2
+const COYOTE_TIME = 0.11
+const JUMP_BUFFER_TIME = 0.12
+const ROLL_TRAIL_INTERVAL = 0.045
 
 export class Player {
   constructor(scene, input) {
@@ -31,22 +32,24 @@ export class Player {
     this.touchingWallRight = false
     this.facingDir = 1
 
-    this.isDashing = false
-    this.dashTimer = 0
-    this.dashDir = 1
-    this.airDashUsed = false
-
     this.isRolling = false
     this.rollTimer = 0
     this.rollDir = 1
+    this.airRollUsed = false
+    this.rollTrailTimer = 0
 
     this.attackTimer = 0
+    this.attackHasHit = false
+    this.jumpBufferTimer = 0
+    this.coyoteTimer = 0
 
+    this.maxHp = 3
+    this.hp = this.maxHp
     this.isInvincible = false
     this.invincibleTimer = 0
-    this.hp = 3
 
     this.sprite = new SpriteAnimator(scene)
+    this.events = []
   }
 
   get bounds() {
@@ -61,17 +64,62 @@ export class Player {
     }
   }
 
+  get isAttacking() {
+    return this.attackTimer > 0
+  }
+
+  get attackBounds() {
+    const reach = 0.85
+    const vertical = 0.75
+    const centerX = this.x + this.facingDir * (this.width / 2 + reach / 2)
+
+    return {
+      left: centerX - reach / 2,
+      right: centerX + reach / 2,
+      bottom: this.y - vertical / 2,
+      top: this.y + vertical / 2,
+    }
+  }
+
+  setSpawn(x, y) {
+    this.spawnX = x
+    this.spawnY = y
+    this.resetToSpawn({ restoreHp: true })
+  }
+
+  resetToSpawn({ restoreHp = false } = {}) {
+    this.x = this.spawnX
+    this.y = this.spawnY
+    this.vx = 0
+    this.vy = 0
+    this.isGrounded = false
+    this.touchingWallLeft = false
+    this.touchingWallRight = false
+    this.isRolling = false
+    this.rollTimer = 0
+    this.airRollUsed = false
+    this.rollTrailTimer = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this.jumpBufferTimer = 0
+    this.coyoteTimer = 0
+
+    if (restoreHp) this.hp = this.maxHp
+
+    this.syncVisual(0)
+  }
+
   update(dt, platforms) {
+    const wasGrounded = this.isGrounded
+    const previousVy = this.vy
+
     this._tickInvincibility(dt)
+    this._tickJumpHelpers(dt)
     this._handleAttack(dt)
-    this._handleDash(dt)
     this._handleRoll(dt)
 
-    if (!this.isDashing) {
+    if (!this.isRolling) {
       this._applyGravity(dt)
-    }
-
-    if (!this.isDashing && !this.isRolling) {
       this._handleHorizontal()
     }
 
@@ -81,9 +129,79 @@ export class Player {
     this.y += this.vy * dt
     this._resolveY(platforms)
 
-    this._handleJump()
-    this._resetIfFallen()
-    this._syncVisual(dt)
+    if (!wasGrounded && this.isGrounded && previousVy < -2) {
+      this._emit('land', { impact: Math.min(1, Math.abs(previousVy) / 22) })
+    }
+
+    this._handleBufferedJump()
+    this.syncVisual(dt)
+  }
+
+  captureSnapshot() {
+    return {
+      x: this.x,
+      y: this.y,
+      vx: this.vx,
+      vy: this.vy,
+      isGrounded: this.isGrounded,
+      touchingWallLeft: this.touchingWallLeft,
+      touchingWallRight: this.touchingWallRight,
+      facingDir: this.facingDir,
+      isRolling: this.isRolling,
+      rollTimer: this.rollTimer,
+      rollDir: this.rollDir,
+      airRollUsed: this.airRollUsed,
+      rollTrailTimer: this.rollTrailTimer,
+      attackTimer: this.attackTimer,
+      attackHasHit: this.attackHasHit,
+      jumpBufferTimer: this.jumpBufferTimer,
+      coyoteTimer: this.coyoteTimer,
+      hp: this.hp,
+      isInvincible: this.isInvincible,
+      invincibleTimer: this.invincibleTimer,
+    }
+  }
+
+  applySnapshot(snapshot) {
+    Object.assign(this, snapshot)
+    this.syncVisual(0)
+  }
+
+  takeDamage() {
+    if (this.isInvincible) return false
+
+    this.hp = Math.max(0, this.hp - 1)
+    this.isInvincible = true
+    this.invincibleTimer = INVINCIBLE_AFTER_HIT
+    this._emit('damage')
+    return true
+  }
+
+  consumeAttackHit() {
+    if (!this.isAttacking || this.attackHasHit) return false
+
+    this.attackHasHit = true
+    return true
+  }
+
+  syncVisual(dt) {
+    const state = this._getAnimationState()
+    const flashing = this.isInvincible && Math.floor(performance.now() / 80) % 2 === 0
+
+    this.sprite.setTransform(
+      this.x,
+      this.y,
+      this.facingDir,
+      this.height,
+      flashing ? 0.35 : 1,
+    )
+    this.sprite.play(state, dt)
+  }
+
+  consumeEvents() {
+    const events = this.events
+    this.events = []
+    return events
   }
 
   _handleHorizontal() {
@@ -98,77 +216,98 @@ export class Player {
     }
   }
 
-  _handleJump() {
-    if (!this.input.jump || this.isDashing) return
+  _tickJumpHelpers(dt) {
+    if (this.input.jump) {
+      this.jumpBufferTimer = JUMP_BUFFER_TIME
+    } else {
+      this.jumpBufferTimer = Math.max(0, this.jumpBufferTimer - dt)
+    }
+
+    if (this.isGrounded) {
+      this.coyoteTimer = COYOTE_TIME
+    } else {
+      this.coyoteTimer = Math.max(0, this.coyoteTimer - dt)
+    }
+  }
+
+  _handleBufferedJump() {
+    if (this.jumpBufferTimer <= 0 || this.isRolling) return
 
     if (this.isGrounded) {
       this.vy = JUMP_FORCE
-      this.isRolling = false
+      this.isGrounded = false
+      this.jumpBufferTimer = 0
+      this.coyoteTimer = 0
+      this._emit('jump')
+    } else if (this.coyoteTimer > 0) {
+      this.vy = JUMP_FORCE
+      this.jumpBufferTimer = 0
+      this.coyoteTimer = 0
+      this._emit('jump')
     } else if (this.touchingWallLeft) {
       this.vy = JUMP_FORCE
       this.vx = MOVE_SPEED * 1.1
       this.facingDir = 1
+      this.jumpBufferTimer = 0
+      this.coyoteTimer = 0
+      this._emit('wallJump')
     } else if (this.touchingWallRight) {
       this.vy = JUMP_FORCE
       this.vx = -MOVE_SPEED * 1.1
       this.facingDir = -1
+      this.jumpBufferTimer = 0
+      this.coyoteTimer = 0
+      this._emit('wallJump')
     }
   }
 
-  _handleDash(dt) {
-    if (this.isDashing) {
-      this.dashTimer -= dt
-      this.vx = this.dashDir * DASH_SPEED
+  _handleRoll(dt) {
+    if (this.isRolling) {
+      this.rollTimer -= dt
+      this.rollTrailTimer -= dt
+      this.vx = this.rollDir * ROLL_SPEED
       this.vy = 0
 
-      if (this.dashTimer <= 0) {
-        this.isDashing = false
+      if (this.rollTrailTimer <= 0) {
+        this.rollTrailTimer = ROLL_TRAIL_INTERVAL
+        this.sprite.spawnAfterimage()
+      }
+
+      if (this.rollTimer <= 0) {
+        this.isRolling = false
         this.vx = 0
       }
 
       return
     }
 
-    if (!this.input.dash || this.isRolling) return
-    if (!this.isGrounded && this.airDashUsed) return
-
-    this.isDashing = true
-    this.dashTimer = DASH_DURATION
-    this.dashDir = this.facingDir
-    this.isInvincible = true
-    this.invincibleTimer = DASH_DURATION
-
-    if (!this.isGrounded) this.airDashUsed = true
-  }
-
-  _handleRoll(dt) {
-    if (this.isRolling) {
-      this.rollTimer -= dt
-      this.vx = this.rollDir * ROLL_SPEED
-
-      if (this.rollTimer <= 0 || !this.isGrounded) {
-        this.isRolling = false
-      }
-
-      return
-    }
-
-    if (!this.input.roll || !this.isGrounded || this.isDashing) return
+    if (!this.input.roll) return
+    if (!this.isGrounded && this.airRollUsed) return
 
     this.isRolling = true
     this.rollTimer = ROLL_DURATION
     this.rollDir = this.facingDir
+    this.rollTrailTimer = 0
+    this.isInvincible = true
+    this.invincibleTimer = ROLL_DURATION
     this.attackTimer = 0
+    this.attackHasHit = false
+    this._emit('roll')
+
+    if (!this.isGrounded) this.airRollUsed = true
   }
 
   _handleAttack(dt) {
     if (this.attackTimer > 0) {
       this.attackTimer = Math.max(0, this.attackTimer - dt)
+      if (this.attackTimer === 0) this.attackHasHit = false
     }
 
-    if (!this.input.attack || this.isDashing || this.isRolling) return
+    if (!this.input.attack || this.isRolling) return
 
     this.attackTimer = ATTACK_DURATION
+    this.attackHasHit = false
+    this._emit('attack')
   }
 
   _applyGravity(dt) {
@@ -189,6 +328,8 @@ export class Player {
     this.touchingWallRight = false
 
     for (const platform of platforms) {
+      if (platform.destroyed) continue
+
       const platformBounds = platform.bounds
       const playerBounds = this.bounds
       if (!overlaps(playerBounds, platformBounds)) continue
@@ -209,6 +350,8 @@ export class Player {
     this.isGrounded = false
 
     for (const platform of platforms) {
+      if (platform.destroyed) continue
+
       const platformBounds = platform.bounds
       const playerBounds = this.bounds
       if (!overlaps(playerBounds, platformBounds)) continue
@@ -220,18 +363,10 @@ export class Player {
         this.y = platformBounds.top + this.height / 2
         this.vy = 0
         this.isGrounded = true
-        this.airDashUsed = false
+        this.airRollUsed = false
+        this.coyoteTimer = COYOTE_TIME
       }
     }
-  }
-
-  takeDamage() {
-    if (this.isInvincible) return false
-
-    this.hp -= 1
-    this.isInvincible = true
-    this.invincibleTimer = INVINCIBLE_AFTER_HIT
-    return true
   }
 
   _tickInvincibility(dt) {
@@ -241,34 +376,7 @@ export class Player {
     if (this.invincibleTimer <= 0) this.isInvincible = false
   }
 
-  _resetIfFallen() {
-    if (this.y > -12) return
-
-    this.x = this.spawnX
-    this.y = this.spawnY
-    this.vx = 0
-    this.vy = 0
-    this.isDashing = false
-    this.isRolling = false
-    this.airDashUsed = false
-  }
-
-  _syncVisual(dt) {
-    const state = this._getAnimationState()
-    const flashing = this.isInvincible && Math.floor(performance.now() / 80) % 2 === 0
-
-    this.sprite.setTransform(
-      this.x,
-      this.y,
-      this.facingDir,
-      this.height,
-      flashing ? 0.35 : 1,
-    )
-    this.sprite.play(state, dt)
-  }
-
   _getAnimationState() {
-    if (this.isDashing) return 'dash'
     if (this.isRolling) return 'roll'
 
     const wallSliding =
@@ -283,9 +391,12 @@ export class Player {
 
     return 'idle'
   }
+
+  _emit(type, data = {}) {
+    this.events.push({ type, ...data })
+  }
 }
 
-function overlaps(a, b) {
+export function overlaps(a, b) {
   return a.right > b.left && a.left < b.right && a.top > b.bottom && a.bottom < b.top
 }
-
