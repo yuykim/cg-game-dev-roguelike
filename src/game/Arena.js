@@ -4,6 +4,7 @@ import { Player, overlaps } from './Player.js'
 import { Enemy } from './Enemy.js'
 import { Camera } from './Camera.js'
 import { HitSparks } from './HitSpark.js'
+import { Projectile } from './Projectile.js'
 import { Platform } from '../obstacles/Platform.js'
 
 const ARENA_HALF_WIDTH = 14
@@ -11,15 +12,22 @@ const GROUND_Y = -1
 const MAX_ENEMY_ATTACKERS = 2
 
 const WAVES = [
-  ['grunt', 'grunt', 'grunt'],
-  ['grunt', 'fast', 'grunt', 'fast'],
-  ['tank', 'grunt', 'fast', 'grunt', 'fast', 'grunt'],
+  ['grunt', 'kicker', 'grunt'],
+  ['grunt', 'fast', 'guarder', 'shooter', 'kicker'],
+  ['tank', 'guarder', 'fast', 'shooter', 'kicker', 'grunt', 'tank'],
 ]
 
 const COMBO = {
-  1: { damage: 1, knockback: 6, hitstop: 0.045, shake: 0.12, sparks: 1.0 },
-  2: { damage: 1, knockback: 7, hitstop: 0.05, shake: 0.14, sparks: 1.05 },
-  3: { damage: 2, knockback: 13, hitstop: 0.09, shake: 0.28, sparks: 1.4 },
+  punch: {
+    1: { damage: 1, knockback: 6, hitstop: 0.045, shake: 0.12, sparks: 1.0 },
+    2: { damage: 1, knockback: 7, hitstop: 0.05, shake: 0.14, sparks: 1.05 },
+    3: { damage: 2, knockback: 13, hitstop: 0.09, shake: 0.28, sparks: 1.4 },
+  },
+  kick: {
+    1: { damage: 1, knockback: 8, hitstop: 0.05, shake: 0.15, sparks: 1.1 },
+    2: { damage: 2, knockback: 10, hitstop: 0.065, shake: 0.2, sparks: 1.22 },
+    3: { damage: 2, knockback: 16, hitstop: 0.1, shake: 0.34, sparks: 1.55 },
+  },
 }
 
 export class Arena {
@@ -50,6 +58,7 @@ export class Arena {
 
     this.platforms = []
     this.enemies = []
+    this.projectiles = []
     this.hitstop = 0
     this.elapsed = 0
     this.state = 'start'
@@ -91,26 +100,29 @@ export class Arena {
     this.platforms.push(new Platform(this.scene, 0, GROUND_Y - 0.5, ARENA_HALF_WIDTH * 2, 1, 0x3a4055))
     this.platforms.push(new Platform(this.scene, -ARENA_HALF_WIDTH, 4, 1, 12, 0x2c3146))
     this.platforms.push(new Platform(this.scene, ARENA_HALF_WIDTH, 4, 1, 12, 0x2c3146))
-    this.platforms.push(new Platform(this.scene, -6, 1.6, 3, 0.6, 0x4a5168))
-    this.platforms.push(new Platform(this.scene, 6, 1.6, 3, 0.6, 0x4a5168))
-    this.platforms.push(new Platform(this.scene, 0, 3.6, 3.2, 0.6, 0x4a5168))
+    this.platforms.push(new Platform(this.scene, -6, 1.6, 3, 0.6, 0x4a5168, { oneWay: true }))
+    this.platforms.push(new Platform(this.scene, 6, 1.6, 3, 0.6, 0x4a5168, { oneWay: true }))
+    this.platforms.push(new Platform(this.scene, 0, 3.6, 3.2, 0.6, 0x4a5168, { oneWay: true }))
   }
 
   _resetRun({ pauseAtStart = false } = {}) {
     for (const e of this.enemies) e.dispose()
+    for (const p of this.projectiles) p.dispose()
     this.enemies = []
+    this.projectiles = []
     this.waveIndex = 0
     this.killCount = 0
     this.elapsed = 0
     this.hitstop = 0
     this.state = pauseAtStart ? 'start' : 'playing'
     this.player.setSpawn(0, 1)
+    this.player.resetSkills()
     this.player.hp = this.player.maxHp
     this._spawnWave(0)
     this._updateHud()
     this._setMessage(
       pauseAtStart
-        ? 'ECHO BRAWLER\n\nJ / SPACE : START\nA,D MOVE  SPACE JUMP  SHIFT ROLL  J COMBO'
+        ? 'ECHO BRAWLER\n\nJ / SPACE : START\nA,D MOVE  SPACE JUMP  SHIFT ROLL  J PUNCH'
         : '',
     )
   }
@@ -160,7 +172,9 @@ export class Arena {
     if (this.state === 'dead' || this.state === 'cleared') {
       if (this.input.restart) this._resetRun()
       for (const e of this.enemies) e.update(dt, this.player, this.platforms)
+      this._handleEnemyEvents()
       this._cleanupDead()
+      this._updateProjectiles(dt)
       this.player.update(dt, this.platforms)
       this._updateHud()
       return
@@ -187,9 +201,11 @@ export class Arena {
     }
 
     for (const e of this.enemies) e.update(dt, this.player, this.platforms, director)
+    this._handleEnemyEvents()
     this._separateEnemies()
 
     this._resolvePlayerAttack()
+    this._updateProjectiles(dt)
     this._cleanupDead()
     this._handlePlayerEvents()
     this._checkProgress()
@@ -211,7 +227,8 @@ export class Arena {
   _resolvePlayerAttack() {
     if (!this.player.isAttacking) return
 
-    const combo = COMBO[this.player.attackComboStep] ?? COMBO[1]
+    const style = this.player.attackStyle ?? 'punch'
+    const combo = COMBO[style]?.[this.player.attackComboStep] ?? COMBO.punch[1]
     const atkBounds = this.player.attackBounds
     const atkId = this.player.attackId
     let hitSomething = false
@@ -233,6 +250,92 @@ export class Arena {
     if (hitSomething) {
       this.hitstop = Math.max(this.hitstop, combo.hitstop)
       this.followCamera.shake(combo.shake, 0.18)
+    }
+
+    for (const projectile of this.projectiles) {
+      if (projectile.destroyed) continue
+      if (!overlaps(atkBounds, projectile.bounds)) continue
+
+      projectile.destroy()
+      this.hitSparks.burst(projectile.x, projectile.y, this.player.facingDir, 0.9, 0xffffff)
+      this.hitstop = Math.max(this.hitstop, 0.025)
+      this.followCamera.shake(0.08, 0.1)
+    }
+  }
+
+  _handleEnemyEvents() {
+    for (const enemy of this.enemies) {
+      for (const event of enemy.consumeEvents()) {
+        if (event.type !== 'shoot') continue
+
+        this.projectiles.push(new Projectile(
+          this.scene,
+          event.x,
+          event.y,
+          event.dir,
+          { speed: event.speed, damage: event.damage },
+        ))
+        this.hitSparks.burst(event.x, event.y, event.dir, 0.7, 0xff8c42)
+      }
+    }
+  }
+
+  _updateProjectiles(dt) {
+    for (const projectile of this.projectiles) {
+      if (projectile.destroyed) continue
+
+      projectile.update(dt)
+      if (this._projectileHitsSolid(projectile)) {
+        projectile.destroy()
+        continue
+      }
+
+      if (projectile.reflected) {
+        this._resolveReflectedProjectile(projectile)
+      } else {
+        this._resolveHostileProjectile(projectile)
+      }
+    }
+
+    for (let i = this.projectiles.length - 1; i >= 0; i -= 1) {
+      if (!this.projectiles[i].destroyed) continue
+
+      this.projectiles[i].dispose()
+      this.projectiles.splice(i, 1)
+    }
+  }
+
+  _projectileHitsSolid(projectile) {
+    return this.platforms.some((platform) => {
+      if (platform.destroyed || platform.oneWay) return false
+      return overlaps(projectile.bounds, platform.bounds)
+    })
+  }
+
+  _resolveHostileProjectile(projectile) {
+    if (!overlaps(projectile.bounds, this.player.bounds)) return
+
+    if (this.player.tryReflectProjectile(projectile.x)) {
+      projectile.reflect()
+      this.hitSparks.burst(projectile.x, projectile.y, -projectile.dir, 1.1, 0x69e7ff)
+      this.followCamera.shake(0.14, 0.16)
+      return
+    }
+
+    this.player.takeDamage(projectile.damage, projectile.x)
+    projectile.destroy()
+  }
+
+  _resolveReflectedProjectile(projectile) {
+    for (const enemy of this.enemies) {
+      if (!enemy.isAlive) continue
+      if (!overlaps(projectile.bounds, enemy.bounds)) continue
+
+      enemy.takeHit(projectile.damage, projectile.dir, 10)
+      this.hitSparks.burst(projectile.x, projectile.y, projectile.dir, 1.2, 0x69e7ff)
+      this.followCamera.shake(0.16, 0.14)
+      projectile.destroy()
+      return
     }
   }
 
@@ -260,9 +363,13 @@ export class Arena {
   _cleanupDead() {
     for (let i = this.enemies.length - 1; i >= 0; i -= 1) {
       if (this.enemies[i].isDead) {
+        const grantSkill = this.enemies[i].grantSkill
         this.enemies[i].dispose()
         this.enemies.splice(i, 1)
         this.killCount += 1
+        if (grantSkill && this.player.unlockSkill(grantSkill)) {
+          this._announceUnlock(grantSkill)
+        }
       }
     }
   }
@@ -310,6 +417,12 @@ export class Arena {
         this._flashDamage(amount >= 3)
         this._spawnDamageText(`-${amount}`, this.player.x, this.player.y + 0.9)
       }
+      if (event.type === 'guardBlock') {
+        this.hitstop = Math.max(this.hitstop, 0.04)
+        this.followCamera.shake(0.16, 0.16)
+        this.hitSparks.burst(this.player.x, this.player.y + 0.45, event.dir ?? 1, 0.95, 0x69e7ff)
+        this._spawnDamageText('BLOCK', this.player.x, this.player.y + 1.0, 'block')
+      }
       if (event.type === 'death') {
         this.hitstop = Math.max(this.hitstop, 0.12)
         this.followCamera.shake(0.75, 0.36)
@@ -339,17 +452,23 @@ export class Arena {
           <span class="arena-label">KO</span>
           <strong data-ko>0</strong>
         </div>
+        <div class="arena-card">
+          <span class="arena-label">SKILLS</span>
+          <strong data-skills>PUNCH</strong>
+        </div>
       </div>
       <div data-msg class="arena-message"></div>
       <div class="arena-help">A/D Move · Space Jump · Shift/Ctrl/S Roll · J Combo · R Restart</div>
     `
     document.body.appendChild(this.hud)
     this.hud.querySelector('.arena-help').textContent =
-      'A/D Move | Space Jump | Shift/Ctrl/S Roll | J Combo | R Restart'
+      'A/D Move | Space Jump | Shift/Ctrl/S Roll | J Punch | R Restart'
     this.hpEl = this.hud.querySelector('[data-hp]')
     this.timeEl = this.hud.querySelector('[data-time]')
     this.waveEl = this.hud.querySelector('[data-wave]')
     this.koEl = this.hud.querySelector('[data-ko]')
+    this.skillsEl = this.hud.querySelector('[data-skills]')
+    this.helpEl = this.hud.querySelector('.arena-help')
     this.msgEl = this.hud.querySelector('[data-msg]')
   }
 
@@ -369,10 +488,37 @@ export class Arena {
     this.timeEl.textContent = this._formatTime(this.elapsed)
     this.waveEl.textContent = `${this.waveIndex + 1}/${WAVES.length} / ${remaining} left`
     this.koEl.textContent = String(this.killCount)
+    this.skillsEl.textContent = this._formatSkills()
+    this.helpEl.textContent = this._formatHelp()
   }
 
   _setMessage(text) {
     if (this.msgEl) this.msgEl.textContent = text
+  }
+
+  _announceUnlock(skill) {
+    const label = skill === 'kick' ? 'KICK' : 'GUARD'
+    const key = skill === 'kick' ? 'K' : 'G'
+    this._setMessage(`${label} UNLOCKED\n\n${key} : ${label}`)
+    this.followCamera.shake(0.18, 0.22)
+    window.setTimeout(() => {
+      if (this.state === 'playing') this._setMessage('')
+    }, 1400)
+  }
+
+  _formatSkills() {
+    const skills = ['PUNCH']
+    if (this.player.skills.kick) skills.push('KICK')
+    if (this.player.skills.guard) skills.push('GUARD')
+    return skills.join(' / ')
+  }
+
+  _formatHelp() {
+    const actions = ['A/D Move', 'Space Jump', 'Shift/Ctrl/S Roll', 'J Punch']
+    if (this.player.skills.kick) actions.push('K Kick')
+    if (this.player.skills.guard) actions.push('Hold G Guard')
+    actions.push('R Restart')
+    return actions.join(' | ')
   }
 
   _flashDamage(strong = false) {
@@ -387,12 +533,12 @@ export class Arena {
     }, strong ? 360 : 220)
   }
 
-  _spawnDamageText(text, x, y) {
+  _spawnDamageText(text, x, y, type = 'damage') {
     if (!this.hud) return
 
     const pos = this._worldToScreen(x, y)
     const el = document.createElement('div')
-    el.className = 'damage-pop'
+    el.className = type === 'block' ? 'damage-pop block-pop' : 'damage-pop'
     el.textContent = text
     el.style.left = `${pos.x}px`
     el.style.top = `${pos.y}px`

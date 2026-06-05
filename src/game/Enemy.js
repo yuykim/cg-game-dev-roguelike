@@ -8,7 +8,10 @@ const ENEMY_STATES = {
   jumpFall: { sequence: 'JumpFall', fps: 1, loop: true },
   attackLight: { sequence: 'Combat/PunchA', fps: 16, loop: false },
   attackFast: { sequence: 'Combat/PunchB', fps: 18, loop: false },
+  attackKick: { sequence: 'Combat/KickA', fps: 17, loop: false },
+  attackGuard: { sequence: 'Combat/GuardImpact', fps: 16, loop: false },
   attackHeavy: { sequence: 'Combat/ShockHeavy', fps: 14, loop: false },
+  attackShoot: { sequence: 'Combat/ShockLight', fps: 14, loop: false },
   hurt: { sequence: 'Knockback', fps: 16, loop: false },
   die: { sequence: 'Die', fps: 14, loop: false },
 }
@@ -42,6 +45,28 @@ const ATTACKS = {
     vertical: 0.82,
     lungeSpeed: 8.0,
   },
+  kick: {
+    state: 'attackKick',
+    damage: 2,
+    windup: 0.26,
+    active: 0.18,
+    recovery: 0.44,
+    cooldown: 1.05,
+    range: 1.32,
+    vertical: 0.9,
+    lungeSpeed: 4.2,
+  },
+  guardBash: {
+    state: 'attackGuard',
+    damage: 1,
+    windup: 0.34,
+    active: 0.16,
+    recovery: 0.5,
+    cooldown: 1.12,
+    range: 1.05,
+    vertical: 0.98,
+    lungeSpeed: 2.2,
+  },
   smash: {
     state: 'attackHeavy',
     damage: 3,
@@ -52,6 +77,19 @@ const ATTACKS = {
     range: 1.42,
     vertical: 1.1,
     lungeSpeed: 1.0,
+  },
+  shoot: {
+    state: 'attackShoot',
+    damage: 2,
+    windup: 0.46,
+    active: 0.12,
+    recovery: 0.62,
+    cooldown: 1.4,
+    range: 8.5,
+    vertical: 2.7,
+    lungeSpeed: 0,
+    projectile: true,
+    projectileSpeed: 9.5,
   },
 }
 
@@ -76,6 +114,40 @@ export const ENEMY_TYPES = {
     preferredRange: 1.0,
     skirmisher: true,
     attack: ATTACKS.lunge,
+  },
+  kicker: {
+    tint: 0x48e07d,
+    hp: 3,
+    speed: 4.25,
+    scale: 1.0,
+    jumpForce: 13.8,
+    jumpCooldown: 0.6,
+    preferredRange: 1.05,
+    attack: ATTACKS.kick,
+    grantSkill: 'kick',
+  },
+  guarder: {
+    tint: 0x69e7ff,
+    hp: 5,
+    speed: 2.55,
+    scale: 1.08,
+    kbResist: 0.25,
+    jumpForce: 12.1,
+    jumpCooldown: 0.95,
+    preferredRange: 0.82,
+    attack: ATTACKS.guardBash,
+    grantSkill: 'guard',
+  },
+  shooter: {
+    tint: 0xff8c42,
+    hp: 3,
+    speed: 2.9,
+    scale: 1.0,
+    jumpForce: 12.8,
+    jumpCooldown: 0.85,
+    preferredRange: 4.2,
+    skirmisher: true,
+    attack: ATTACKS.shoot,
   },
   tank: {
     tint: 0xb066ff,
@@ -104,6 +176,7 @@ export class Enemy {
     this.preferredRange = def.preferredRange
     this.skirmisher = def.skirmisher ?? false
     this.attackDef = def.attack
+    this.grantSkill = def.grantSkill ?? null
 
     this.x = x
     this.y = y
@@ -128,6 +201,7 @@ export class Enemy {
     this.blockedDir = 0
     this.stuckTimer = 0
     this.sideBias = Math.random() < 0.5 ? -1 : 1
+    this.events = []
 
     this.sprite = new SpriteAnimator(scene, {
       states: ENEMY_STATES,
@@ -172,6 +246,12 @@ export class Enemy {
     return this.state === 'attacking' && this.attackPhase !== 'recovery'
   }
 
+  consumeEvents() {
+    const events = this.events
+    this.events = []
+    return events
+  }
+
   update(dt, player, platforms, director = null) {
     this.flashTimer = Math.max(0, this.flashTimer - dt)
     this.jumpCooldown = Math.max(0, this.jumpCooldown - dt)
@@ -181,8 +261,9 @@ export class Enemy {
       this.spawnTimer -= dt
       this.vx = 0
       this._applyGravity(dt)
+      const previousY = this.y
       this.y += this.vy * dt
-      this._resolveY(platforms)
+      this._resolveY(platforms, previousY)
       if (this.spawnTimer <= 0) this.state = 'alive'
       this._syncVisual(dt)
       return
@@ -203,7 +284,7 @@ export class Enemy {
       const intent = this._chooseIntent(player, platforms)
       this.facingDir = intent.faceDir
       this.vx = intent.moveDir * this.speed * intent.speedScale
-      if (intent.jump) this._jump()
+      if (intent.jump) this._jump(intent.leapVx)
       else this._tryStartAttack(player, director)
     }
 
@@ -221,8 +302,9 @@ export class Enemy {
       this.stuckTimer = 0
     }
 
+    const previousY = this.y
     this.y += this.vy * dt
-    this._resolveY(platforms)
+    this._resolveY(platforms, previousY)
     this._syncVisual(dt)
   }
 
@@ -250,8 +332,9 @@ export class Enemy {
   _updateDying(dt, platforms) {
     this.deathTimer -= dt
     this._applyGravity(dt)
+    const previousY = this.y
     this.y += this.vy * dt
-    this._resolveY(platforms)
+    this._resolveY(platforms, previousY)
     this.vx *= 1 - Math.min(1, KNOCKBACK_DECAY * dt)
     this.x += this.vx * dt
     if (this.deathTimer <= 0) this.state = 'dead'
@@ -279,11 +362,14 @@ export class Enemy {
       speedScale = 0.8
     }
 
+    const leapVx = this._targetLeapVelocity(dx, dy)
+
     return {
       faceDir: dir,
       moveDir,
       speedScale,
       jump: this._shouldJump(player, platforms, dir, dx, dy),
+      leapVx,
     }
   }
 
@@ -322,7 +408,11 @@ export class Enemy {
 
     if (this.attackPhase === 'active') {
       this.vx = this.attackDir * this.attackDef.lungeSpeed
-      this._tryApplyAttackHit(player)
+      if (this.attackDef.projectile) {
+        this._tryFireProjectile()
+      } else {
+        this._tryApplyAttackHit(player)
+      }
       if (this.attackTimer <= 0) {
         this.attackPhase = 'recovery'
         this.attackTimer = this.attackDef.recovery
@@ -346,6 +436,20 @@ export class Enemy {
 
     this.attackHasHit = true
     player.takeDamage(this.attackDef.damage, this.x)
+  }
+
+  _tryFireProjectile() {
+    if (this.attackHasHit) return
+
+    this.attackHasHit = true
+    this.events.push({
+      type: 'shoot',
+      x: this.x + this.attackDir * (this.width / 2 + 0.38),
+      y: this.y + 0.32,
+      dir: this.attackDir,
+      speed: this.attackDef.projectileSpeed,
+      damage: this.attackDef.damage,
+    })
   }
 
   _shouldJump(player, platforms, dir, dx, dy) {
@@ -374,8 +478,18 @@ export class Enemy {
     })
   }
 
-  _jump() {
+  _targetLeapVelocity(dx, dy) {
+    const absDx = Math.abs(dx)
+    if (dy <= 0.75 || absDx < 0.4 || absDx > 8.0) return null
+
+    const estimatedTime = Math.max(0.42, Math.min(0.92, absDx / Math.max(4.5, this.speed * 1.25)))
+    const vx = dx / estimatedTime
+    return Math.max(-9.5, Math.min(9.5, vx))
+  }
+
+  _jump(leapVx = null) {
     this.vy = Math.max(this.vy, this.jumpForce)
+    if (leapVx != null) this.vx = leapVx
     this.isGrounded = false
     this.jumpCooldown = this.jumpCooldownBase
   }
@@ -387,6 +501,7 @@ export class Enemy {
   _resolveX(platforms) {
     for (const p of platforms) {
       if (p.destroyed) continue
+      if (p.oneWay) continue
       if (!overlaps(this.bounds, p.bounds)) continue
 
       this.blockedDir = Math.sign(this.vx) || this.facingDir
@@ -399,11 +514,27 @@ export class Enemy {
     }
   }
 
-  _resolveY(platforms) {
+  _resolveY(platforms, previousY = this.y) {
     this.isGrounded = false
     for (const p of platforms) {
       if (p.destroyed) continue
       if (!overlaps(this.bounds, p.bounds)) continue
+
+      if (p.oneWay) {
+        const b = p.bounds
+        const previousBottom = previousY - this.height / 2
+        const currentBottom = this.bounds.bottom
+        const falling = this.vy <= 0
+        const crossedTop = previousBottom >= b.top - 0.08
+        const nearTop = currentBottom <= b.top + 0.18
+        if (!falling || !crossedTop || !nearTop) continue
+
+        this.y = b.top + this.height / 2
+        this.vy = 0
+        this.isGrounded = true
+        continue
+      }
+
       if (this.y <= p.y) {
         this.y = p.bounds.bottom - this.height / 2
         this.vy = 0

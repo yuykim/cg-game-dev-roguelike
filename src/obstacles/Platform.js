@@ -8,6 +8,7 @@ export class Platform {
     this.w = w
     this.h = h
     this.breakable = options.breakable ?? false
+    this.oneWay = options.oneWay ?? false
     this.maxHits = options.hitsToBreak ?? 1
     this.hitsRemaining = this.maxHits
     this.destroyed = false
@@ -91,6 +92,7 @@ export class Platform {
       dy: this.dy,
       destroyed: this.destroyed,
       hitsRemaining: this.hitsRemaining,
+      oneWay: this.oneWay,
     }
   }
 

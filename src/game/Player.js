@@ -17,6 +17,7 @@ const HURT_DURATION = 0.22
 const DAMAGE_FLASH_DURATION = 0.24
 const HIT_KNOCKBACK = 7
 const STARTING_HP = 10
+const GUARD_IMPACT_DURATION = 0.18
 
 export class Player {
   constructor(scene, input) {
@@ -46,6 +47,7 @@ export class Player {
     this.attackTimer = 0
     this.attackHasHit = false
     this.attackComboStep = 1
+    this.attackStyle = 'punch'
     this.attackComboWindow = 0
     this.attackId = 0
     this.jumpBufferTimer = 0
@@ -58,6 +60,9 @@ export class Player {
     this.isDead = false
     this.hurtTimer = 0
     this.damageFlashTimer = 0
+    this.isGuarding = false
+    this.guardImpactTimer = 0
+    this.skills = { kick: false, guard: false }
 
     this.sprite = new SpriteAnimator(scene)
     this.events = []
@@ -80,8 +85,8 @@ export class Player {
   }
 
   get attackBounds() {
-    const reach = 0.85
-    const vertical = 0.75
+    const reach = this.attackStyle === 'kick' ? 1.18 : 0.85
+    const vertical = this.attackStyle === 'kick' ? 0.82 : 0.75
     const centerX = this.x + this.facingDir * (this.width / 2 + reach / 2)
 
     return {
@@ -113,6 +118,7 @@ export class Player {
     this.attackTimer = 0
     this.attackHasHit = false
     this.attackComboStep = 1
+    this.attackStyle = 'punch'
     this.attackComboWindow = 0
     this.attackId = 0
     this.jumpBufferTimer = 0
@@ -120,6 +126,8 @@ export class Player {
     this.isDead = false
     this.hurtTimer = 0
     this.damageFlashTimer = 0
+    this.isGuarding = false
+    this.guardImpactTimer = 0
     this.isInvincible = false
     this.invincibleTimer = 0
     this.sprite.setTint(0xffffff)
@@ -138,8 +146,9 @@ export class Player {
       this.vx *= 1 - Math.min(1, 8 * dt)
       this.x += this.vx * dt
       this._resolveX(platforms)
+      const previousY = this.y
       this.y += this.vy * dt
-      this._resolveY(platforms)
+      this._resolveY(platforms, previousY)
       this.syncVisual(dt)
       return
     }
@@ -147,14 +156,21 @@ export class Player {
     this._tickInvincibility(dt)
     this._tickDamageFeedback(dt)
     this._tickHurt(dt)
+    this._tickGuardImpact(dt)
 
     if (this.hurtTimer <= 0) {
+      this._handleGuard()
       this._tickJumpHelpers(dt)
-      this._handleAttack(dt)
-      this._handleRoll(dt)
+      if (!this.isGuarding) {
+        this._handleAttack(dt)
+        this._handleRoll(dt)
+      }
     }
 
-    if (!this.isRolling && this.hurtTimer <= 0) {
+    if (this.isGuarding) {
+      this._applyGravity(dt)
+      this.vx = 0
+    } else if (!this.isRolling && this.hurtTimer <= 0) {
       this._applyGravity(dt)
       this._handleHorizontal()
     } else if (this.hurtTimer > 0) {
@@ -165,14 +181,15 @@ export class Player {
     this.x += this.vx * dt
     this._resolveX(platforms)
 
+    const previousY = this.y
     this.y += this.vy * dt
-    this._resolveY(platforms)
+    this._resolveY(platforms, previousY)
 
     if (!wasGrounded && this.isGrounded && previousVy < -2) {
       this._emit('land', { impact: Math.min(1, Math.abs(previousVy) / 22) })
     }
 
-    if (this.hurtTimer <= 0) this._handleBufferedJump()
+    if (this.hurtTimer <= 0 && !this.isGuarding) this._handleBufferedJump()
     this.syncVisual(dt)
   }
 
@@ -194,6 +211,7 @@ export class Player {
       attackTimer: this.attackTimer,
       attackHasHit: this.attackHasHit,
       attackComboStep: this.attackComboStep,
+      attackStyle: this.attackStyle,
       attackComboWindow: this.attackComboWindow,
       attackId: this.attackId,
       animationState: this._getAnimationState(),
@@ -205,6 +223,9 @@ export class Player {
       isDead: this.isDead,
       hurtTimer: this.hurtTimer,
       damageFlashTimer: this.damageFlashTimer,
+      isGuarding: this.isGuarding,
+      guardImpactTimer: this.guardImpactTimer,
+      skills: { ...this.skills },
     }
   }
 
@@ -221,11 +242,21 @@ export class Player {
       ? -this.facingDir
       : Math.sign(this.x - sourceX) || -this.facingDir
     const damage = Math.max(1, Math.round(amount))
+
+    if (this._canGuardDamage(damageDir)) {
+      this.guardImpactTimer = GUARD_IMPACT_DURATION
+      this.isGuarding = true
+      this.vx = damageDir * HIT_KNOCKBACK * 0.22
+      this._emit('guardBlock', { amount: damage, dir: damageDir })
+      return false
+    }
+
     this.hp = Math.max(0, this.hp - damage)
     this.isInvincible = true
     this.invincibleTimer = INVINCIBLE_AFTER_HIT
     this.damageFlashTimer = DAMAGE_FLASH_DURATION
     this.hurtTimer = HURT_DURATION
+    this.isGuarding = false
     this.isRolling = false
     this.rollTimer = 0
     this.attackTimer = 0
@@ -244,6 +275,29 @@ export class Player {
       this._emit('death', { dir: damageDir })
     }
 
+    return true
+  }
+
+  resetSkills() {
+    this.skills = { kick: false, guard: false }
+  }
+
+  unlockSkill(skill) {
+    if (!(skill in this.skills) || this.skills[skill]) return false
+
+    this.skills[skill] = true
+    this._emit('skillUnlocked', { skill })
+    return true
+  }
+
+  tryReflectProjectile(sourceX) {
+    const damageDir = Math.sign(this.x - sourceX) || -this.facingDir
+    if (!this._canGuardDamage(damageDir)) return false
+
+    this.guardImpactTimer = GUARD_IMPACT_DURATION
+    this.isGuarding = true
+    this.vx = damageDir * HIT_KNOCKBACK * 0.18
+    this._emit('guardBlock', { amount: 0, dir: damageDir })
     return true
   }
 
@@ -375,6 +429,15 @@ export class Player {
     if (!this.isGrounded) this.airRollUsed = true
   }
 
+  _handleGuard() {
+    this.isGuarding =
+      this.skills.guard &&
+      this.input.guard &&
+      !this.isRolling &&
+      !this.isAttacking &&
+      this.hurtTimer <= 0
+  }
+
   _handleAttack(dt) {
     if (this.attackTimer > 0) {
       this.attackTimer = Math.max(0, this.attackTimer - dt)
@@ -383,16 +446,22 @@ export class Player {
 
     this.attackComboWindow = Math.max(0, this.attackComboWindow - dt)
 
-    if (!this.input.attack || this.isRolling) return
+    const wantsKick = this.skills.kick && this.input.kick
+    const wantsPunch = this.input.attack
+    if ((!wantsPunch && !wantsKick) || this.isRolling || this.isGuarding) return
 
-    this.attackComboStep = this.attackComboWindow > 0
+    const nextStyle = wantsKick ? 'kick' : 'punch'
+    const sameStyle = this.attackStyle === nextStyle
+
+    this.attackStyle = nextStyle
+    this.attackComboStep = this.attackComboWindow > 0 && sameStyle
       ? (this.attackComboStep % 3) + 1
       : 1
     this.attackTimer = ATTACK_DURATION
     this.attackComboWindow = ATTACK_COMBO_WINDOW
     this.attackHasHit = false
     this.attackId += 1
-    this._emit('attack')
+    this._emit('attack', { style: this.attackStyle, step: this.attackComboStep })
   }
 
   _applyGravity(dt) {
@@ -414,6 +483,7 @@ export class Player {
 
     for (const platform of platforms) {
       if (platform.destroyed) continue
+      if (platform.oneWay) continue
 
       const platformBounds = platform.bounds
       const playerBounds = this.bounds
@@ -431,7 +501,7 @@ export class Player {
     }
   }
 
-  _resolveY(platforms) {
+  _resolveY(platforms, previousY = this.y) {
     this.isGrounded = false
 
     for (const platform of platforms) {
@@ -440,6 +510,21 @@ export class Player {
       const platformBounds = platform.bounds
       const playerBounds = this.bounds
       if (!overlaps(playerBounds, platformBounds)) continue
+
+      if (platform.oneWay) {
+        const previousBottom = previousY - this.height / 2
+        const falling = this.vy <= 0
+        const crossedTop = previousBottom >= platformBounds.top - 0.08
+        const nearTop = playerBounds.bottom <= platformBounds.top + 0.18
+        if (!falling || !crossedTop || !nearTop) continue
+
+        this.y = platformBounds.top + this.height / 2
+        this.vy = 0
+        this.isGrounded = true
+        this.airRollUsed = false
+        this.coyoteTimer = COYOTE_TIME
+        continue
+      }
 
       if (this.y <= platform.y) {
         this.y = platformBounds.bottom - this.height / 2
@@ -469,9 +554,20 @@ export class Player {
     this.hurtTimer = Math.max(0, this.hurtTimer - dt)
   }
 
+  _tickGuardImpact(dt) {
+    this.guardImpactTimer = Math.max(0, this.guardImpactTimer - dt)
+  }
+
+  _canGuardDamage(damageDir) {
+    if (!this.skills.guard || !this.isGuarding) return false
+    return damageDir === -this.facingDir
+  }
+
   _getAnimationState() {
     if (this.isDead) return 'dead'
     if (this.hurtTimer > 0) return 'hurt'
+    if (this.guardImpactTimer > 0) return 'guardImpact'
+    if (this.isGuarding) return 'guard'
     if (this.isRolling) return 'roll'
 
     const wallSliding =
@@ -480,7 +576,11 @@ export class Player {
       this.vy < 0
 
     if (wallSliding) return 'wallSlide'
-    if (this.attackTimer > 0) return `attack${this.attackComboStep}`
+    if (this.attackTimer > 0) {
+      return this.attackStyle === 'kick'
+        ? `kick${this.attackComboStep}`
+        : `attack${this.attackComboStep}`
+    }
     if (!this.isGrounded) return this.vy >= 0 ? 'jumpRise' : 'jumpFall'
     if (Math.abs(this.vx) > 0.1) return 'run'
 

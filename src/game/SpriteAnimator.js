@@ -12,6 +12,11 @@ const DEFAULT_STATES = {
   attack1: { sequence: 'Combat/PunchA', fps: 16, loop: false },
   attack2: { sequence: 'Combat/PunchB', fps: 16, loop: false },
   attack3: { sequence: 'Combat/PunchC', fps: 16, loop: false },
+  kick1: { sequence: 'Combat/KickA', fps: 17, loop: false },
+  kick2: { sequence: 'Combat/KickB', fps: 17, loop: false },
+  kick3: { sequence: 'Combat/KickC', fps: 17, loop: false },
+  guard: { sequence: 'Combat/Guard', fps: 1, loop: true },
+  guardImpact: { sequence: 'Combat/GuardImpact', fps: 18, loop: false },
 }
 
 export class SpriteAnimator {
