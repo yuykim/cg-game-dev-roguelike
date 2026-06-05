@@ -17,6 +17,8 @@ const DEFAULT_STATES = {
   kick3: { sequence: 'Combat/KickC', fps: 17, loop: false },
   guard: { sequence: 'Combat/Guard', fps: 1, loop: true },
   guardImpact: { sequence: 'Combat/GuardImpact', fps: 18, loop: false },
+  shock: { sequence: 'Combat/ShockHeavy', fps: 16, loop: false },
+  shockLight: { sequence: 'Combat/ShockLight', fps: 16, loop: false },
 }
 
 export class SpriteAnimator {

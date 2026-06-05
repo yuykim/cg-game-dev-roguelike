@@ -61,23 +61,54 @@ export class HitSparks {
     })
   }
 
+  // 광역 충격파 링 (확장하며 사라짐)
+  ring(x, y, color = 0xffffff) {
+    const geo = new THREE.RingGeometry(0.15, 0.32, 28)
+    const mat = new THREE.MeshBasicMaterial({
+      color,
+      transparent: true,
+      opacity: 0.9,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+      side: THREE.DoubleSide,
+    })
+    const mesh = new THREE.Mesh(geo, mat)
+    mesh.position.set(x, y, 0.9)
+    mesh.renderOrder = 21
+    this.scene.add(mesh)
+    this.particles.push({
+      mesh,
+      vx: 0,
+      vy: 0,
+      life: 0.34,
+      maxLife: 0.34,
+      spin: 0,
+      grow: 28,
+      fixed: true,
+      ownGeo: geo,
+    })
+  }
+
   update(dt) {
     for (let i = this.particles.length - 1; i >= 0; i -= 1) {
       const p = this.particles[i]
       p.life -= dt
       const ratio = Math.max(0, p.life / p.maxLife)
 
-      p.mesh.position.x += p.vx * dt
-      p.mesh.position.y += p.vy * dt
-      p.vy -= 14 * dt
+      if (!p.fixed) {
+        p.mesh.position.x += p.vx * dt
+        p.mesh.position.y += p.vy * dt
+        p.vy -= 14 * dt
+      }
       p.mesh.rotation.z += p.spin * dt
-      p.mesh.material.opacity = ratio
+      p.mesh.material.opacity = ratio * (p.fixed ? 0.9 : 1)
       if (p.grow) p.mesh.scale.addScalar(p.grow * dt)
 
       if (p.life > 0) continue
 
       this.scene.remove(p.mesh)
       p.mesh.material.dispose()
+      if (p.ownGeo) p.ownGeo.dispose()
       this.particles.splice(i, 1)
     }
   }

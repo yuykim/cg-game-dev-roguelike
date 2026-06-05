@@ -74,6 +74,8 @@ const ATTACKS = {
     active: 0.22,
     recovery: 0.68,
     cooldown: 1.45,
+    shape: 'circle',
+    radius: 2.25,
     range: 1.42,
     vertical: 1.1,
     lungeSpeed: 1.0,
@@ -90,6 +92,19 @@ const ATTACKS = {
     lungeSpeed: 0,
     projectile: true,
     projectileSpeed: 9.5,
+  },
+  snipe: {
+    state: 'attackShoot',
+    damage: 3,
+    windup: 0.66,
+    active: 0.12,
+    recovery: 0.78,
+    cooldown: 1.85,
+    range: 10.5,
+    vertical: 2.4,
+    lungeSpeed: 0,
+    projectile: true,
+    projectileSpeed: 12.5,
   },
 }
 
@@ -136,7 +151,6 @@ export const ENEMY_TYPES = {
     jumpCooldown: 0.95,
     preferredRange: 0.82,
     attack: ATTACKS.guardBash,
-    grantSkill: 'guard',
   },
   shooter: {
     tint: 0xff8c42,
@@ -148,6 +162,18 @@ export const ENEMY_TYPES = {
     preferredRange: 4.2,
     skirmisher: true,
     attack: ATTACKS.shoot,
+    grantSkill: 'bolt',
+  },
+  sniper: {
+    tint: 0xffbe63,
+    hp: 3,
+    speed: 2.25,
+    scale: 1.02,
+    jumpForce: 12.4,
+    jumpCooldown: 1.05,
+    preferredRange: 6.1,
+    skirmisher: true,
+    attack: ATTACKS.snipe,
   },
   tank: {
     tint: 0xb066ff,
@@ -158,6 +184,18 @@ export const ENEMY_TYPES = {
     jumpForce: 11.6,
     jumpCooldown: 1.05,
     preferredRange: 0.9,
+    attack: ATTACKS.smash,
+    grantSkill: 'shock',
+  },
+  warden: {
+    tint: 0xd8a2ff,
+    hp: 11,
+    speed: 1.8,
+    scale: 1.48,
+    kbResist: 0.58,
+    jumpForce: 11.2,
+    jumpCooldown: 1.15,
+    preferredRange: 1.0,
     attack: ATTACKS.smash,
   },
 }
@@ -220,6 +258,17 @@ export class Enemy {
 
   get attackBounds() {
     const def = this.attackDef
+
+    if (def.shape === 'circle') {
+      const radius = def.radius ?? def.range
+      return {
+        left: this.x - radius,
+        right: this.x + radius,
+        bottom: this.y - radius,
+        top: this.y + radius,
+      }
+    }
+
     const centerX = this.x + this.attackDir * (this.width / 2 + def.range / 2)
     return {
       left: centerX - def.range / 2,
@@ -385,12 +434,68 @@ export class Enemy {
     this.facingDir = this.attackDir
     this.attackHasHit = false
     this.vx = 0
+    this._queueAttackTelegraph()
   }
 
   _isPlayerInAttackStartRange(player) {
     const dx = Math.abs(player.x - this.x)
     const dy = Math.abs(player.y - this.y)
+
+    if (this.attackDef.shape === 'circle') {
+      return Math.hypot(dx, dy) <= (this.attackDef.radius ?? this.attackDef.range) + 0.45
+    }
+
     return dx <= this.attackDef.range + 0.38 && dy <= this.attackDef.vertical * 0.85
+  }
+
+  _queueAttackTelegraph() {
+    const def = this.attackDef
+    const duration = def.windup + def.active
+    const color = def.projectile
+      ? 0xff8c42
+      : def.state === 'attackHeavy'
+        ? 0xb066ff
+        : 0xff4d57
+
+    if (def.shape === 'circle') {
+      this.events.push({
+        type: 'attackTelegraph',
+        shape: 'circle',
+        x: this.x,
+        y: this.y + 0.1,
+        radius: def.radius ?? def.range,
+        duration,
+        color,
+      })
+      return
+    }
+
+    if (def.projectile) {
+      const height = 0.34
+      const centerX = this.x + this.attackDir * (this.width / 2 + def.range / 2)
+      const centerY = this.y + 0.32
+      this.events.push({
+        type: 'attackTelegraph',
+        shape: 'rect',
+        bounds: {
+          left: centerX - def.range / 2,
+          right: centerX + def.range / 2,
+          bottom: centerY - height / 2,
+          top: centerY + height / 2,
+        },
+        duration,
+        color,
+      })
+      return
+    }
+
+    this.events.push({
+      type: 'attackTelegraph',
+      shape: 'rect',
+      bounds: { ...this.attackBounds },
+      duration,
+      color,
+    })
   }
 
   _updateAttack(dt, player) {
@@ -432,10 +537,24 @@ export class Enemy {
 
   _tryApplyAttackHit(player) {
     if (this.attackHasHit) return
-    if (!overlaps(this.attackBounds, player.bounds)) return
+    if (!this._attackHitsPlayer(player)) return
 
     this.attackHasHit = true
     player.takeDamage(this.attackDef.damage, this.x)
+  }
+
+  _attackHitsPlayer(player) {
+    if (this.attackDef.shape !== 'circle') {
+      return overlaps(this.attackBounds, player.bounds)
+    }
+
+    const radius = this.attackDef.radius ?? this.attackDef.range
+    const centerX = this.x
+    const centerY = this.y + 0.1
+    const b = player.bounds
+    const closestX = clamp(centerX, b.left, b.right)
+    const closestY = clamp(centerY, b.bottom, b.top)
+    return Math.hypot(closestX - centerX, closestY - centerY) <= radius
   }
 
   _tryFireProjectile() {
@@ -586,4 +705,8 @@ export class Enemy {
     this.sprite.dispose?.()
     this.sprite.group?.parent?.remove(this.sprite.group)
   }
+}
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value))
 }

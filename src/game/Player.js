@@ -17,7 +17,44 @@ const HURT_DURATION = 0.22
 const DAMAGE_FLASH_DURATION = 0.24
 const HIT_KNOCKBACK = 7
 const STARTING_HP = 10
-const GUARD_IMPACT_DURATION = 0.18
+const SHOCK_MOVES = {
+  heavy: {
+    animation: 'shock',
+    shape: 'circle',
+    duration: 0.4,
+    cooldown: 2.6,
+    radius: 3.2,
+    damage: 2,
+    force: 18,
+    label: 'SHOCK HEAVY',
+  },
+  light: {
+    animation: 'shockLight',
+    shape: 'rect',
+    duration: 0.3,
+    cooldown: 1.35,
+    range: 3.75,
+    vertical: 1.2,
+    damage: 1,
+    force: 11,
+    label: 'SHOCK LINE',
+  },
+  bolt: {
+    animation: 'shockLight',
+    duration: 0.24,
+    cooldown: 1.55,
+    speed: 13,
+    damage: 2,
+    label: 'ECHO BOLT',
+  },
+}
+
+// 키 추가 없이 J/K 콤보로만 스킬 발동. (J,J,K = 충격파)
+const SKILL_PATTERNS = [
+  { skill: 'shock', move: 'heavy', seq: ['J', 'J', 'K'] },
+  { skill: 'shock', move: 'light', seq: ['J', 'K', 'J'] },
+  { skill: 'bolt', move: 'bolt', seq: ['K', 'J', 'K'] },
+]
 
 export class Player {
   constructor(scene, input) {
@@ -50,6 +87,7 @@ export class Player {
     this.attackStyle = 'punch'
     this.attackComboWindow = 0
     this.attackId = 0
+    this.comboSeq = []
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
 
@@ -60,9 +98,11 @@ export class Player {
     this.isDead = false
     this.hurtTimer = 0
     this.damageFlashTimer = 0
-    this.isGuarding = false
-    this.guardImpactTimer = 0
-    this.skills = { kick: false, guard: false }
+    this.shockTimer = 0
+    this.shockCooldown = 0
+    this.boltCooldown = 0
+    this.shockStyle = 'heavy'
+    this.skills = { kick: false, shock: false, bolt: false }
 
     this.sprite = new SpriteAnimator(scene)
     this.events = []
@@ -82,6 +122,10 @@ export class Player {
 
   get isAttacking() {
     return this.attackTimer > 0
+  }
+
+  get isShocking() {
+    return this.shockTimer > 0
   }
 
   get attackBounds() {
@@ -121,13 +165,16 @@ export class Player {
     this.attackStyle = 'punch'
     this.attackComboWindow = 0
     this.attackId = 0
+    this.comboSeq = []
     this.jumpBufferTimer = 0
     this.coyoteTimer = 0
     this.isDead = false
     this.hurtTimer = 0
     this.damageFlashTimer = 0
-    this.isGuarding = false
-    this.guardImpactTimer = 0
+    this.shockTimer = 0
+    this.shockCooldown = 0
+    this.boltCooldown = 0
+    this.shockStyle = 'heavy'
     this.isInvincible = false
     this.invincibleTimer = 0
     this.sprite.setTint(0xffffff)
@@ -156,18 +203,15 @@ export class Player {
     this._tickInvincibility(dt)
     this._tickDamageFeedback(dt)
     this._tickHurt(dt)
-    this._tickGuardImpact(dt)
+    this._tickShock(dt)
 
-    if (this.hurtTimer <= 0) {
-      this._handleGuard()
+    if (this.hurtTimer <= 0 && !this.isShocking) {
       this._tickJumpHelpers(dt)
-      if (!this.isGuarding) {
-        this._handleAttack(dt)
-        this._handleRoll(dt)
-      }
+      this._handleAttack(dt)
+      if (!this.isShocking) this._handleRoll(dt)
     }
 
-    if (this.isGuarding) {
+    if (this.isShocking) {
       this._applyGravity(dt)
       this.vx = 0
     } else if (!this.isRolling && this.hurtTimer <= 0) {
@@ -189,7 +233,7 @@ export class Player {
       this._emit('land', { impact: Math.min(1, Math.abs(previousVy) / 22) })
     }
 
-    if (this.hurtTimer <= 0 && !this.isGuarding) this._handleBufferedJump()
+    if (this.hurtTimer <= 0 && !this.isShocking) this._handleBufferedJump()
     this.syncVisual(dt)
   }
 
@@ -223,8 +267,10 @@ export class Player {
       isDead: this.isDead,
       hurtTimer: this.hurtTimer,
       damageFlashTimer: this.damageFlashTimer,
-      isGuarding: this.isGuarding,
-      guardImpactTimer: this.guardImpactTimer,
+      shockTimer: this.shockTimer,
+      shockCooldown: this.shockCooldown,
+      boltCooldown: this.boltCooldown,
+      shockStyle: this.shockStyle,
       skills: { ...this.skills },
     }
   }
@@ -243,20 +289,12 @@ export class Player {
       : Math.sign(this.x - sourceX) || -this.facingDir
     const damage = Math.max(1, Math.round(amount))
 
-    if (this._canGuardDamage(damageDir)) {
-      this.guardImpactTimer = GUARD_IMPACT_DURATION
-      this.isGuarding = true
-      this.vx = damageDir * HIT_KNOCKBACK * 0.22
-      this._emit('guardBlock', { amount: damage, dir: damageDir })
-      return false
-    }
-
     this.hp = Math.max(0, this.hp - damage)
     this.isInvincible = true
     this.invincibleTimer = INVINCIBLE_AFTER_HIT
     this.damageFlashTimer = DAMAGE_FLASH_DURATION
     this.hurtTimer = HURT_DURATION
-    this.isGuarding = false
+    this.shockTimer = 0
     this.isRolling = false
     this.rollTimer = 0
     this.attackTimer = 0
@@ -279,7 +317,7 @@ export class Player {
   }
 
   resetSkills() {
-    this.skills = { kick: false, guard: false }
+    this.skills = { kick: false, shock: false, bolt: false }
   }
 
   unlockSkill(skill) {
@@ -287,17 +325,6 @@ export class Player {
 
     this.skills[skill] = true
     this._emit('skillUnlocked', { skill })
-    return true
-  }
-
-  tryReflectProjectile(sourceX) {
-    const damageDir = Math.sign(this.x - sourceX) || -this.facingDir
-    if (!this._canGuardDamage(damageDir)) return false
-
-    this.guardImpactTimer = GUARD_IMPACT_DURATION
-    this.isGuarding = true
-    this.vx = damageDir * HIT_KNOCKBACK * 0.18
-    this._emit('guardBlock', { amount: 0, dir: damageDir })
     return true
   }
 
@@ -429,15 +456,6 @@ export class Player {
     if (!this.isGrounded) this.airRollUsed = true
   }
 
-  _handleGuard() {
-    this.isGuarding =
-      this.skills.guard &&
-      this.input.guard &&
-      !this.isRolling &&
-      !this.isAttacking &&
-      this.hurtTimer <= 0
-  }
-
   _handleAttack(dt) {
     if (this.attackTimer > 0) {
       this.attackTimer = Math.max(0, this.attackTimer - dt)
@@ -445,15 +463,41 @@ export class Player {
     }
 
     this.attackComboWindow = Math.max(0, this.attackComboWindow - dt)
+    if (this.attackComboWindow <= 0) this.comboSeq = []
 
-    const wantsKick = this.skills.kick && this.input.kick
-    const wantsPunch = this.input.attack
-    if ((!wantsPunch && !wantsKick) || this.isRolling || this.isGuarding) return
+    if (this.isRolling || this.isShocking) return
 
-    const nextStyle = wantsKick ? 'kick' : 'punch'
-    const sameStyle = this.attackStyle === nextStyle
+    // 입력은 J / K 둘뿐. K는 킥 또는 스킬(충격파)이 언락됐을 때만 유효 입력.
+    const pressedJ = this.input.attack
+    const kReady = this.skills.kick || this.skills.shock || this.skills.bolt
+    const pressedK = kReady && this.input.kick
+    if (!pressedJ && !pressedK) return
 
-    this.attackStyle = nextStyle
+    const btn = pressedJ ? 'J' : 'K'
+    this.comboSeq.push(btn)
+    if (this.comboSeq.length > 4) this.comboSeq.shift()
+
+    // 콤보 시퀀스가 스킬 패턴과 맞으면 평타 대신 스킬 발동
+    for (const pattern of SKILL_PATTERNS) {
+      if (!this.skills[pattern.skill]) continue
+      if (pattern.skill === 'shock' && this.shockCooldown > 0) continue
+      if (pattern.skill === 'bolt' && this.boltCooldown > 0) continue
+      if (!this._suffixMatch(pattern.seq)) continue
+
+      if (pattern.skill === 'shock') this._startShock(pattern.move)
+      if (pattern.skill === 'bolt') this._startBolt()
+      this.comboSeq = []
+      return
+    }
+
+    this._startBasicAttack(btn)
+  }
+
+  _startBasicAttack(btn) {
+    const style = btn === 'K' && this.skills.kick ? 'kick' : 'punch'
+    const sameStyle = this.attackStyle === style
+
+    this.attackStyle = style
     this.attackComboStep = this.attackComboWindow > 0 && sameStyle
       ? (this.attackComboStep % 3) + 1
       : 1
@@ -462,6 +506,61 @@ export class Player {
     this.attackHasHit = false
     this.attackId += 1
     this._emit('attack', { style: this.attackStyle, step: this.attackComboStep })
+  }
+
+  _startShock(move = 'heavy') {
+    const def = SHOCK_MOVES[move] ?? SHOCK_MOVES.heavy
+
+    this.shockTimer = def.duration
+    this.shockCooldown = def.cooldown
+    this.shockStyle = move
+    this.vx = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this.isInvincible = true
+    this.invincibleTimer = Math.max(this.invincibleTimer, def.duration)
+    this._emit('shock', {
+      move,
+      label: def.label,
+      shape: def.shape,
+      x: this.x,
+      y: this.y,
+      dir: this.facingDir,
+      radius: def.radius,
+      range: def.range,
+      vertical: def.vertical,
+      force: def.force,
+      damage: def.damage,
+      duration: def.duration,
+    })
+  }
+
+  _startBolt() {
+    const def = SHOCK_MOVES.bolt
+
+    this.shockTimer = def.duration
+    this.boltCooldown = def.cooldown
+    this.shockStyle = 'bolt'
+    this.vx = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this._emit('bolt', {
+      label: def.label,
+      x: this.x + this.facingDir * (this.width / 2 + 0.32),
+      y: this.y + 0.35,
+      dir: this.facingDir,
+      speed: def.speed,
+      damage: def.damage,
+    })
+  }
+
+  _suffixMatch(seq) {
+    if (this.comboSeq.length < seq.length) return false
+    const offset = this.comboSeq.length - seq.length
+    for (let i = 0; i < seq.length; i += 1) {
+      if (this.comboSeq[offset + i] !== seq[i]) return false
+    }
+    return true
   }
 
   _applyGravity(dt) {
@@ -554,20 +653,19 @@ export class Player {
     this.hurtTimer = Math.max(0, this.hurtTimer - dt)
   }
 
-  _tickGuardImpact(dt) {
-    this.guardImpactTimer = Math.max(0, this.guardImpactTimer - dt)
-  }
-
-  _canGuardDamage(damageDir) {
-    if (!this.skills.guard || !this.isGuarding) return false
-    return damageDir === -this.facingDir
+  _tickShock(dt) {
+    this.shockCooldown = Math.max(0, this.shockCooldown - dt)
+    this.boltCooldown = Math.max(0, this.boltCooldown - dt)
+    if (this.shockTimer > 0) {
+      this.shockTimer = Math.max(0, this.shockTimer - dt)
+      this.vx = 0
+    }
   }
 
   _getAnimationState() {
     if (this.isDead) return 'dead'
     if (this.hurtTimer > 0) return 'hurt'
-    if (this.guardImpactTimer > 0) return 'guardImpact'
-    if (this.isGuarding) return 'guard'
+    if (this.isShocking) return SHOCK_MOVES[this.shockStyle]?.animation ?? 'shock'
     if (this.isRolling) return 'roll'
 
     const wallSliding =

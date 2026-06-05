@@ -37,6 +37,5 @@ export class InputManager {
   }
   get attack(){ return this.isJustPressed('KeyJ') }
   get kick(){ return this.isJustPressed('KeyK') }
-  get guard(){ return this.isDown('KeyG') }
   get restart(){ return this.isJustPressed('KeyR') }
 }
