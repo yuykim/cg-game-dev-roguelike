@@ -57,15 +57,33 @@ const ARENA_LAYOUTS = {
 }
 
 const WAVES = [
-  { name: 'WAVE 1 / FIRST CONTACT', layout: 'ring', enemies: ['grunt', 'kicker', 'grunt'] },
-  { name: 'WAVE 2 / SPLIT LANES', layout: 'split', enemies: ['grunt', 'fast', 'kicker', 'grunt'] },
-  { name: 'WAVE 3 / CROSSFIRE', layout: 'crossfire', enemies: ['shooter', 'grunt', 'fast', 'kicker'] },
-  { name: 'WAVE 4 / PLATFORM HUNT', layout: 'tower', enemies: ['guarder', 'fast', 'shooter', 'grunt', 'kicker'] },
-  { name: 'WAVE 5 / SHOCK LESSON', layout: 'pit', enemies: ['tank', 'guarder', 'fast', 'shooter'] },
-  { name: 'WAVE 6 / DOUBLE CROSSFIRE', layout: 'crossfire', enemies: ['shooter', 'sniper', 'fast', 'kicker', 'guarder', 'grunt'] },
-  { name: 'WAVE 7 / VERTICAL PRESSURE', layout: 'tower', enemies: ['tank', 'fast', 'fast', 'guarder', 'sniper'] },
-  { name: 'WAVE 8 / ENDURANCE MIX', layout: 'split', enemies: ['tank', 'tank', 'shooter', 'kicker', 'fast', 'guarder', 'grunt'] },
-  { name: 'WAVE 9 / WARDEN', layout: 'finale', enemies: ['warden', 'tank', 'sniper', 'shooter', 'fast', 'kicker', 'guarder'] },
+  { act: 1, name: 'ACT 1-1 / FIRST CONTACT', layout: 'ring', objective: { type: 'eliminate' }, enemies: ['grunt', 'kicker', 'grunt'] },
+  { act: 1, name: 'ACT 1-2 / RUSH LESSON', layout: 'split', objective: { type: 'eliminate' }, enemies: ['grunt', 'fast', 'kicker', 'grunt'] },
+  { act: 1, name: 'ACT 1-3 / CROSSFIRE TARGET', layout: 'crossfire', objective: { type: 'hunt', targetType: 'shooter', label: 'Defeat the Shooter' }, enemies: ['shooter', 'grunt', 'fast', 'kicker'] },
+  { act: 1, name: 'ACT 1-4 / HOLD THE TOWER', layout: 'tower', objective: { type: 'survive', duration: 25 }, enemies: ['guarder', 'fast', 'shooter', 'grunt', 'kicker'] },
+  { act: 1, name: 'ACT 1-5 / SHOCK LESSON', layout: 'pit', objective: { type: 'hunt', targetType: 'tank', label: 'Defeat the Tank' }, enemies: ['tank', 'guarder', 'fast', 'shooter'] },
+  { act: 2, name: 'ACT 2-1 / DOUBLE CROSSFIRE', layout: 'crossfire', objective: { type: 'eliminate' }, enemies: ['shooter', 'sniper', 'fast', 'kicker', 'guarder', 'grunt'] },
+  { act: 2, name: 'ACT 2-2 / BREAKER LESSON', layout: 'split', objective: { type: 'hunt', targetType: 'guarder', label: 'Break the Guarder' }, enemies: ['guarder', 'guarder', 'fast', 'sniper', 'grunt'] },
+  { act: 2, name: 'ACT 2-3 / SURVIVE THE PIT', layout: 'pit', objective: { type: 'survive', duration: 30 }, enemies: ['tank', 'fast', 'fast', 'shooter', 'guarder'] },
+  { act: 2, name: 'ACT 2-4 / TANK PAIR', layout: 'tower', objective: { type: 'eliminate' }, enemies: ['tank', 'tank', 'shooter', 'kicker', 'fast', 'guarder', 'grunt'] },
+  { act: 2, name: 'ACT 2-5 / MINI WARDEN', layout: 'finale', objective: { type: 'hunt', targetType: 'warden', label: 'Defeat the Warden' }, enemies: ['warden', 'sniper', 'shooter', 'fast', 'guarder'] },
+  { act: 3, name: 'ACT 3-1 / SNIPER NEST', layout: 'crossfire', objective: { type: 'hunt', targetType: 'sniper', label: 'Kill the Sniper' }, enemies: ['sniper', 'sniper', 'shooter', 'fast', 'kicker', 'grunt'] },
+  { act: 3, name: 'ACT 3-2 / LAST STAND', layout: 'tower', objective: { type: 'survive', duration: 35 }, enemies: ['tank', 'sniper', 'fast', 'fast', 'guarder', 'shooter'] },
+  { act: 3, name: 'ACT 3-3 / HEAVY ROOM', layout: 'pit', objective: { type: 'eliminate' }, enemies: ['tank', 'tank', 'guarder', 'guarder', 'shooter', 'fast'] },
+  { act: 3, name: 'ACT 3-4 / WARDEN GUARD', layout: 'split', objective: { type: 'hunt', targetType: 'warden', label: 'Defeat the Warden' }, enemies: ['warden', 'tank', 'sniper', 'guarder', 'fast', 'kicker'] },
+  { act: 3, name: 'ACT 3-5 / FINAL ECHO', layout: 'finale', objective: { type: 'eliminate' }, enemies: ['warden', 'tank', 'sniper', 'shooter', 'fast', 'kicker', 'guarder', 'grunt'] },
+]
+
+const REWARD_POOL = [
+  { id: 'punch_plus', name: 'HEAVY HANDS', desc: 'Punch damage +1' },
+  { id: 'kick_plus', name: 'IRON KICK', desc: 'Kick damage +1', skill: 'kick' },
+  { id: 'bolt_plus', name: 'CHARGED BOLT', desc: 'Echo Bolt damage +1', skill: 'bolt' },
+  { id: 'bolt_cdr', name: 'QUICK CHARGE', desc: 'Echo Bolt cooldown -15%', skill: 'bolt' },
+  { id: 'shock_radius', name: 'WIDE SHOCK', desc: 'Shock Heavy radius +0.4', skill: 'shock' },
+  { id: 'shock_power', name: 'DEEP SHOCK', desc: 'Shock damage +1', skill: 'shock' },
+  { id: 'shock_cdr', name: 'STATIC FLOW', desc: 'Shock cooldown -12%', skill: 'shock' },
+  { id: 'max_hp', name: 'SECOND BREATH', desc: 'Max HP +2 and heal 2' },
+  { id: 'skill_power', name: 'TECHNIQUE CORE', desc: 'Rush/Breaker damage +1', anySkill: ['lunge', 'breaker'] },
 ]
 
 const COMBO = {
@@ -95,6 +113,22 @@ const SKILL_DISPLAY = [
     command: 'K',
     detail: 'defeat Kicker',
     isUnlocked: (player) => player.skills.kick,
+  },
+  {
+    id: 'lunge',
+    name: 'Rush Strike',
+    command: 'J K K',
+    detail: 'defeat Fast',
+    isUnlocked: (player) => player.skills.lunge,
+    cooldown: (player) => player.lungeCooldown,
+  },
+  {
+    id: 'breaker',
+    name: 'Breaker',
+    command: 'K K J',
+    detail: 'defeat Guarder',
+    isUnlocked: (player) => player.skills.breaker,
+    cooldown: (player) => player.breakerCooldown,
   },
   {
     id: 'bolt',
@@ -154,10 +188,13 @@ export class Arena {
     this.telegraphs = []
     this.hitstop = 0
     this.elapsed = 0
+    this.roomTimer = 0
     this.state = 'start'
     this.waveIndex = 0
     this.killCount = 0
     this.enemyAttackSlots = MAX_ENEMY_ATTACKERS
+    this.lastReward = null
+    this.roomUnlocks = []
 
     this._buildArena()
     this._buildHud()
@@ -226,7 +263,10 @@ export class Arena {
     this.waveIndex = 0
     this.killCount = 0
     this.elapsed = 0
+    this.roomTimer = 0
     this.hitstop = 0
+    this.lastReward = null
+    this.roomUnlocks = []
     this.state = pauseAtStart ? 'start' : 'playing'
     this.player.setSpawn(0, 1)
     this.player.resetSkills()
@@ -235,7 +275,7 @@ export class Arena {
     this._updateHud()
     this._setMessage(
       pauseAtStart
-        ? `ECHO BRAWLER\n\nJ / SPACE : START\n${WAVES.length} WAVES  |  J/K COMBO UNLOCKS`
+        ? `ECHO BRAWLER\n\nJ / SPACE : START\n${WAVES.length} ROOMS  |  J/K COMBO UNLOCKS`
         : '',
     )
   }
@@ -248,10 +288,14 @@ export class Arena {
     this.projectiles = []
     this._clearTelegraphs()
     this._buildArena(wave.layout)
+    this.roomTimer = 0
+    this.roomUnlocks = []
 
     wave.enemies.forEach((typeKey, i) => {
       const spawn = this._chooseEnemySpawn(typeKey, i, wave.layout)
-      this.enemies.push(new Enemy(this.scene, spawn.x, spawn.y, typeKey))
+      const enemy = new Enemy(this.scene, spawn.x, spawn.y, typeKey)
+      enemy.objectiveTarget = wave.objective?.type === 'hunt' && typeKey === wave.objective.targetType
+      this.enemies.push(enemy)
     })
 
     return wave
@@ -339,6 +383,7 @@ export class Arena {
     }
 
     this.elapsed += dt
+    this.roomTimer += dt
     const currentThreats = this.enemies.filter((e) => e.isThreatening).length
     this.enemyAttackSlots = Math.max(0, MAX_ENEMY_ATTACKERS - currentThreats)
 
@@ -382,6 +427,10 @@ export class Arena {
 
     const style = this.player.attackStyle ?? 'punch'
     const combo = COMBO[style]?.[this.player.attackComboStep] ?? COMBO.punch[1]
+    const damageBonus = style === 'kick'
+      ? this.player.upgrades.kickDamageBonus
+      : this.player.upgrades.punchDamageBonus
+    const damage = combo.damage + damageBonus
     const atkBounds = this.player.attackBounds
     const atkId = this.player.attackId
     let hitSomething = false
@@ -392,7 +441,7 @@ export class Arena {
       if (!overlaps(atkBounds, e.bounds)) continue
 
       e._lastHitId = atkId
-      e.takeHit(combo.damage, this.player.facingDir, combo.knockback)
+      e.takeHit(damage, this.player.facingDir, combo.knockback)
 
       const hx = (atkBounds.left + atkBounds.right) / 2
       const hy = e.y + 0.2
@@ -552,6 +601,51 @@ export class Arena {
     }
   }
 
+  _resolvePlayerSkillRect(event) {
+    const bounds = this._skillRectBounds(event)
+    const color = event.move === 'breaker' ? 0xffb23f : 0x35ff88
+    const damage = event.damage + (this.player.upgrades.skillDamageBonus ?? 0)
+    let hitSomething = false
+
+    this._spawnRectTelegraph(bounds, color, event.duration ?? 0.28, 0.3)
+
+    for (const enemy of this.enemies) {
+      if (!enemy.isAlive) continue
+      if (!overlaps(bounds, enemy.bounds)) continue
+
+      enemy.takeHit(damage, event.dir, event.force)
+      this.hitSparks.burst(enemy.x, enemy.y + 0.2, event.dir, 1.2, color)
+      hitSomething = true
+    }
+
+    for (const projectile of this.projectiles) {
+      if (projectile.destroyed) continue
+      if (!overlaps(bounds, projectile.bounds)) continue
+
+      projectile.destroy()
+      this.hitSparks.burst(projectile.x, projectile.y, event.dir, 0.9, color)
+      hitSomething = true
+    }
+
+    this.hitSparks.ring(event.x + event.dir * 1.0, event.y + 0.35, color)
+    this.hitstop = Math.max(this.hitstop, hitSomething ? 0.07 : 0.03)
+    this.followCamera.shake(hitSomething ? 0.24 : 0.1, 0.18)
+  }
+
+  _skillRectBounds(event) {
+    const range = event.range ?? 2.2
+    const vertical = event.vertical ?? 1
+    const centerX = event.x + event.dir * (this.player.width / 2 + range / 2)
+    const centerY = event.y + 0.2
+
+    return {
+      left: centerX - range / 2,
+      right: centerX + range / 2,
+      bottom: centerY - vertical / 2,
+      top: centerY + vertical / 2,
+    }
+  }
+
   _resolveReflectedProjectile(projectile) {
     for (const enemy of this.enemies) {
       if (!enemy.isAlive) continue
@@ -589,14 +683,29 @@ export class Arena {
   _cleanupDead() {
     for (let i = this.enemies.length - 1; i >= 0; i -= 1) {
       if (this.enemies[i].isDead) {
-        const grantSkill = this.enemies[i].grantSkill
-        this.enemies[i].dispose()
+        const enemy = this.enemies[i]
+        this._countEnemyKill(enemy)
+        this._grantEnemySkill(enemy)
+        enemy.dispose()
         this.enemies.splice(i, 1)
-        this.killCount += 1
-        if (grantSkill && this.player.unlockSkill(grantSkill)) {
-          this._announceUnlock(grantSkill)
-        }
       }
+    }
+  }
+
+  _countEnemyKill(enemy) {
+    if (enemy.killCounted) return
+
+    enemy.killCounted = true
+    this.killCount += 1
+  }
+
+  _grantEnemySkill(enemy) {
+    if (!enemy.grantSkill || enemy.skillRewardGranted) return
+
+    enemy.skillRewardGranted = true
+    if (this.player.unlockSkill(enemy.grantSkill)) {
+      this.roomUnlocks.push(enemy.grantSkill)
+      this._announceUnlock(enemy.grantSkill)
     }
   }
 
@@ -607,20 +716,137 @@ export class Arena {
       return
     }
 
-    const remaining = this.enemies.filter((e) => e.isAlive).length
-    if (remaining > 0) return
+    if (!this._isObjectiveComplete()) return
 
     if (this.waveIndex < WAVES.length - 1) {
-      const healed = this._grantWaveClearReward()
-      this.waveIndex += 1
-      const wave = this._spawnWave(this.waveIndex)
-      this._setMessage(`${wave.name}\n\n${healed > 0 ? `+${healed} HP` : 'NO HEAL NEEDED'}`)
-      window.setTimeout(() => {
-        if (this.state === 'playing') this._setMessage('')
-      }, 1100)
-    } else if (this.enemies.length === 0) {
+      this._advanceToNextRoom()
+    } else {
+      this._clearRoomThreats()
       this.state = 'cleared'
       this._setMessage(`CLEAR!\n\nTIME ${this._formatTime(this.elapsed)} / KO ${this.killCount}\nR : RESTART`)
+    }
+  }
+
+  _currentRoom() {
+    return WAVES[this.waveIndex]
+  }
+
+  _isObjectiveComplete() {
+    const room = this._currentRoom()
+    const objective = room?.objective ?? { type: 'eliminate' }
+
+    if (objective.type === 'survive') {
+      return this.roomTimer >= objective.duration
+    }
+
+    if (objective.type === 'hunt') {
+      return !this.enemies.some((enemy) => enemy.isAlive && enemy.type === objective.targetType)
+    }
+
+    return this.enemies.filter((enemy) => enemy.isAlive).length === 0
+  }
+
+  _objectiveLabel(room = this._currentRoom()) {
+    const objective = room?.objective ?? { type: 'eliminate' }
+
+    if (objective.type === 'survive') return `Survive ${objective.duration}s`
+    if (objective.type === 'hunt') return objective.label ?? `Defeat ${objective.targetType}`
+    return 'Eliminate all enemies'
+  }
+
+  _objectiveProgress(room = this._currentRoom()) {
+    const objective = room?.objective ?? { type: 'eliminate' }
+
+    if (objective.type === 'survive') {
+      const remaining = Math.max(0, Math.ceil(objective.duration - this.roomTimer))
+      return `SURVIVE ${remaining}s`
+    }
+
+    if (objective.type === 'hunt') {
+      const targets = this.enemies.filter((enemy) => enemy.isAlive && enemy.type === objective.targetType).length
+      return `TARGET ${targets}`
+    }
+
+    const remaining = this.enemies.filter((enemy) => enemy.isAlive).length
+    return `${remaining} LEFT`
+  }
+
+  _clearRoomThreats() {
+    for (const enemy of this.enemies) {
+      if (!enemy.isAlive) {
+        this._countEnemyKill(enemy)
+        this._grantEnemySkill(enemy)
+      }
+      enemy.dispose()
+    }
+    for (const projectile of this.projectiles) projectile.dispose()
+    this._clearTelegraphs()
+    this.enemies = []
+    this.projectiles = []
+  }
+
+  _advanceToNextRoom() {
+    const healed = this._grantWaveClearReward()
+
+    this._clearRoomThreats()
+    const unlocks = [...this.roomUnlocks]
+    const reward = this._rollReward()
+
+    if (reward) {
+      this._applyReward(reward)
+      this.lastReward = reward
+    } else {
+      this.lastReward = null
+    }
+    this.waveIndex += 1
+
+    const wave = this._spawnWave(this.waveIndex)
+    this.state = 'playing'
+    this._setMessage(this._formatRoomTransition(wave, reward, healed, unlocks))
+    window.setTimeout(() => {
+      if (this.state === 'playing') this._setMessage('')
+    }, 1200)
+  }
+
+  _rollReward() {
+    const pool = REWARD_POOL.filter((reward) => this._isRewardAvailable(reward))
+    if (pool.length === 0) return null
+
+    return pool[Math.floor(Math.random() * pool.length)]
+  }
+
+  _isRewardAvailable(reward) {
+    if (reward.skill) return !!this.player.skills[reward.skill]
+    if (reward.anySkill) return reward.anySkill.some((skill) => this.player.skills[skill])
+    return true
+  }
+
+  _formatRoomTransition(room, reward, healed, unlocks) {
+    const lines = [room.name, '', this._objectiveLabel(room)]
+
+    if (reward) lines.push(`AUTO UPGRADE: ${reward.name}`, reward.desc)
+    if (healed > 0) lines.push(`+${healed} HP`)
+    if (unlocks.length > 0) lines.push(`NEW TECH: ${unlocks.map((skill) => this._skillLabel(skill)).join(' / ')}`)
+
+    return lines.join('\n')
+  }
+
+  _applyReward(reward) {
+    const upgrades = this.player.upgrades
+
+    if (reward.id === 'punch_plus') upgrades.punchDamageBonus += 1
+    if (reward.id === 'kick_plus') upgrades.kickDamageBonus += 1
+    if (reward.id === 'bolt_plus') upgrades.boltDamageBonus += 1
+    if (reward.id === 'bolt_cdr') upgrades.boltCooldownMultiplier *= 0.85
+    if (reward.id === 'shock_radius') upgrades.shockRadiusBonus += 0.4
+    if (reward.id === 'shock_power') upgrades.shockDamageBonus += 1
+    if (reward.id === 'shock_cdr') upgrades.shockCooldownMultiplier *= 0.88
+    if (reward.id === 'skill_power') upgrades.skillDamageBonus += 1
+
+    if (reward.id === 'max_hp') {
+      this.player.maxHp += 2
+      this.player.hp = Math.min(this.player.maxHp, this.player.hp + 2)
+      this._spawnDamageText('+2 MAX', this.player.x, this.player.y + 1.1, 'block')
     }
   }
 
@@ -661,6 +887,10 @@ export class Arena {
       }
       if (event.type === 'bolt') {
         this._spawnPlayerBolt(event)
+      }
+      if (event.type === 'skillRect') {
+        this._resolvePlayerSkillRect(event)
+        this._spawnDamageText(event.label ?? 'TECH', this.player.x, this.player.y + 1.0, 'block')
       }
       if (event.type === 'death') {
         this.hitstop = Math.max(this.hitstop, 0.12)
@@ -835,7 +1065,7 @@ export class Arena {
           <strong data-time>00:00</strong>
         </div>
         <div class="arena-card">
-          <span class="arena-label">WAVE</span>
+          <span class="arena-label">ROOM</span>
           <strong data-wave>1/${WAVES.length}</strong>
         </div>
         <div class="arena-card">
@@ -883,9 +1113,9 @@ export class Arena {
       (_, i) => `<i class="${i < hp ? 'filled' : ''}"></i>`,
     ).join('')
 
-    const remaining = this.enemies.filter((e) => e.isAlive).length
+    const progress = this.state === 'cleared' ? 'CLEAR' : this._objectiveProgress()
     this.timeEl.textContent = this._formatTime(this.elapsed)
-    this.waveEl.textContent = `${this.waveIndex + 1}/${WAVES.length} / ${remaining} left`
+    this.waveEl.textContent = `${this.waveIndex + 1}/${WAVES.length} / ${progress}`
     this.koEl.textContent = String(this.killCount)
     this.skillsEl.textContent = this._formatSkills()
     this._renderSkillPanel()
@@ -935,9 +1165,21 @@ export class Arena {
     if (this.msgEl) this.msgEl.textContent = text
   }
 
+  _skillLabel(skill) {
+    return {
+      kick: 'KICK',
+      lunge: 'RUSH STRIKE',
+      breaker: 'BREAKER',
+      bolt: 'ECHO BOLT',
+      shock: 'SHOCK',
+    }[skill] ?? skill.toUpperCase()
+  }
+
   _announceUnlock(skill) {
     const info = {
       kick: { label: 'KICK', how: 'K / K,K,K combo' },
+      lunge: { label: 'RUSH STRIKE', how: 'J,K,K forward tech' },
+      breaker: { label: 'BREAKER', how: 'K,K,J guard breaker' },
       bolt: { label: 'ECHO BOLT', how: 'K,J,K projectile' },
       shock: { label: 'SHOCK', how: 'J,J,K heavy / J,K,J line' },
     }[skill] ?? { label: skill.toUpperCase(), how: 'NEW J/K COMBO' }
@@ -952,6 +1194,8 @@ export class Arena {
   _formatSkills() {
     const skills = ['PUNCH']
     if (this.player.skills.kick) skills.push('KICK')
+    if (this.player.skills.lunge) skills.push('RUSH')
+    if (this.player.skills.breaker) skills.push('BREAK')
     if (this.player.skills.bolt) skills.push('BOLT')
     if (this.player.skills.shock) skills.push('SHOCK')
     return skills.join(' / ')

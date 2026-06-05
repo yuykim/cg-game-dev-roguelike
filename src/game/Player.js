@@ -17,6 +17,16 @@ const HURT_DURATION = 0.22
 const DAMAGE_FLASH_DURATION = 0.24
 const HIT_KNOCKBACK = 7
 const STARTING_HP = 10
+const BASE_UPGRADES = {
+  punchDamageBonus: 0,
+  kickDamageBonus: 0,
+  boltDamageBonus: 0,
+  boltCooldownMultiplier: 1,
+  shockDamageBonus: 0,
+  shockRadiusBonus: 0,
+  shockCooldownMultiplier: 1,
+  skillDamageBonus: 0,
+}
 const SHOCK_MOVES = {
   heavy: {
     animation: 'shock',
@@ -47,6 +57,26 @@ const SHOCK_MOVES = {
     damage: 2,
     label: 'ECHO BOLT',
   },
+  lunge: {
+    animation: 'attack2',
+    duration: 0.24,
+    cooldown: 1.15,
+    range: 2.75,
+    vertical: 0.95,
+    damage: 2,
+    force: 16,
+    label: 'RUSH STRIKE',
+  },
+  breaker: {
+    animation: 'kick3',
+    duration: 0.34,
+    cooldown: 1.85,
+    range: 1.55,
+    vertical: 1.05,
+    damage: 3,
+    force: 19,
+    label: 'BREAKER',
+  },
 }
 
 // 키 추가 없이 J/K 콤보로만 스킬 발동. (J,J,K = 충격파)
@@ -54,6 +84,8 @@ const SKILL_PATTERNS = [
   { skill: 'shock', move: 'heavy', seq: ['J', 'J', 'K'] },
   { skill: 'shock', move: 'light', seq: ['J', 'K', 'J'] },
   { skill: 'bolt', move: 'bolt', seq: ['K', 'J', 'K'] },
+  { skill: 'lunge', move: 'lunge', seq: ['J', 'K', 'K'] },
+  { skill: 'breaker', move: 'breaker', seq: ['K', 'K', 'J'] },
 ]
 
 export class Player {
@@ -101,8 +133,11 @@ export class Player {
     this.shockTimer = 0
     this.shockCooldown = 0
     this.boltCooldown = 0
+    this.lungeCooldown = 0
+    this.breakerCooldown = 0
     this.shockStyle = 'heavy'
-    this.skills = { kick: false, shock: false, bolt: false }
+    this.skills = { kick: false, shock: false, bolt: false, lunge: false, breaker: false }
+    this.upgrades = { ...BASE_UPGRADES }
 
     this.sprite = new SpriteAnimator(scene)
     this.events = []
@@ -174,6 +209,8 @@ export class Player {
     this.shockTimer = 0
     this.shockCooldown = 0
     this.boltCooldown = 0
+    this.lungeCooldown = 0
+    this.breakerCooldown = 0
     this.shockStyle = 'heavy'
     this.isInvincible = false
     this.invincibleTimer = 0
@@ -262,6 +299,7 @@ export class Player {
       jumpBufferTimer: this.jumpBufferTimer,
       coyoteTimer: this.coyoteTimer,
       hp: this.hp,
+      maxHp: this.maxHp,
       isInvincible: this.isInvincible,
       invincibleTimer: this.invincibleTimer,
       isDead: this.isDead,
@@ -270,8 +308,11 @@ export class Player {
       shockTimer: this.shockTimer,
       shockCooldown: this.shockCooldown,
       boltCooldown: this.boltCooldown,
+      lungeCooldown: this.lungeCooldown,
+      breakerCooldown: this.breakerCooldown,
       shockStyle: this.shockStyle,
       skills: { ...this.skills },
+      upgrades: { ...this.upgrades },
     }
   }
 
@@ -317,7 +358,14 @@ export class Player {
   }
 
   resetSkills() {
-    this.skills = { kick: false, shock: false, bolt: false }
+    this.skills = { kick: false, shock: false, bolt: false, lunge: false, breaker: false }
+    this.resetUpgrades()
+    this.maxHp = STARTING_HP
+    this.hp = Math.min(this.hp, this.maxHp)
+  }
+
+  resetUpgrades() {
+    this.upgrades = { ...BASE_UPGRADES }
   }
 
   unlockSkill(skill) {
@@ -469,7 +517,12 @@ export class Player {
 
     // 입력은 J / K 둘뿐. K는 킥 또는 스킬(충격파)이 언락됐을 때만 유효 입력.
     const pressedJ = this.input.attack
-    const kReady = this.skills.kick || this.skills.shock || this.skills.bolt
+    const kReady =
+      this.skills.kick ||
+      this.skills.shock ||
+      this.skills.bolt ||
+      this.skills.lunge ||
+      this.skills.breaker
     const pressedK = kReady && this.input.kick
     if (!pressedJ && !pressedK) return
 
@@ -482,10 +535,14 @@ export class Player {
       if (!this.skills[pattern.skill]) continue
       if (pattern.skill === 'shock' && this.shockCooldown > 0) continue
       if (pattern.skill === 'bolt' && this.boltCooldown > 0) continue
+      if (pattern.skill === 'lunge' && this.lungeCooldown > 0) continue
+      if (pattern.skill === 'breaker' && this.breakerCooldown > 0) continue
       if (!this._suffixMatch(pattern.seq)) continue
 
       if (pattern.skill === 'shock') this._startShock(pattern.move)
       if (pattern.skill === 'bolt') this._startBolt()
+      if (pattern.skill === 'lunge') this._startSkillRect('lunge')
+      if (pattern.skill === 'breaker') this._startSkillRect('breaker')
       this.comboSeq = []
       return
     }
@@ -512,7 +569,7 @@ export class Player {
     const def = SHOCK_MOVES[move] ?? SHOCK_MOVES.heavy
 
     this.shockTimer = def.duration
-    this.shockCooldown = def.cooldown
+    this.shockCooldown = def.cooldown * this.upgrades.shockCooldownMultiplier
     this.shockStyle = move
     this.vx = 0
     this.attackTimer = 0
@@ -526,11 +583,11 @@ export class Player {
       x: this.x,
       y: this.y,
       dir: this.facingDir,
-      radius: def.radius,
+      radius: def.radius == null ? undefined : def.radius + this.upgrades.shockRadiusBonus,
       range: def.range,
       vertical: def.vertical,
       force: def.force,
-      damage: def.damage,
+      damage: def.damage + this.upgrades.shockDamageBonus,
       duration: def.duration,
     })
   }
@@ -539,7 +596,7 @@ export class Player {
     const def = SHOCK_MOVES.bolt
 
     this.shockTimer = def.duration
-    this.boltCooldown = def.cooldown
+    this.boltCooldown = def.cooldown * this.upgrades.boltCooldownMultiplier
     this.shockStyle = 'bolt'
     this.vx = 0
     this.attackTimer = 0
@@ -550,7 +607,32 @@ export class Player {
       y: this.y + 0.35,
       dir: this.facingDir,
       speed: def.speed,
+      damage: def.damage + this.upgrades.boltDamageBonus,
+    })
+  }
+
+  _startSkillRect(move) {
+    const def = SHOCK_MOVES[move]
+    if (!def) return
+
+    this.shockTimer = def.duration
+    this.shockStyle = move
+    if (move === 'lunge') this.lungeCooldown = def.cooldown
+    if (move === 'breaker') this.breakerCooldown = def.cooldown
+    this.vx = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this._emit('skillRect', {
+      move,
+      label: def.label,
+      x: this.x,
+      y: this.y,
+      dir: this.facingDir,
+      range: def.range,
+      vertical: def.vertical,
+      force: def.force,
       damage: def.damage,
+      duration: def.duration,
     })
   }
 
@@ -656,6 +738,8 @@ export class Player {
   _tickShock(dt) {
     this.shockCooldown = Math.max(0, this.shockCooldown - dt)
     this.boltCooldown = Math.max(0, this.boltCooldown - dt)
+    this.lungeCooldown = Math.max(0, this.lungeCooldown - dt)
+    this.breakerCooldown = Math.max(0, this.breakerCooldown - dt)
     if (this.shockTimer > 0) {
       this.shockTimer = Math.max(0, this.shockTimer - dt)
       this.vx = 0

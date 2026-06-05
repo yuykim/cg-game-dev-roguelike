@@ -129,6 +129,7 @@ export const ENEMY_TYPES = {
     preferredRange: 1.0,
     skirmisher: true,
     attack: ATTACKS.lunge,
+    grantSkill: 'lunge',
   },
   kicker: {
     tint: 0x48e07d,
@@ -151,6 +152,7 @@ export const ENEMY_TYPES = {
     jumpCooldown: 0.95,
     preferredRange: 0.82,
     attack: ATTACKS.guardBash,
+    grantSkill: 'breaker',
   },
   shooter: {
     tint: 0xff8c42,
