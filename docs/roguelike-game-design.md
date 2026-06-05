@@ -92,11 +92,23 @@ Floating arena platforms are one-way platforms.
 - Floating platforms ignore side and bottom collision.
 - Player and enemies land only when falling onto the platform top.
 - This prevents enemies from getting stuck against platform sides while jumping.
+- Arena layouts use reachable step heights so enemies can climb instead of turning platforms into safe camping spots.
 
 Enemies use targeted leaps when the player is above them.
 
-- If the player is high enough and within leap range, enemies jump with horizontal velocity toward the player.
-- This is not full pathfinding. It is a pragmatic fix so platform camping does not trivialize waves.
+- Airborne enemies preserve their leap velocity instead of immediately overwriting it with ground movement.
+- If the player is too high for a direct jump, enemies target the next reachable one-way platform first.
+- Ranged enemies can spawn on elevated platforms, making each layout change the opening pressure pattern.
+- This is not full pathfinding. It is a pragmatic platform-chase layer so map layouts create combat variables.
+
+## Layout Variables
+
+The arena layouts should change how the player solves a wave, not just change decoration.
+
+- Low center platforms create roll/jump escape routes but also give melee enemies chase access.
+- Side perches make shooters and snipers dangerous until the player closes distance or uses Echo Bolt.
+- Tower layouts reward vertical movement, but enemies can climb in steps.
+- Pit/finale layouts create temporary safe pockets, not permanent safe zones.
 
 ## Projectiles
 

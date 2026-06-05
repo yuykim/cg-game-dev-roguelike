@@ -11,6 +11,8 @@ const ARENA_HALF_WIDTH = 14
 const GROUND_Y = -1
 const MAX_ENEMY_ATTACKERS = 2
 const WAVE_CLEAR_HEAL = 2
+const RANGED_ENEMIES = new Set(['shooter', 'sniper'])
+const HEAVY_ENEMIES = new Set(['tank', 'warden'])
 
 const ARENA_LAYOUTS = {
   ring: [
@@ -21,35 +23,35 @@ const ARENA_LAYOUTS = {
   split: [
     { x: -8, y: 1.35, w: 2.6, h: 0.6 },
     { x: 8, y: 1.35, w: 2.6, h: 0.6 },
-    { x: -3.2, y: 2.9, w: 2.8, h: 0.6 },
-    { x: 3.2, y: 2.9, w: 2.8, h: 0.6 },
+    { x: -3.2, y: 2.45, w: 2.8, h: 0.6 },
+    { x: 3.2, y: 2.45, w: 2.8, h: 0.6 },
   ],
   crossfire: [
-    { x: -7.2, y: 2.35, w: 3, h: 0.6 },
-    { x: 7.2, y: 2.35, w: 3, h: 0.6 },
+    { x: -7.2, y: 2.1, w: 3, h: 0.6 },
+    { x: 7.2, y: 2.1, w: 3, h: 0.6 },
     { x: 0, y: 1.15, w: 3.4, h: 0.6 },
-    { x: 0, y: 4.2, w: 3.2, h: 0.6 },
+    { x: 0, y: 3.45, w: 3.2, h: 0.6 },
   ],
   tower: [
     { x: -7.4, y: 1.3, w: 2.6, h: 0.6 },
     { x: 7.4, y: 1.3, w: 2.6, h: 0.6 },
-    { x: -3.8, y: 2.8, w: 2.4, h: 0.6 },
-    { x: 3.8, y: 2.8, w: 2.4, h: 0.6 },
-    { x: 0, y: 4.45, w: 2.8, h: 0.6 },
+    { x: -3.8, y: 2.45, w: 2.4, h: 0.6 },
+    { x: 3.8, y: 2.45, w: 2.4, h: 0.6 },
+    { x: 0, y: 3.65, w: 2.8, h: 0.6 },
   ],
   pit: [
     { x: -9, y: 1.65, w: 2.4, h: 0.6 },
     { x: 9, y: 1.65, w: 2.4, h: 0.6 },
-    { x: -4.4, y: 3.15, w: 2.8, h: 0.6 },
-    { x: 4.4, y: 3.15, w: 2.8, h: 0.6 },
+    { x: -4.4, y: 2.8, w: 2.8, h: 0.6 },
+    { x: 4.4, y: 2.8, w: 2.8, h: 0.6 },
     { x: 0, y: 0.65, w: 3.2, h: 0.6 },
   ],
   finale: [
     { x: -9.2, y: 1.2, w: 2.4, h: 0.6 },
     { x: 9.2, y: 1.2, w: 2.4, h: 0.6 },
-    { x: -5.2, y: 2.7, w: 2.6, h: 0.6 },
-    { x: 5.2, y: 2.7, w: 2.6, h: 0.6 },
-    { x: 0, y: 3.95, w: 3.2, h: 0.6 },
+    { x: -5.2, y: 2.35, w: 2.6, h: 0.6 },
+    { x: 5.2, y: 2.35, w: 2.6, h: 0.6 },
+    { x: 0, y: 3.45, w: 3.2, h: 0.6 },
     { x: 0, y: 1.35, w: 2.6, h: 0.6 },
   ],
 }
@@ -78,6 +80,47 @@ const COMBO = {
     3: { damage: 2, knockback: 16, hitstop: 0.1, shake: 0.34, sparks: 1.55 },
   },
 }
+
+const SKILL_DISPLAY = [
+  {
+    id: 'punch',
+    name: 'Punch',
+    command: 'J',
+    detail: 'basic combo',
+    isUnlocked: () => true,
+  },
+  {
+    id: 'kick',
+    name: 'Kick',
+    command: 'K',
+    detail: 'defeat Kicker',
+    isUnlocked: (player) => player.skills.kick,
+  },
+  {
+    id: 'bolt',
+    name: 'Echo Bolt',
+    command: 'K J K',
+    detail: 'defeat Shooter',
+    isUnlocked: (player) => player.skills.bolt,
+    cooldown: (player) => player.boltCooldown,
+  },
+  {
+    id: 'shock-heavy',
+    name: 'Shock Heavy',
+    command: 'J J K',
+    detail: 'defeat Tank',
+    isUnlocked: (player) => player.skills.shock,
+    cooldown: (player) => player.shockCooldown,
+  },
+  {
+    id: 'shock-line',
+    name: 'Shock Line',
+    command: 'J K J',
+    detail: 'defeat Tank',
+    isUnlocked: (player) => player.skills.shock,
+    cooldown: (player) => player.shockCooldown,
+  },
+]
 
 export class Arena {
   constructor() {
@@ -207,12 +250,44 @@ export class Arena {
     this._buildArena(wave.layout)
 
     wave.enemies.forEach((typeKey, i) => {
-      const side = i % 2 === 0 ? -1 : 1
-      const x = side * (8 + Math.random() * 4)
-      this.enemies.push(new Enemy(this.scene, x, 1.5, typeKey))
+      const spawn = this._chooseEnemySpawn(typeKey, i, wave.layout)
+      this.enemies.push(new Enemy(this.scene, spawn.x, spawn.y, typeKey))
     })
 
     return wave
+  }
+
+  _chooseEnemySpawn(typeKey, index, layoutKey) {
+    const spawnSets = this._spawnSetsForLayout(layoutKey)
+    let pool = spawnSets.ground
+
+    if (RANGED_ENEMIES.has(typeKey)) {
+      pool = spawnSets.high.length ? spawnSets.high : spawnSets.platforms
+    } else if (!HEAVY_ENEMIES.has(typeKey) && index % 3 === 1 && spawnSets.platforms.length) {
+      pool = spawnSets.platforms
+    }
+
+    const point = pool[index % pool.length] ?? spawnSets.ground[0]
+    const jitter = HEAVY_ENEMIES.has(typeKey) ? 0 : (Math.random() - 0.5) * 0.45
+    return { x: point.x + jitter, y: point.y }
+  }
+
+  _spawnSetsForLayout(layoutKey) {
+    const layout = ARENA_LAYOUTS[layoutKey] ?? ARENA_LAYOUTS.ring
+    const ground = [
+      { x: -10.5, y: 1.5 },
+      { x: 10.5, y: 1.5 },
+      { x: -5.5, y: 1.5 },
+      { x: 5.5, y: 1.5 },
+    ]
+    const platforms = layout.map((platform) => ({
+      x: platform.x,
+      y: platform.y + platform.h / 2 + 0.85,
+      high: platform.y >= 2.1,
+    }))
+    const high = platforms.filter((point) => point.high)
+
+    return { ground, platforms, high }
   }
 
   _loop(timestamp) {
@@ -346,6 +421,11 @@ export class Arena {
       for (const event of enemy.consumeEvents()) {
         if (event.type === 'attackTelegraph') {
           this._spawnTelegraph(event)
+          continue
+        }
+
+        if (event.type === 'attackImpact') {
+          this._spawnAttackImpact(event)
           continue
         }
 
@@ -618,6 +698,13 @@ export class Arena {
     }
   }
 
+  _spawnAttackImpact(event) {
+    if (event.shape !== 'circle') return
+
+    this._spawnCircleTelegraph(event.x, event.y, event.radius, event.color, 0.18, 0.34)
+    this.hitSparks.ring(event.x, event.y, event.color)
+  }
+
   _spawnCircleTelegraph(x, y, radius, color = 0xffffff, duration = 0.35, opacity = 0.2) {
     if (!Number.isFinite(radius) || radius <= 0) return
 
@@ -760,6 +847,13 @@ export class Arena {
           <strong data-skills>PUNCH</strong>
         </div>
       </div>
+      <aside class="arena-skill-panel">
+        <div class="arena-skill-head">
+          <span>Tech</span>
+          <strong data-skill-ready>0/0</strong>
+        </div>
+        <div data-skill-list class="arena-skill-list"></div>
+      </aside>
       <div data-msg class="arena-message"></div>
       <div class="arena-help">A/D Move · Space Jump · Shift/Ctrl/S Roll · J Combo · R Restart</div>
     `
@@ -771,6 +865,8 @@ export class Arena {
     this.waveEl = this.hud.querySelector('[data-wave]')
     this.koEl = this.hud.querySelector('[data-ko]')
     this.skillsEl = this.hud.querySelector('[data-skills]')
+    this.skillReadyEl = this.hud.querySelector('[data-skill-ready]')
+    this.skillListEl = this.hud.querySelector('[data-skill-list]')
     this.helpEl = this.hud.querySelector('.arena-help')
     this.msgEl = this.hud.querySelector('[data-msg]')
   }
@@ -792,7 +888,47 @@ export class Arena {
     this.waveEl.textContent = `${this.waveIndex + 1}/${WAVES.length} / ${remaining} left`
     this.koEl.textContent = String(this.killCount)
     this.skillsEl.textContent = this._formatSkills()
+    this._renderSkillPanel()
     this.helpEl.textContent = this._formatHelp()
+  }
+
+  _renderSkillPanel() {
+    if (!this.skillListEl) return
+
+    let readyCount = 0
+    const unlockedSkills = SKILL_DISPLAY.filter((skill) => skill.isUnlocked(this.player))
+    const rows = unlockedSkills.map((skill) => {
+      const unlocked = skill.isUnlocked(this.player)
+      const cooldown = unlocked ? skill.cooldown?.(this.player) ?? 0 : 0
+      const cooling = unlocked && cooldown > 0.05
+      const ready = unlocked && !cooling
+
+      if (ready) readyCount += 1
+
+      const status = cooling ? `${cooldown.toFixed(1)}s` : 'READY'
+      const className = [
+        'arena-skill',
+        'unlocked',
+        ready ? 'ready' : '',
+        cooling ? 'cooling' : '',
+      ].filter(Boolean).join(' ')
+
+      return `
+        <div class="${className}">
+          <div class="arena-skill-main">
+            <b>${skill.name}</b>
+            <kbd>${skill.command}</kbd>
+          </div>
+          <div class="arena-skill-sub">
+            <span>${skill.detail}</span>
+            <strong>${status}</strong>
+          </div>
+        </div>
+      `
+    }).join('')
+
+    this.skillListEl.innerHTML = rows
+    if (this.skillReadyEl) this.skillReadyEl.textContent = `${readyCount}/${unlockedSkills.length} READY`
   }
 
   _setMessage(text) {
@@ -822,11 +958,7 @@ export class Arena {
   }
 
   _formatHelp() {
-    const actions = ['A/D Move', 'Space Jump', 'Shift Roll', 'J Punch']
-    if (this.player.skills.kick) actions.push('K Kick')
-    if (this.player.skills.bolt) actions.push('K,J,K Bolt')
-    if (this.player.skills.shock) actions.push('J,J,K Heavy')
-    if (this.player.skills.shock) actions.push('J,K,J Line')
+    const actions = ['A/D Move', 'Space Jump', 'Shift Roll', 'J/K Tech']
     actions.push('R Restart')
     return actions.join(' | ')
   }

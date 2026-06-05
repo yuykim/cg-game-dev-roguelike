@@ -10,7 +10,7 @@ const ENEMY_STATES = {
   attackFast: { sequence: 'Combat/PunchB', fps: 18, loop: false },
   attackKick: { sequence: 'Combat/KickA', fps: 17, loop: false },
   attackGuard: { sequence: 'Combat/GuardImpact', fps: 16, loop: false },
-  attackHeavy: { sequence: 'Combat/ShockHeavy', fps: 14, loop: false },
+  attackHeavy: { sequence: 'Combat/ShockHeavy', fps: 7, loop: false },
   attackShoot: { sequence: 'Combat/ShockLight', fps: 14, loop: false },
   hurt: { sequence: 'Knockback', fps: 16, loop: false },
   die: { sequence: 'Die', fps: 14, loop: false },
@@ -70,10 +70,10 @@ const ATTACKS = {
   smash: {
     state: 'attackHeavy',
     damage: 3,
-    windup: 0.58,
-    active: 0.22,
-    recovery: 0.68,
-    cooldown: 1.45,
+    windup: 0.38,
+    active: 0.18,
+    recovery: 0.56,
+    cooldown: 1.35,
     shape: 'circle',
     radius: 2.25,
     range: 1.42,
@@ -332,9 +332,16 @@ export class Enemy {
     } else {
       const intent = this._chooseIntent(player, platforms)
       this.facingDir = intent.faceDir
-      this.vx = intent.moveDir * this.speed * intent.speedScale
-      if (intent.jump) this._jump(intent.leapVx)
-      else this._tryStartAttack(player, director)
+
+      if (this.isGrounded) {
+        this.vx = intent.moveDir * this.speed * intent.speedScale
+        if (intent.jump) this._jump(intent.leapVx)
+        else this._tryStartAttack(player, director)
+      } else {
+        const targetVx = intent.moveDir * this.speed * intent.speedScale
+        const airControl = Math.min(1, 2.8 * dt)
+        this.vx += (targetVx - this.vx) * airControl
+      }
     }
 
     this._applyGravity(dt)
@@ -395,12 +402,16 @@ export class Enemy {
     const dy = player.y - this.y
     const absDx = Math.abs(dx)
     const dir = Math.sign(dx) || this.facingDir
+    const chasePlatform = this._findChasePlatform(player, platforms, dir)
     let moveDir = dir
     let speedScale = 1
 
     if (this._isPlayerInAttackStartRange(player)) {
       moveDir = 0
       speedScale = 0
+    } else if (chasePlatform) {
+      moveDir = Math.sign(chasePlatform.x - this.x) || dir
+      speedScale = 1
     } else if (absDx < this.preferredRange && Math.abs(dy) < 0.7) {
       moveDir = -dir
       speedScale = 0.55
@@ -411,13 +422,15 @@ export class Enemy {
       speedScale = 0.8
     }
 
-    const leapVx = this._targetLeapVelocity(dx, dy)
+    const leapVx = chasePlatform
+      ? this._targetLeapVelocity(chasePlatform.x - this.x, chasePlatform.y - this.y)
+      : this._targetLeapVelocity(dx, dy)
 
     return {
       faceDir: dir,
       moveDir,
       speedScale,
-      jump: this._shouldJump(player, platforms, dir, dx, dy),
+      jump: this._shouldJump(player, platforms, dir, dx, dy, chasePlatform),
       leapVx,
     }
   }
@@ -498,6 +511,20 @@ export class Enemy {
     })
   }
 
+  _queueAttackImpact() {
+    const def = this.attackDef
+    if (def.state !== 'attackHeavy') return
+
+    this.events.push({
+      type: 'attackImpact',
+      shape: def.shape ?? 'rect',
+      x: this.x,
+      y: this.y + 0.1,
+      radius: def.radius ?? def.range,
+      color: 0xb066ff,
+    })
+  }
+
   _updateAttack(dt, player) {
     this.attackTimer -= dt
 
@@ -507,6 +534,7 @@ export class Enemy {
         this.attackPhase = 'active'
         this.attackTimer = this.attackDef.active
         this.attackHasHit = false
+        this._queueAttackImpact()
       }
       return
     }
@@ -571,10 +599,11 @@ export class Enemy {
     })
   }
 
-  _shouldJump(player, platforms, dir, dx, dy) {
+  _shouldJump(player, platforms, dir, dx, dy, chasePlatform = null) {
     if (!this.isGrounded || this.jumpCooldown > 0) return false
 
     const absDx = Math.abs(dx)
+    if (chasePlatform) return true
     if (dy > 0.75 && absDx < 7.5) return true
     if (this.blockedDir === dir && dy > -0.35) return true
     if (this.stuckTimer > 0.18 && dy > -0.45) return true
@@ -582,6 +611,49 @@ export class Enemy {
     if (!this._hasGroundAhead(platforms, dir) && dy >= -0.2 && absDx > 1.0) return true
 
     return false
+  }
+
+  _findChasePlatform(player, platforms, dir) {
+    const playerAbove = player.y - this.y > 0.7
+    if (!playerAbove || !this.isGrounded) return null
+
+    const currentFootY = this.y - this.height / 2
+    const maxJumpHeight = (this.jumpForce * this.jumpForce) / (2 * Math.abs(GRAVITY)) * 0.92
+    const minLandingGap = 0.35
+    const maxHorizontal = 8.8
+    let best = null
+    let bestScore = -Infinity
+
+    for (const platform of platforms) {
+      if (platform.destroyed || !platform.oneWay) continue
+
+      const b = platform.bounds
+      const landingY = b.top + this.height / 2
+      const dy = landingY - this.y
+      if (dy < minLandingGap || dy > maxJumpHeight) continue
+
+      const padding = Math.min(0.45, Math.max(0, platform.w / 2 - 0.1))
+      const minX = b.left + padding
+      const maxX = b.right - padding
+      const playerBiasedX = clamp(player.x, minX, maxX)
+      const pathBiasedX = clamp(this.x + dir * 4.2, minX, maxX)
+      const targetX = Math.abs(playerBiasedX - this.x) <= maxHorizontal
+        ? playerBiasedX
+        : pathBiasedX
+      const dx = targetX - this.x
+      if (Math.abs(dx) > maxHorizontal) continue
+
+      const horizontalProgress = Math.max(0, Math.sign(player.x - this.x) * (targetX - this.x))
+      const verticalProgress = b.top - currentFootY
+      const playerDistance = Math.abs(player.x - targetX) + Math.abs(player.y - landingY) * 1.4
+      const score = verticalProgress * 3 + horizontalProgress * 0.45 - playerDistance * 0.25
+
+      if (score <= bestScore) continue
+      bestScore = score
+      best = { x: targetX, y: landingY }
+    }
+
+    return best
   }
 
   _hasGroundAhead(platforms, dir) {
@@ -599,11 +671,16 @@ export class Enemy {
 
   _targetLeapVelocity(dx, dy) {
     const absDx = Math.abs(dx)
-    if (dy <= 0.75 || absDx < 0.4 || absDx > 8.0) return null
+    if (dy <= 0.45 || absDx < 0.25 || absDx > 9.2) return null
 
-    const estimatedTime = Math.max(0.42, Math.min(0.92, absDx / Math.max(4.5, this.speed * 1.25)))
+    const gravity = Math.abs(GRAVITY)
+    const discriminant = this.jumpForce * this.jumpForce - 2 * gravity * dy
+    if (discriminant < 0) return null
+
+    const airTime = (this.jumpForce + Math.sqrt(discriminant)) / gravity
+    const estimatedTime = Math.max(0.38, Math.min(1.12, airTime))
     const vx = dx / estimatedTime
-    return Math.max(-9.5, Math.min(9.5, vx))
+    return Math.max(-11.5, Math.min(11.5, vx))
   }
 
   _jump(leapVx = null) {
