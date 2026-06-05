@@ -6,6 +6,9 @@ import { Camera } from './Camera.js'
 import { HitSparks } from './HitSpark.js'
 import { Projectile } from './Projectile.js'
 import { Platform } from '../obstacles/Platform.js'
+import brandIconUrl from '../assets/vite.svg'
+import logoUrl from '../assets/echo-brawler-logo.svg'
+import howToUrl from '../assets/echo-brawler-howto.svg'
 
 const ARENA_HALF_WIDTH = 14
 const GROUND_Y = -1
@@ -190,6 +193,7 @@ export class Arena {
     this.elapsed = 0
     this.roomTimer = 0
     this.state = 'start'
+    this.introStep = 'title'
     this.waveIndex = 0
     this.killCount = 0
     this.enemyAttackSlots = MAX_ENEMY_ATTACKERS
@@ -268,16 +272,14 @@ export class Arena {
     this.lastReward = null
     this.roomUnlocks = []
     this.state = pauseAtStart ? 'start' : 'playing'
+    this.introStep = pauseAtStart ? 'title' : 'hidden'
     this.player.setSpawn(0, 1)
     this.player.resetSkills()
     this.player.hp = this.player.maxHp
     this._spawnWave(0)
     this._updateHud()
-    this._setMessage(
-      pauseAtStart
-        ? `ECHO BRAWLER\n\nJ / SPACE : START\n${WAVES.length} ROOMS  |  J/K COMBO UNLOCKS`
-        : '',
-    )
+    this._syncIntroOverlay()
+    this._setMessage('')
   }
 
   _spawnWave(index) {
@@ -357,10 +359,6 @@ export class Arena {
 
   _simulate(dt) {
     if (this.state === 'start') {
-      if (this.input.attack || this.input.jump || this.input.restart) {
-        this.state = 'playing'
-        this._setMessage('')
-      }
       this.player.update(dt, this.platforms)
       this._updateHud()
       return
@@ -1084,6 +1082,25 @@ export class Arena {
         </div>
         <div data-skill-list class="arena-skill-list"></div>
       </aside>
+      <section class="arena-intro" data-intro>
+        <div class="arena-intro-panel" data-title-screen>
+          <img class="arena-brand-mark" src="${brandIconUrl}" alt="Echo Brawler icon" />
+          <img class="arena-logo-art" src="${logoUrl}" alt="Echo Brawler logo" />
+          <p class="arena-intro-copy">
+            Clear fifteen arena rooms, unlock new combo branches, and keep pressure on every spawn.
+          </p>
+          <div class="arena-intro-actions">
+            <button type="button" data-open-howto>Start</button>
+          </div>
+        </div>
+        <div class="arena-intro-panel hidden" data-howto-screen>
+          <img class="arena-howto-art" src="${howToUrl}" alt="How to play Echo Brawler" />
+          <div class="arena-intro-actions">
+            <button type="button" data-begin-run>Enter Arena</button>
+            <button type="button" class="ghost" data-back-title>Back</button>
+          </div>
+        </div>
+      </section>
       <div data-msg class="arena-message"></div>
       <div class="arena-help">A/D Move · Space Jump · Shift/Ctrl/S Roll · J Combo · R Restart</div>
     `
@@ -1099,6 +1116,25 @@ export class Arena {
     this.skillListEl = this.hud.querySelector('[data-skill-list]')
     this.helpEl = this.hud.querySelector('.arena-help')
     this.msgEl = this.hud.querySelector('[data-msg]')
+    this.introEl = this.hud.querySelector('[data-intro]')
+    this.titleScreenEl = this.hud.querySelector('[data-title-screen]')
+    this.howToScreenEl = this.hud.querySelector('[data-howto-screen]')
+    this.hudEl = this.hud.querySelector('.arena-hud')
+    this.skillPanelEl = this.hud.querySelector('.arena-skill-panel')
+
+    this.hud.querySelector('[data-open-howto]').addEventListener('click', () => {
+      this.introStep = 'howto'
+      this._syncIntroOverlay()
+    })
+    this.hud.querySelector('[data-back-title]').addEventListener('click', () => {
+      this.introStep = 'title'
+      this._syncIntroOverlay()
+    })
+    this.hud.querySelector('[data-begin-run]').addEventListener('click', () => {
+      this.state = 'playing'
+      this.introStep = 'hidden'
+      this._syncIntroOverlay()
+    })
   }
 
   _updateHud() {
@@ -1120,6 +1156,20 @@ export class Arena {
     this.skillsEl.textContent = this._formatSkills()
     this._renderSkillPanel()
     this.helpEl.textContent = this._formatHelp()
+    this._syncIntroOverlay()
+  }
+
+  _syncIntroOverlay() {
+    if (!this.introEl) return
+
+    const introVisible = this.state === 'start' && this.introStep !== 'hidden'
+    this.introEl.classList.toggle('hidden', !introVisible)
+    this.titleScreenEl.classList.toggle('hidden', this.introStep !== 'title')
+    this.howToScreenEl.classList.toggle('hidden', this.introStep !== 'howto')
+    this.msgEl.classList.toggle('hidden', introVisible)
+    this.helpEl.classList.toggle('hidden', introVisible)
+    this.hudEl.classList.toggle('hidden', introVisible)
+    this.skillPanelEl.classList.toggle('hidden', introVisible)
   }
 
   _renderSkillPanel() {

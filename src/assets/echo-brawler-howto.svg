@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="162" y1="72" x2="1244" y2="852" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B1220"/>
+      <stop offset="1" stop-color="#05070D"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="198" y1="150" x2="1200" y2="748" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F1B2E"/>
+      <stop offset="1" stop-color="#08111D"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="282" y1="230" x2="1108" y2="614" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6AE7FF"/>
+      <stop offset="1" stop-color="#2F92FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="1400" height="900" rx="40" fill="url(#bg)"/>
+  <rect x="86" y="86" width="1228" height="728" rx="34" fill="url(#panel)" stroke="#253A55" stroke-width="3"/>
+  <text x="132" y="178" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="800" letter-spacing="7">HOW TO FIGHT</text>
+  <text x="132" y="250" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="76" font-weight="800">Arena Controls</text>
+  <text x="132" y="302" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="26">Move cleanly, chain combos, and restart fast when a room goes bad.</text>
+  <g>
+    <rect x="132" y="360" width="530" height="148" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
+    <text x="168" y="412" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">MOVE</text>
+    <rect x="168" y="436" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <rect x="252" y="436" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <text x="204" y="469" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">A</text>
+    <text x="288" y="469" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">D</text>
+    <text x="360" y="468" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Left / Right</text>
+  </g>
+  <g>
+    <rect x="132" y="536" width="530" height="148" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
+    <text x="168" y="588" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">JUMP</text>
+    <rect x="168" y="612" width="182" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <text x="259" y="645" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">SPACE</text>
+    <text x="386" y="644" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Air control and escape</text>
+  </g>
+  <g>
+    <rect x="132" y="712" width="530" height="72" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
+    <text x="168" y="758" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">RESTART</text>
+    <rect x="344" y="726" width="58" height="44" rx="12" fill="#261A20" stroke="#FF8A2A" stroke-width="3"/>
+    <text x="373" y="756" fill="#FFF1E0" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle">R</text>
+    <text x="430" y="756" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Reset the run instantly</text>
+  </g>
+  <g>
+    <rect x="736" y="360" width="532" height="424" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
+    <text x="772" y="412" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">COMBAT</text>
+    <rect x="772" y="438" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <text x="808" y="471" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">J</text>
+    <text x="872" y="470" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Punch and start combos</text>
+    <rect x="772" y="514" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <text x="808" y="547" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">K</text>
+    <text x="872" y="546" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Kick after unlocks</text>
+    <rect x="772" y="590" width="150" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
+    <text x="847" y="623" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle">SHIFT</text>
+    <text x="948" y="622" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Roll through pressure</text>
+    <text x="772" y="700" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="34" font-weight="800">Goal</text>
+    <text x="772" y="746" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="24">Clear 15 rooms, unlock new techniques, and keep the combo route tight.</text>
+  </g>
+  <path d="M686 250H1182" stroke="url(#accent)" stroke-width="6" stroke-linecap="round"/>
+</svg>

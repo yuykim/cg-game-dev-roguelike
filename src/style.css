@@ -558,6 +558,76 @@ h1 {
   text-shadow: rgba(0, 0, 0, 0.72) 0 6px 28px;
 }
 
+.arena-intro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  pointer-events: auto;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 13, 0.92), rgba(4, 7, 13, 0.82)),
+    repeating-linear-gradient(
+      90deg,
+      rgba(105, 231, 255, 0.06) 0,
+      rgba(105, 231, 255, 0.06) 1px,
+      transparent 1px,
+      transparent 72px
+    );
+}
+
+.arena-intro-panel {
+  width: min(1120px, 100%);
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  padding: clamp(20px, 3vw, 34px);
+  border: 1px solid rgba(105, 231, 255, 0.18);
+  border-radius: 28px;
+  background: rgba(8, 13, 22, 0.88);
+  box-shadow: rgba(0, 0, 0, 0.34) 0 24px 64px;
+  backdrop-filter: blur(12px);
+}
+
+.arena-brand-mark {
+  width: 78px;
+  height: 78px;
+}
+
+.arena-logo-art,
+.arena-howto-art {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid rgba(105, 231, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.arena-logo-art {
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.arena-howto-art {
+  aspect-ratio: 14 / 9;
+  object-fit: contain;
+}
+
+.arena-intro-copy {
+  max-width: 760px;
+  color: #b9c8df;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.arena-intro-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
 .arena-help {
   position: absolute;
   right: 0;
@@ -648,6 +718,24 @@ h1 {
     align-items: center;
     flex-direction: row;
     gap: 5px;
+  }
+
+  .arena-intro {
+    padding: 14px;
+  }
+
+  .arena-intro-panel {
+    padding: 16px;
+    gap: 14px;
+  }
+
+  .arena-brand-mark {
+    width: 62px;
+    height: 62px;
+  }
+
+  .arena-intro-copy {
+    font-size: 15px;
   }
 
   .result-grid,
