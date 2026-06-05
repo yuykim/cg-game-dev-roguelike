@@ -49,6 +49,20 @@
   <path d="M226 784H1398" stroke="#3A4C68" stroke-width="22" stroke-linecap="round"/>
   <path d="M316 694H566" stroke="#68E7FF" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
   <path d="M1036 632H1294" stroke="#FF9F43" stroke-width="10" stroke-linecap="round" opacity="0.85"/>
+  <g opacity="0.92">
+    <path d="M592 632L650 560L708 632H592Z" fill="#BBD7F8"/>
+    <rect x="628" y="446" width="44" height="124" rx="18" fill="#DCEEFF"/>
+    <rect x="596" y="462" width="32" height="112" rx="16" fill="#7DEBFF"/>
+    <rect x="672" y="462" width="32" height="112" rx="16" fill="#7DEBFF"/>
+    <rect x="606" y="570" width="28" height="90" rx="14" fill="#7DA7D8"/>
+    <rect x="666" y="570" width="28" height="90" rx="14" fill="#7DA7D8"/>
+    <circle cx="650" cy="410" r="30" fill="#F5FBFF"/>
+    <path d="M964 622L1004 546L1038 586L1076 520L1116 622H964Z" fill="#FFB25A"/>
+    <rect x="1018" y="430" width="38" height="124" rx="18" fill="#FFC97A"/>
+    <rect x="986" y="454" width="28" height="108" rx="14" fill="#FF9348"/>
+    <rect x="1060" y="454" width="28" height="108" rx="14" fill="#FF9348"/>
+    <circle cx="1038" cy="394" r="28" fill="#FFF2DD"/>
+  </g>
   <g filter="url(#hardGlow)" opacity="0.95">
     <path d="M559 322H1018L934 435H476L559 322Z" fill="#102236"/>
     <path d="M1034 338L1135 384L944 620L844 575L1034 338Z" fill="#1E2C3F"/>
@@ -58,6 +72,6 @@
   <g>
     <text x="800" y="396" fill="#E9FBFF" font-family="Verdana, Arial, sans-serif" font-size="154" font-weight="800" letter-spacing="6" text-anchor="middle">ECHO</text>
     <text x="800" y="572" fill="#E9FBFF" font-family="Verdana, Arial, sans-serif" font-size="170" font-weight="800" letter-spacing="8" text-anchor="middle">BRAWLER</text>
-    <text x="800" y="658" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="36" font-weight="700" letter-spacing="18" text-anchor="middle">TIME-LAG ARENA</text>
+    <text x="800" y="658" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="36" font-weight="700" letter-spacing="12" text-anchor="middle">STEAL THEIR MOVES</text>
   </g>
 </svg>

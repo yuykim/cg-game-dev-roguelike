@@ -1087,10 +1087,10 @@ export class Arena {
           <img class="arena-brand-mark" src="${brandIconUrl}" alt="Echo Brawler icon" />
           <img class="arena-logo-art" src="${logoUrl}" alt="Echo Brawler logo" />
           <p class="arena-intro-copy">
-            Clear fifteen arena rooms, unlock new combo branches, and keep pressure on every spawn.
+            Start as a bare-handed fighter. Defeat specialist enemies, steal their techniques, and survive a fifteen-room roguelite run.
           </p>
           <div class="arena-intro-actions">
-            <button type="button" data-open-howto>Start</button>
+            <button type="button" data-open-howto>Start Run</button>
           </div>
         </div>
         <div class="arena-intro-panel hidden" data-howto-screen>

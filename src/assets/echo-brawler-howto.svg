@@ -15,9 +15,9 @@
   </defs>
   <rect width="1400" height="900" rx="40" fill="url(#bg)"/>
   <rect x="86" y="86" width="1228" height="728" rx="34" fill="url(#panel)" stroke="#253A55" stroke-width="3"/>
-  <text x="132" y="178" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="800" letter-spacing="7">HOW TO FIGHT</text>
-  <text x="132" y="250" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="76" font-weight="800">Arena Controls</text>
-  <text x="132" y="302" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="26">Move cleanly, chain combos, and restart fast when a room goes bad.</text>
+  <text x="132" y="178" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="30" font-weight="800" letter-spacing="7">HOW TO PLAY</text>
+  <text x="132" y="250" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="76" font-weight="800">Steal-a-Move Roguelite</text>
+  <text x="132" y="302" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="26">Start with punches only. Defeat specialists to steal kicks, rush, breaker, bolt, and shock combos.</text>
   <g>
     <rect x="132" y="360" width="530" height="148" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
     <text x="168" y="412" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">MOVE</text>
@@ -29,10 +29,10 @@
   </g>
   <g>
     <rect x="132" y="536" width="530" height="148" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
-    <text x="168" y="588" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">JUMP</text>
+    <text x="168" y="588" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">JUMP / ROLL</text>
     <rect x="168" y="612" width="182" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
     <text x="259" y="645" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">SPACE</text>
-    <text x="386" y="644" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Air control and escape</text>
+    <text x="386" y="644" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Jump, then roll with Shift / Ctrl / S</text>
   </g>
   <g>
     <rect x="132" y="712" width="530" height="72" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
@@ -43,18 +43,19 @@
   </g>
   <g>
     <rect x="736" y="360" width="532" height="424" rx="24" fill="#0D1626" stroke="#22374F" stroke-width="3"/>
-    <text x="772" y="412" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">COMBAT</text>
+    <text x="772" y="412" fill="#69E7FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800">COMBAT / UNLOCKS</text>
     <rect x="772" y="438" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
     <text x="808" y="471" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">J</text>
-    <text x="872" y="470" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Punch and start combos</text>
+    <text x="872" y="470" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Punch combo from the start</text>
     <rect x="772" y="514" width="72" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
     <text x="808" y="547" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="28" font-weight="800" text-anchor="middle">K</text>
-    <text x="872" y="546" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Kick after unlocks</text>
+    <text x="872" y="546" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Kick unlocks after defeating Kicker</text>
     <rect x="772" y="590" width="150" height="48" rx="14" fill="#18283C" stroke="#6AE7FF" stroke-width="3"/>
-    <text x="847" y="623" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle">SHIFT</text>
-    <text x="948" y="622" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Roll through pressure</text>
+    <text x="847" y="623" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="26" font-weight="800" text-anchor="middle">J / K</text>
+    <text x="948" y="622" fill="#C7D6EB" font-family="Verdana, Arial, sans-serif" font-size="28">Advanced skills use J/K sequences</text>
     <text x="772" y="700" fill="#EEF4FF" font-family="Verdana, Arial, sans-serif" font-size="34" font-weight="800">Goal</text>
-    <text x="772" y="746" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="24">Clear 15 rooms, unlock new techniques, and keep the combo route tight.</text>
+    <text x="772" y="736" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="24">Clear 15 rooms. Hunt target enemies, survive pressure rooms, and steal specialist moves for this run.</text>
+    <text x="772" y="774" fill="#90A7C8" font-family="Verdana, Arial, sans-serif" font-size="22">Rush: J,K,K  Breaker: K,K,J  Bolt: K,J,K  Shock: J,J,K / J,K,J</text>
   </g>
   <path d="M686 250H1182" stroke="url(#accent)" stroke-width="6" stroke-linecap="round"/>
 </svg>
