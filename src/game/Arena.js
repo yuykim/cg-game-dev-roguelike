@@ -5,15 +5,12 @@ import { Enemy } from './Enemy.js'
 import { Camera } from './Camera.js'
 import { HitSparks } from './HitSpark.js'
 import { Projectile } from './Projectile.js'
+import { AudioManager } from './AudioManager.js'
 import { Platform } from '../obstacles/Platform.js'
-import brandIconUrl from '../assets/vite.svg'
-import logoUrl from '../assets/echo-brawler-logo.svg'
-import howToUrl from '../assets/echo-brawler-howto.svg'
 
 const ARENA_HALF_WIDTH = 14
 const GROUND_Y = -1
 const MAX_ENEMY_ATTACKERS = 2
-const WAVE_CLEAR_HEAL = 2
 const RANGED_ENEMIES = new Set(['shooter', 'sniper'])
 const HEAVY_ENEMIES = new Set(['tank', 'warden'])
 
@@ -59,34 +56,23 @@ const ARENA_LAYOUTS = {
   ],
 }
 
+// 모든 방은 등장한 적을 전부 처치하면 다음 방으로 넘어간다. 마지막은 보스전.
 const WAVES = [
-  { act: 1, name: 'ACT 1-1 / FIRST CONTACT', layout: 'ring', objective: { type: 'eliminate' }, enemies: ['grunt', 'kicker', 'grunt'] },
-  { act: 1, name: 'ACT 1-2 / RUSH LESSON', layout: 'split', objective: { type: 'eliminate' }, enemies: ['grunt', 'fast', 'kicker', 'grunt'] },
-  { act: 1, name: 'ACT 1-3 / CROSSFIRE TARGET', layout: 'crossfire', objective: { type: 'hunt', targetType: 'shooter', label: 'Defeat the Shooter' }, enemies: ['shooter', 'grunt', 'fast', 'kicker'] },
-  { act: 1, name: 'ACT 1-4 / HOLD THE TOWER', layout: 'tower', objective: { type: 'survive', duration: 25 }, enemies: ['guarder', 'fast', 'shooter', 'grunt', 'kicker'] },
-  { act: 1, name: 'ACT 1-5 / SHOCK LESSON', layout: 'pit', objective: { type: 'hunt', targetType: 'tank', label: 'Defeat the Tank' }, enemies: ['tank', 'guarder', 'fast', 'shooter'] },
-  { act: 2, name: 'ACT 2-1 / DOUBLE CROSSFIRE', layout: 'crossfire', objective: { type: 'eliminate' }, enemies: ['shooter', 'sniper', 'fast', 'kicker', 'guarder', 'grunt'] },
-  { act: 2, name: 'ACT 2-2 / BREAKER LESSON', layout: 'split', objective: { type: 'hunt', targetType: 'guarder', label: 'Break the Guarder' }, enemies: ['guarder', 'guarder', 'fast', 'sniper', 'grunt'] },
-  { act: 2, name: 'ACT 2-3 / SURVIVE THE PIT', layout: 'pit', objective: { type: 'survive', duration: 30 }, enemies: ['tank', 'fast', 'fast', 'shooter', 'guarder'] },
-  { act: 2, name: 'ACT 2-4 / TANK PAIR', layout: 'tower', objective: { type: 'eliminate' }, enemies: ['tank', 'tank', 'shooter', 'kicker', 'fast', 'guarder', 'grunt'] },
-  { act: 2, name: 'ACT 2-5 / MINI WARDEN', layout: 'finale', objective: { type: 'hunt', targetType: 'warden', label: 'Defeat the Warden' }, enemies: ['warden', 'sniper', 'shooter', 'fast', 'guarder'] },
-  { act: 3, name: 'ACT 3-1 / SNIPER NEST', layout: 'crossfire', objective: { type: 'hunt', targetType: 'sniper', label: 'Kill the Sniper' }, enemies: ['sniper', 'sniper', 'shooter', 'fast', 'kicker', 'grunt'] },
-  { act: 3, name: 'ACT 3-2 / LAST STAND', layout: 'tower', objective: { type: 'survive', duration: 35 }, enemies: ['tank', 'sniper', 'fast', 'fast', 'guarder', 'shooter'] },
-  { act: 3, name: 'ACT 3-3 / HEAVY ROOM', layout: 'pit', objective: { type: 'eliminate' }, enemies: ['tank', 'tank', 'guarder', 'guarder', 'shooter', 'fast'] },
-  { act: 3, name: 'ACT 3-4 / WARDEN GUARD', layout: 'split', objective: { type: 'hunt', targetType: 'warden', label: 'Defeat the Warden' }, enemies: ['warden', 'tank', 'sniper', 'guarder', 'fast', 'kicker'] },
-  { act: 3, name: 'ACT 3-5 / FINAL ECHO', layout: 'finale', objective: { type: 'eliminate' }, enemies: ['warden', 'tank', 'sniper', 'shooter', 'fast', 'kicker', 'guarder', 'grunt'] },
-]
-
-const REWARD_POOL = [
-  { id: 'punch_plus', name: 'HEAVY HANDS', desc: 'Punch damage +1' },
-  { id: 'kick_plus', name: 'IRON KICK', desc: 'Kick damage +1', skill: 'kick' },
-  { id: 'bolt_plus', name: 'CHARGED BOLT', desc: 'Echo Bolt damage +1', skill: 'bolt' },
-  { id: 'bolt_cdr', name: 'QUICK CHARGE', desc: 'Echo Bolt cooldown -15%', skill: 'bolt' },
-  { id: 'shock_radius', name: 'WIDE SHOCK', desc: 'Shock Heavy radius +0.4', skill: 'shock' },
-  { id: 'shock_power', name: 'DEEP SHOCK', desc: 'Shock damage +1', skill: 'shock' },
-  { id: 'shock_cdr', name: 'STATIC FLOW', desc: 'Shock cooldown -12%', skill: 'shock' },
-  { id: 'max_hp', name: 'SECOND BREATH', desc: 'Max HP +2 and heal 2' },
-  { id: 'skill_power', name: 'TECHNIQUE CORE', desc: 'Rush/Breaker damage +1', anySkill: ['lunge', 'breaker'] },
+  { act: 1, name: 'ACT 1-1 / FIRST CONTACT', layout: 'ring', enemies: ['grunt', 'kicker', 'grunt'] },
+  { act: 1, name: 'ACT 1-2 / RUSH LESSON', layout: 'split', enemies: ['grunt', 'fast', 'kicker', 'grunt'] },
+  { act: 1, name: 'ACT 1-3 / CROSSFIRE', layout: 'crossfire', enemies: ['shooter', 'grunt', 'fast', 'kicker'] },
+  { act: 1, name: 'ACT 1-4 / TOWER ASSAULT', layout: 'tower', enemies: ['guarder', 'fast', 'shooter', 'grunt', 'kicker'] },
+  { act: 1, name: 'ACT 1-5 / SHOCK LESSON', layout: 'pit', enemies: ['tank', 'guarder', 'fast', 'shooter'] },
+  { act: 2, name: 'ACT 2-1 / DOUBLE CROSSFIRE', layout: 'crossfire', enemies: ['shooter', 'sniper', 'fast', 'kicker', 'guarder', 'grunt'] },
+  { act: 2, name: 'ACT 2-2 / BREAKER ROOM', layout: 'split', enemies: ['guarder', 'guarder', 'fast', 'sniper', 'grunt'] },
+  { act: 2, name: 'ACT 2-3 / THE PIT', layout: 'pit', enemies: ['tank', 'fast', 'fast', 'shooter', 'guarder'] },
+  { act: 2, name: 'ACT 2-4 / TANK PAIR', layout: 'tower', enemies: ['tank', 'tank', 'shooter', 'kicker', 'fast', 'guarder', 'grunt'] },
+  { act: 2, name: 'ACT 2-5 / WARDEN', layout: 'finale', enemies: ['warden', 'sniper', 'shooter', 'fast', 'guarder'] },
+  { act: 3, name: 'ACT 3-1 / SNIPER NEST', layout: 'crossfire', enemies: ['sniper', 'sniper', 'shooter', 'fast', 'kicker', 'grunt'] },
+  { act: 3, name: 'ACT 3-2 / LAST STAND', layout: 'tower', enemies: ['tank', 'sniper', 'fast', 'fast', 'guarder', 'shooter'] },
+  { act: 3, name: 'ACT 3-3 / HEAVY ROOM', layout: 'pit', enemies: ['tank', 'tank', 'guarder', 'guarder', 'shooter', 'fast'] },
+  { act: 3, name: 'ACT 3-4 / WARDEN GUARD', layout: 'split', enemies: ['warden', 'tank', 'sniper', 'guarder', 'fast', 'kicker'] },
+  { act: 3, name: 'ACT 3-5 / FINAL BOSS', layout: 'finale', boss: true, enemies: ['boss'] },
 ]
 
 const COMBO = {
@@ -109,6 +95,28 @@ const SKILL_DISPLAY = [
     command: 'J',
     detail: 'basic combo',
     isUnlocked: () => true,
+  },
+  {
+    id: 'uppercut',
+    name: 'Uppercut',
+    command: 'Roll → J',
+    detail: 'launch enemies up',
+    isUnlocked: () => true,
+  },
+  {
+    id: 'airdash',
+    name: 'Air Dash',
+    command: 'Air + Shift',
+    detail: 'dash through the air',
+    isUnlocked: () => true,
+  },
+  {
+    id: 'slam',
+    name: 'Air Slam',
+    command: 'Air + S + J',
+    detail: 'dive slam',
+    isUnlocked: () => true,
+    cooldown: (player) => player.slamCooldown,
   },
   {
     id: 'kick',
@@ -184,6 +192,12 @@ export class Arena {
     this.input = new InputManager()
     this.player = new Player(this.scene, this.input)
     this.hitSparks = new HitSparks(this.scene)
+    this.audio = new AudioManager()
+
+    // 브라우저 정책상 첫 사용자 입력에서 오디오 컨텍스트를 깨운다.
+    const unlockAudio = () => this.audio.unlock()
+    window.addEventListener('keydown', unlockAudio, { once: true })
+    window.addEventListener('pointerdown', unlockAudio, { once: true })
 
     this.platforms = []
     this.enemies = []
@@ -197,7 +211,6 @@ export class Arena {
     this.waveIndex = 0
     this.killCount = 0
     this.enemyAttackSlots = MAX_ENEMY_ATTACKERS
-    this.lastReward = null
     this.roomUnlocks = []
 
     this._buildArena()
@@ -269,7 +282,6 @@ export class Arena {
     this.elapsed = 0
     this.roomTimer = 0
     this.hitstop = 0
-    this.lastReward = null
     this.roomUnlocks = []
     this.state = pauseAtStart ? 'start' : 'playing'
     this.introStep = pauseAtStart ? 'title' : 'hidden'
@@ -296,7 +308,6 @@ export class Arena {
     wave.enemies.forEach((typeKey, i) => {
       const spawn = this._chooseEnemySpawn(typeKey, i, wave.layout)
       const enemy = new Enemy(this.scene, spawn.x, spawn.y, typeKey)
-      enemy.objectiveTarget = wave.objective?.type === 'hunt' && typeKey === wave.objective.targetType
       this.enemies.push(enemy)
     })
 
@@ -304,6 +315,9 @@ export class Arena {
   }
 
   _chooseEnemySpawn(typeKey, index, layoutKey) {
+    // 보스는 항상 아레나 중앙에서 등장한다.
+    if (typeKey === 'boss') return { x: 0, y: 2 }
+
     const spawnSets = this._spawnSetsForLayout(layoutKey)
     let pool = spawnSets.ground
 
@@ -448,8 +462,17 @@ export class Arena {
     }
 
     if (hitSomething) {
+      const heavy = this.player.attackComboStep >= 3
       this.hitstop = Math.max(this.hitstop, combo.hitstop)
-      this.followCamera.shake(combo.shake, 0.18)
+      this.followCamera.impact({
+        shake: combo.shake,
+        duration: 0.18,
+        dirX: this.player.facingDir,
+        kick: 0.12 + combo.sparks * 0.06,
+        fov: heavy ? 3.4 : 1.3,
+      })
+      if (heavy) this.audio.heavyHit(combo.sparks)
+      else this.audio.hit(combo.sparks)
     }
 
     for (const projectile of this.projectiles) {
@@ -460,6 +483,7 @@ export class Arena {
       this.hitSparks.burst(projectile.x, projectile.y, this.player.facingDir, 0.9, 0xffffff)
       this.hitstop = Math.max(this.hitstop, 0.025)
       this.followCamera.shake(0.08, 0.1)
+      this.audio.hit(0.7)
     }
   }
 
@@ -476,6 +500,13 @@ export class Arena {
           continue
         }
 
+        if (event.type === 'warpFlash') {
+          this.hitSparks.ring(event.x, event.y, 0xff5db1)
+          this.hitSparks.burst(event.x, event.y, 1, 1.0, 0xff5db1)
+          this.audio.enemyShoot()
+          continue
+        }
+
         if (event.type !== 'shoot') continue
 
         this.projectiles.push(new Projectile(
@@ -486,6 +517,7 @@ export class Arena {
           { speed: event.speed, damage: event.damage },
         ))
         this.hitSparks.burst(event.x, event.y, event.dir, 0.7, 0xff8c42)
+        this.audio.enemyShoot()
       }
     }
   }
@@ -729,43 +761,14 @@ export class Arena {
     return WAVES[this.waveIndex]
   }
 
+  // 모든 방의 목표는 동일: 등장한 적을 전부 처치.
   _isObjectiveComplete() {
-    const room = this._currentRoom()
-    const objective = room?.objective ?? { type: 'eliminate' }
-
-    if (objective.type === 'survive') {
-      return this.roomTimer >= objective.duration
-    }
-
-    if (objective.type === 'hunt') {
-      return !this.enemies.some((enemy) => enemy.isAlive && enemy.type === objective.targetType)
-    }
-
     return this.enemies.filter((enemy) => enemy.isAlive).length === 0
   }
 
-  _objectiveLabel(room = this._currentRoom()) {
-    const objective = room?.objective ?? { type: 'eliminate' }
-
-    if (objective.type === 'survive') return `Survive ${objective.duration}s`
-    if (objective.type === 'hunt') return objective.label ?? `Defeat ${objective.targetType}`
-    return 'Eliminate all enemies'
-  }
-
   _objectiveProgress(room = this._currentRoom()) {
-    const objective = room?.objective ?? { type: 'eliminate' }
-
-    if (objective.type === 'survive') {
-      const remaining = Math.max(0, Math.ceil(objective.duration - this.roomTimer))
-      return `SURVIVE ${remaining}s`
-    }
-
-    if (objective.type === 'hunt') {
-      const targets = this.enemies.filter((enemy) => enemy.isAlive && enemy.type === objective.targetType).length
-      return `TARGET ${targets}`
-    }
-
     const remaining = this.enemies.filter((enemy) => enemy.isAlive).length
+    if (room?.boss) return remaining > 0 ? 'BOSS' : 'CLEAR'
     return `${remaining} LEFT`
   }
 
@@ -784,76 +787,40 @@ export class Arena {
   }
 
   _advanceToNextRoom() {
-    const healed = this._grantWaveClearReward()
+    const healed = this._grantClearHeal()
 
     this._clearRoomThreats()
     const unlocks = [...this.roomUnlocks]
-    const reward = this._rollReward()
-
-    if (reward) {
-      this._applyReward(reward)
-      this.lastReward = reward
-    } else {
-      this.lastReward = null
-    }
     this.waveIndex += 1
 
     const wave = this._spawnWave(this.waveIndex)
     this.state = 'playing'
-    this._setMessage(this._formatRoomTransition(wave, reward, healed, unlocks))
-    window.setTimeout(() => {
-      if (this.state === 'playing') this._setMessage('')
-    }, 1200)
+    this.audio.waveClear()
+
+    if (wave?.boss) {
+      this._showToast(`⚠  FINAL BOSS  ⚠\n${wave.name}\nDodge the slams — strike in the gaps`, 3200)
+      this.followCamera.shake(0.3, 0.4)
+    } else {
+      this._showToast(this._formatRoomTransition(wave, healed, unlocks), 2400)
+    }
   }
 
-  _rollReward() {
-    const pool = REWARD_POOL.filter((reward) => this._isRewardAvailable(reward))
-    if (pool.length === 0) return null
+  _formatRoomTransition(room, healed, unlocks) {
+    const lines = [room.name]
 
-    return pool[Math.floor(Math.random() * pool.length)]
-  }
-
-  _isRewardAvailable(reward) {
-    if (reward.skill) return !!this.player.skills[reward.skill]
-    if (reward.anySkill) return reward.anySkill.some((skill) => this.player.skills[skill])
-    return true
-  }
-
-  _formatRoomTransition(room, reward, healed, unlocks) {
-    const lines = [room.name, '', this._objectiveLabel(room)]
-
-    if (reward) lines.push(`AUTO UPGRADE: ${reward.name}`, reward.desc)
+    if (unlocks.length > 0) lines.push(`▲ NEW TECH: ${unlocks.map((skill) => this._skillLabel(skill)).join(' / ')}`)
     if (healed > 0) lines.push(`+${healed} HP`)
-    if (unlocks.length > 0) lines.push(`NEW TECH: ${unlocks.map((skill) => this._skillLabel(skill)).join(' / ')}`)
 
     return lines.join('\n')
   }
 
-  _applyReward(reward) {
-    const upgrades = this.player.upgrades
-
-    if (reward.id === 'punch_plus') upgrades.punchDamageBonus += 1
-    if (reward.id === 'kick_plus') upgrades.kickDamageBonus += 1
-    if (reward.id === 'bolt_plus') upgrades.boltDamageBonus += 1
-    if (reward.id === 'bolt_cdr') upgrades.boltCooldownMultiplier *= 0.85
-    if (reward.id === 'shock_radius') upgrades.shockRadiusBonus += 0.4
-    if (reward.id === 'shock_power') upgrades.shockDamageBonus += 1
-    if (reward.id === 'shock_cdr') upgrades.shockCooldownMultiplier *= 0.88
-    if (reward.id === 'skill_power') upgrades.skillDamageBonus += 1
-
-    if (reward.id === 'max_hp') {
-      this.player.maxHp += 2
-      this.player.hp = Math.min(this.player.maxHp, this.player.hp + 2)
-      this._spawnDamageText('+2 MAX', this.player.x, this.player.y + 1.1, 'block')
-    }
-  }
-
-  _grantWaveClearReward() {
+  // 보상 버프는 없다. 방을 비우면 40% 확률로 회복: 그 중 60%는 3, 40%는 2 회복.
+  _grantClearHeal() {
     const missing = this.player.maxHp - this.player.hp
-    const healed = Math.min(WAVE_CLEAR_HEAL, Math.max(0, missing))
+    if (missing <= 0 || Math.random() >= 0.4) return 0
 
-    if (healed <= 0) return 0
-
+    const amount = Math.random() < 0.6 ? 2 : 1
+    const healed = Math.min(amount, missing)
     this.player.hp += healed
     this._spawnDamageText(`+${healed}`, this.player.x, this.player.y + 1.1, 'block')
     return healed
@@ -861,14 +828,43 @@ export class Arena {
 
   _handlePlayerEvents() {
     for (const event of this.player.consumeEvents()) {
-      if (event.type === 'roll') this.followCamera.shake(0.055, 0.1)
-      if (event.type === 'jump') this.followCamera.shake(0.03, 0.08)
-      if (event.type === 'wallJump') this.followCamera.shake(0.09, 0.12)
-      if (event.type === 'land') this.followCamera.shake(0.05 + event.impact * 0.08, 0.12)
+      if (event.type === 'roll') {
+        this.followCamera.shake(0.055, 0.1)
+        this.audio.roll()
+      }
+      if (event.type === 'airDash') {
+        this.followCamera.shake(0.06, 0.1)
+        this.audio.roll()
+      }
+      if (event.type === 'uppercut') {
+        this._resolveUppercut(event)
+      }
+      if (event.type === 'jump') {
+        this.followCamera.shake(0.03, 0.08)
+        this.audio.jump()
+      }
+      if (event.type === 'wallJump') {
+        this.followCamera.shake(0.09, 0.12)
+        this.audio.jump()
+      }
+      if (event.type === 'land') {
+        this.followCamera.shake(0.05 + event.impact * 0.08, 0.12)
+        if (event.impact > 0.25) this.audio.land(event.impact)
+      }
+      if (event.type === 'slam') {
+        this._resolveSlam(event)
+      }
       if (event.type === 'damage') {
         const amount = event.amount ?? 1
         this.hitstop = Math.max(this.hitstop, 0.045 + amount * 0.025)
-        this.followCamera.shake(0.34 + amount * 0.16, 0.22 + amount * 0.035)
+        this.followCamera.impact({
+          shake: 0.34 + amount * 0.16,
+          duration: 0.22 + amount * 0.035,
+          dirX: event.dir ?? 1,
+          kick: 0.18 + amount * 0.05,
+          fov: amount >= 3 ? 4 : 2,
+        })
+        this.audio.damage(amount)
         this.hitSparks.burst(
           this.player.x,
           this.player.y + 0.35,
@@ -881,21 +877,100 @@ export class Arena {
       }
       if (event.type === 'shock') {
         this._resolveShock(event)
+        this.audio.shock()
         this._spawnDamageText(event.label ?? 'SHOCK', this.player.x, this.player.y + 1.0, 'block')
       }
       if (event.type === 'bolt') {
         this._spawnPlayerBolt(event)
+        this.audio.bolt()
       }
       if (event.type === 'skillRect') {
         this._resolvePlayerSkillRect(event)
+        if (event.move === 'smash') this.audio.smash()
+        else this.audio.heavyHit(1.3)
         this._spawnDamageText(event.label ?? 'TECH', this.player.x, this.player.y + 1.0, 'block')
       }
       if (event.type === 'death') {
         this.hitstop = Math.max(this.hitstop, 0.12)
-        this.followCamera.shake(0.75, 0.36)
+        this.followCamera.impact({ shake: 0.75, duration: 0.36, fov: 5 })
+        this.audio.death()
         this._flashDamage(true)
       }
     }
+  }
+
+  // 어퍼컷: 앞쪽 적을 강하게 위로 띄운다.
+  _resolveUppercut(event) {
+    const bounds = this._skillRectBounds(event)
+    const color = 0x8cff6b
+    const damage = event.damage
+    let hitSomething = false
+
+    this._spawnRectTelegraph(bounds, color, 0.26, 0.3)
+
+    for (const enemy of this.enemies) {
+      if (!enemy.isAlive) continue
+      if (!overlaps(bounds, enemy.bounds)) continue
+
+      enemy.takeHit(damage, event.dir, event.force)
+      // 위로 띄우기
+      enemy.vy = event.launch
+      enemy.isGrounded = false
+      this.hitSparks.burst(enemy.x, enemy.y + 0.3, event.dir, 1.2, color)
+      hitSomething = true
+    }
+
+    this.hitSparks.ring(event.x + event.dir * 0.6, event.y + 0.6, color)
+    this.hitstop = Math.max(this.hitstop, hitSomething ? 0.08 : 0.03)
+    this.followCamera.impact({
+      shake: hitSomething ? 0.24 : 0.1,
+      duration: 0.18,
+      dirY: 1,
+      kick: hitSomething ? 0.2 : 0.08,
+      fov: hitSomething ? 3 : 0,
+    })
+    if (hitSomething) this.audio.heavyHit(1.2)
+    else this.audio.hit(0.7)
+    this._spawnDamageText('UPPER', event.x, event.y + 1.2, 'block')
+  }
+
+  // 공중 아래찍기 착지: 착지 지점 주변 적을 띄우고 투사체를 지운다.
+  _resolveSlam(event) {
+    const { x, y, dir, impact = 0.6 } = event
+    const radius = 3.0 + impact * 1.2
+    const damage = 2 + (this.player.upgrades.skillDamageBonus ?? 0)
+    const color = 0xffd166
+
+    this._spawnCircleTelegraph(x, y + 0.1, radius, color, 0.42, 0.26)
+    this.hitSparks.ring(x, y + 0.2, color)
+
+    for (const enemy of this.enemies) {
+      if (!enemy.isAlive) continue
+      const dist = Math.hypot(enemy.x - x, enemy.y - y)
+      if (dist > radius) continue
+
+      const hitDir = Math.sign(enemy.x - x) || dir
+      const falloff = 1 - (dist / radius) * 0.35
+      enemy.takeHit(damage, hitDir, 16 * falloff)
+      this.hitSparks.burst(enemy.x, enemy.y + 0.2, hitDir, 1.25, color)
+    }
+
+    for (const projectile of this.projectiles) {
+      if (projectile.destroyed) continue
+      if (Math.hypot(projectile.x - x, projectile.y - y) > radius) continue
+      projectile.destroy()
+    }
+
+    this.hitstop = Math.max(this.hitstop, 0.07 + impact * 0.04)
+    this.followCamera.impact({
+      shake: 0.32 + impact * 0.22,
+      duration: 0.26,
+      dirY: -1,
+      kick: 0.22 + impact * 0.12,
+      fov: 4.5,
+    })
+    this.audio.slam()
+    this._spawnDamageText('SLAM', x, y + 1.2, 'block')
   }
 
   _spawnPlayerBolt(event) {
@@ -931,6 +1006,7 @@ export class Arena {
 
     this._spawnCircleTelegraph(event.x, event.y, event.radius, event.color, 0.18, 0.34)
     this.hitSparks.ring(event.x, event.y, event.color)
+    this.audio.enemyAttack()
   }
 
   _spawnCircleTelegraph(x, y, radius, color = 0xffffff, duration = 0.35, opacity = 0.2) {
@@ -1083,30 +1159,48 @@ export class Arena {
         <div data-skill-list class="arena-skill-list"></div>
       </aside>
       <section class="arena-intro" data-intro>
-        <div class="arena-intro-panel" data-title-screen>
-          <img class="arena-brand-mark" src="${brandIconUrl}" alt="Echo Brawler icon" />
-          <img class="arena-logo-art" src="${logoUrl}" alt="Echo Brawler logo" />
+        <div class="arena-intro-panel title-panel" data-title-screen>
+          <span class="arena-eyebrow">ROGUELITE&nbsp;&nbsp;BRAWLER</span>
+          <h1 class="arena-title">MIMIC</h1>
+          <p class="arena-tagline">Steal every move. Climb fifteen rooms. Break the boss.</p>
           <p class="arena-intro-copy">
-            Start as a bare-handed fighter. Defeat specialist enemies, steal their techniques, and survive a fifteen-room roguelite run.
+            You start with bare fists. Each specialist you defeat hands you their
+            technique — kicks, rushes, bolts, shockwaves. Adapt fast and survive.
           </p>
           <div class="arena-intro-actions">
-            <button type="button" data-open-howto>Start Run</button>
+            <button type="button" data-open-howto class="ghost">How to Play</button>
+            <button type="button" data-begin-run>Enter Arena</button>
           </div>
         </div>
         <div class="arena-intro-panel hidden" data-howto-screen>
-          <img class="arena-howto-art" src="${howToUrl}" alt="How to play Echo Brawler" />
+          <h2 class="arena-howto-title">HOW TO PLAY</h2>
+          <div class="arena-howto-grid">
+            <div class="arena-howto-row"><kbd>A / D</kbd><span>Move left / right</span></div>
+            <div class="arena-howto-row"><kbd>Space</kbd><span>Jump · wall-jump off walls</span></div>
+            <div class="arena-howto-row"><kbd>Shift / Ctrl</kbd><span>Roll on ground · Air Dash in the air (i-frames)</span></div>
+            <div class="arena-howto-row"><kbd>J</kbd><span>Punch combo</span></div>
+            <div class="arena-howto-row"><kbd>K</kbd><span>Kick / skill inputs (once unlocked)</span></div>
+            <div class="arena-howto-row accent"><kbd>Roll → J</kbd><span>Uppercut — launch enemies into the air</span></div>
+            <div class="arena-howto-row accent"><kbd>Air + S + J</kbd><span>Air Slam — dive &amp; shockwave (cooldown)</span></div>
+            <div class="arena-howto-row"><kbd>R</kbd><span>Restart the run</span></div>
+          </div>
+          <p class="arena-howto-note">
+            Steal combos from specialists — Rush <b>J K K</b> · Breaker <b>K K J</b> ·
+            Bolt <b>K J K</b> · Shock <b>J J K</b> / <b>J K J</b>
+          </p>
           <div class="arena-intro-actions">
-            <button type="button" data-begin-run>Enter Arena</button>
             <button type="button" class="ghost" data-back-title>Back</button>
+            <button type="button" data-begin-run>Enter Arena</button>
           </div>
         </div>
       </section>
       <div data-msg class="arena-message"></div>
+      <div data-toast class="arena-toast"></div>
       <div class="arena-help">A/D Move · Space Jump · Shift/Ctrl/S Roll · J Combo · R Restart</div>
     `
     document.body.appendChild(this.hud)
     this.hud.querySelector('.arena-help').textContent =
-      'A/D Move | Space Jump | Shift/Ctrl/S Roll | J Punch | R Restart'
+      'A/D Move | Space Jump | Shift Roll/Air-Dash | Roll→J Uppercut | Air+S+J Slam | J/K Combo | R Restart'
     this.hpEl = this.hud.querySelector('[data-hp]')
     this.timeEl = this.hud.querySelector('[data-time]')
     this.waveEl = this.hud.querySelector('[data-wave]')
@@ -1116,6 +1210,7 @@ export class Arena {
     this.skillListEl = this.hud.querySelector('[data-skill-list]')
     this.helpEl = this.hud.querySelector('.arena-help')
     this.msgEl = this.hud.querySelector('[data-msg]')
+    this.toastEl = this.hud.querySelector('[data-toast]')
     this.introEl = this.hud.querySelector('[data-intro]')
     this.titleScreenEl = this.hud.querySelector('[data-title-screen]')
     this.howToScreenEl = this.hud.querySelector('[data-howto-screen]')
@@ -1123,17 +1218,24 @@ export class Arena {
     this.skillPanelEl = this.hud.querySelector('.arena-skill-panel')
 
     this.hud.querySelector('[data-open-howto]').addEventListener('click', () => {
+      this.audio.unlock()
+      this.audio.uiClick()
       this.introStep = 'howto'
       this._syncIntroOverlay()
     })
     this.hud.querySelector('[data-back-title]').addEventListener('click', () => {
+      this.audio.uiClick()
       this.introStep = 'title'
       this._syncIntroOverlay()
     })
-    this.hud.querySelector('[data-begin-run]').addEventListener('click', () => {
-      this.state = 'playing'
-      this.introStep = 'hidden'
-      this._syncIntroOverlay()
+    this.hud.querySelectorAll('[data-begin-run]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.audio.unlock()
+        this.audio.uiClick()
+        this.state = 'playing'
+        this.introStep = 'hidden'
+        this._syncIntroOverlay()
+      })
     })
   }
 
@@ -1176,19 +1278,23 @@ export class Arena {
     if (!this.skillListEl) return
 
     let readyCount = 0
-    const unlockedSkills = SKILL_DISPLAY.filter((skill) => skill.isUnlocked(this.player))
-    const rows = unlockedSkills.map((skill) => {
+    let unlockedCount = 0
+
+    const rows = SKILL_DISPLAY.map((skill) => {
       const unlocked = skill.isUnlocked(this.player)
       const cooldown = unlocked ? skill.cooldown?.(this.player) ?? 0 : 0
       const cooling = unlocked && cooldown > 0.05
       const ready = unlocked && !cooling
 
+      if (unlocked) unlockedCount += 1
       if (ready) readyCount += 1
 
-      const status = cooling ? `${cooldown.toFixed(1)}s` : 'READY'
+      // 잠긴 스킬은 해금 조건(detail)을, 풀린 스킬은 쿨다운/READY 상태를 보여준다.
+      const status = !unlocked ? 'LOCKED' : cooling ? `${cooldown.toFixed(1)}s` : 'READY'
+      const sub = unlocked ? skill.detail : skill.detail
       const className = [
         'arena-skill',
-        'unlocked',
+        unlocked ? 'unlocked' : 'locked',
         ready ? 'ready' : '',
         cooling ? 'cooling' : '',
       ].filter(Boolean).join(' ')
@@ -1200,7 +1306,7 @@ export class Arena {
             <kbd>${skill.command}</kbd>
           </div>
           <div class="arena-skill-sub">
-            <span>${skill.detail}</span>
+            <span>${sub}</span>
             <strong>${status}</strong>
           </div>
         </div>
@@ -1208,11 +1314,26 @@ export class Arena {
     }).join('')
 
     this.skillListEl.innerHTML = rows
-    if (this.skillReadyEl) this.skillReadyEl.textContent = `${readyCount}/${unlockedSkills.length} READY`
+    if (this.skillReadyEl) this.skillReadyEl.textContent = `${readyCount}/${unlockedCount} READY`
   }
 
   _setMessage(text) {
     if (this.msgEl) this.msgEl.textContent = text
+  }
+
+  // 화면을 가리지 않는 상단 토스트. 해금/방 전환 안내용.
+  _showToast(text, duration = 1800) {
+    if (!this.toastEl) return
+
+    this.toastEl.textContent = text
+    this.toastEl.classList.remove('show')
+    void this.toastEl.offsetWidth
+    this.toastEl.classList.add('show')
+
+    window.clearTimeout(this._toastTimer)
+    this._toastTimer = window.setTimeout(() => {
+      this.toastEl?.classList.remove('show')
+    }, duration)
   }
 
   _skillLabel(skill) {
@@ -1234,11 +1355,9 @@ export class Arena {
       shock: { label: 'SHOCK', how: 'J,J,K heavy / J,K,J line' },
     }[skill] ?? { label: skill.toUpperCase(), how: 'NEW J/K COMBO' }
 
-    this._setMessage(`${info.label} UNLOCKED\n\n${info.how}`)
+    this._showToast(`▲ NEW TECH  ${info.label}   ${info.how}`, 2200)
     this.followCamera.shake(0.18, 0.22)
-    window.setTimeout(() => {
-      if (this.state === 'playing') this._setMessage('')
-    }, 1400)
+    this.audio.unlockJingle()
   }
 
   _formatSkills() {
@@ -1252,9 +1371,7 @@ export class Arena {
   }
 
   _formatHelp() {
-    const actions = ['A/D Move', 'Space Jump', 'Shift Roll', 'J/K Tech']
-    actions.push('R Restart')
-    return actions.join(' | ')
+    return 'A/D Move | Space Jump | Shift Roll/Air-Dash | Roll→J Uppercut | Air+S+J Slam | J/K Combo | R Restart'
   }
 
   _flashDamage(strong = false) {

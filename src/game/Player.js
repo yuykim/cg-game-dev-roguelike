@@ -7,6 +7,8 @@ const MAX_FALL = -22
 const WALL_SLIDE_SPEED = -2
 const ROLL_SPEED = 20
 const ROLL_DURATION = 0.18
+const SLAM_SPEED = -36
+const SLAM_RECOVERY = 0.16
 const ATTACK_DURATION = 0.32
 const ATTACK_COMBO_WINDOW = 0.42
 const INVINCIBLE_AFTER_HIT = 1.2
@@ -77,7 +79,21 @@ const SHOCK_MOVES = {
     force: 19,
     label: 'BREAKER',
   },
+  // 구르기 도중 J: 어퍼컷 런처 — 맞은 적을 공중으로 띄운다.
+  uppercut: {
+    animation: 'attack3',
+    duration: 0.34,
+    range: 1.6,
+    vertical: 1.7,
+    damage: 2,
+    force: 6,
+    launch: 17,
+    hop: 9,
+    label: 'UPPERCUT',
+  },
 }
+
+const SLAM_COOLDOWN = 4.0
 
 // 키 추가 없이 J/K 콤보로만 스킬 발동. (J,J,K = 충격파)
 const SKILL_PATTERNS = [
@@ -113,6 +129,8 @@ export class Player {
     this.airRollUsed = false
     this.rollTrailTimer = 0
 
+    this.isSlamming = false
+
     this.attackTimer = 0
     this.attackHasHit = false
     this.attackComboStep = 1
@@ -135,6 +153,7 @@ export class Player {
     this.boltCooldown = 0
     this.lungeCooldown = 0
     this.breakerCooldown = 0
+    this.slamCooldown = 0
     this.shockStyle = 'heavy'
     this.skills = { kick: false, shock: false, bolt: false, lunge: false, breaker: false }
     this.upgrades = { ...BASE_UPGRADES }
@@ -194,6 +213,7 @@ export class Player {
     this.rollTimer = 0
     this.airRollUsed = false
     this.rollTrailTimer = 0
+    this.isSlamming = false
     this.attackTimer = 0
     this.attackHasHit = false
     this.attackComboStep = 1
@@ -211,6 +231,7 @@ export class Player {
     this.boltCooldown = 0
     this.lungeCooldown = 0
     this.breakerCooldown = 0
+    this.slamCooldown = 0
     this.shockStyle = 'heavy'
     this.isInvincible = false
     this.invincibleTimer = 0
@@ -242,13 +263,16 @@ export class Player {
     this._tickHurt(dt)
     this._tickShock(dt)
 
-    if (this.hurtTimer <= 0 && !this.isShocking) {
+    if (this.hurtTimer <= 0 && !this.isShocking && !this.isSlamming) {
       this._tickJumpHelpers(dt)
       this._handleAttack(dt)
       if (!this.isShocking) this._handleRoll(dt)
     }
 
-    if (this.isShocking) {
+    if (this.isSlamming) {
+      this.vx = 0
+      this.vy = SLAM_SPEED
+    } else if (this.isShocking) {
       this._applyGravity(dt)
       this.vx = 0
     } else if (!this.isRolling && this.hurtTimer <= 0) {
@@ -266,11 +290,13 @@ export class Player {
     this.y += this.vy * dt
     this._resolveY(platforms, previousY)
 
-    if (!wasGrounded && this.isGrounded && previousVy < -2) {
+    if (this.isSlamming && this.isGrounded) {
+      this._resolveSlamLanding(previousVy)
+    } else if (!wasGrounded && this.isGrounded && previousVy < -2) {
       this._emit('land', { impact: Math.min(1, Math.abs(previousVy) / 22) })
     }
 
-    if (this.hurtTimer <= 0 && !this.isShocking) this._handleBufferedJump()
+    if (this.hurtTimer <= 0 && !this.isShocking && !this.isSlamming) this._handleBufferedJump()
     this.syncVisual(dt)
   }
 
@@ -336,6 +362,7 @@ export class Player {
     this.damageFlashTimer = DAMAGE_FLASH_DURATION
     this.hurtTimer = HURT_DURATION
     this.shockTimer = 0
+    this.isSlamming = false
     this.isRolling = false
     this.rollTimer = 0
     this.attackTimer = 0
@@ -469,6 +496,8 @@ export class Player {
   }
 
   _handleRoll(dt) {
+    if (this.isSlamming) return
+
     if (this.isRolling) {
       this.rollTimer -= dt
       this.rollTrailTimer -= dt
@@ -489,6 +518,8 @@ export class Player {
     }
 
     if (!this.input.roll) return
+
+    // 지상 = 구르기, 공중 = 공중 대시(수평, 1회)
     if (!this.isGrounded && this.airRollUsed) return
 
     this.isRolling = true
@@ -499,9 +530,32 @@ export class Player {
     this.invincibleTimer = ROLL_DURATION
     this.attackTimer = 0
     this.attackHasHit = false
-    this._emit('roll')
+    this._emit(this.isGrounded ? 'roll' : 'airDash')
 
     if (!this.isGrounded) this.airRollUsed = true
+  }
+
+  _startSlam() {
+    this.isSlamming = true
+    this.isRolling = false
+    this.rollTimer = 0
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this.vx = 0
+    this.vy = SLAM_SPEED
+    this.airRollUsed = true
+    this.slamCooldown = SLAM_COOLDOWN
+    this._emit('slamStart')
+  }
+
+  _resolveSlamLanding(previousVy) {
+    this.isSlamming = false
+    // 낙하 속도가 빠를수록 충격이 크다
+    const impact = Math.min(1, Math.abs(previousVy) / Math.abs(SLAM_SPEED))
+    this.shockStyle = 'heavy'
+    this.shockTimer = SLAM_RECOVERY
+    this.vx = 0
+    this._emit('slam', { x: this.x, y: this.y - this.height / 2, dir: this.facingDir, impact })
   }
 
   _handleAttack(dt) {
@@ -513,7 +567,13 @@ export class Player {
     this.attackComboWindow = Math.max(0, this.attackComboWindow - dt)
     if (this.attackComboWindow <= 0) this.comboSeq = []
 
-    if (this.isRolling || this.isShocking) return
+    if (this.isShocking) return
+
+    // 구르기/공중 대시 도중 J → 어퍼컷 런처 (적을 공중으로 띄움)
+    if (this.isRolling) {
+      if (this.input.attack) this._startUppercut()
+      return
+    }
 
     // 입력은 J / K 둘뿐. K는 킥 또는 스킬(충격파)이 언락됐을 때만 유효 입력.
     const pressedJ = this.input.attack
@@ -525,6 +585,13 @@ export class Player {
       this.skills.breaker
     const pressedK = kReady && this.input.kick
     if (!pressedJ && !pressedK) return
+
+    // 공중에서 아래(S) + J → 아래찍기 슬램
+    if (pressedJ && !this.isGrounded && this.input.down && this.slamCooldown <= 0) {
+      this._startSlam()
+      this.comboSeq = []
+      return
+    }
 
     const btn = pressedJ ? 'J' : 'K'
     this.comboSeq.push(btn)
@@ -608,6 +675,35 @@ export class Player {
       dir: this.facingDir,
       speed: def.speed,
       damage: def.damage + this.upgrades.boltDamageBonus,
+    })
+  }
+
+  // 구르기/대시를 J로 캔슬하는 어퍼컷. 살짝 솟구치며 적을 위로 띄운다.
+  _startUppercut() {
+    const def = SHOCK_MOVES.uppercut
+
+    this.isRolling = false
+    this.rollTimer = 0
+    this.shockTimer = def.duration
+    this.shockStyle = 'uppercut'
+    this.attackTimer = 0
+    this.attackHasHit = false
+    this.vx = 0
+    this.vy = Math.max(this.vy, def.hop)
+    this.isGrounded = false
+    this.isInvincible = true
+    this.invincibleTimer = Math.max(this.invincibleTimer, def.duration * 0.6)
+    this._emit('uppercut', {
+      label: def.label,
+      x: this.x,
+      y: this.y,
+      dir: this.facingDir,
+      range: def.range,
+      vertical: def.vertical,
+      force: def.force,
+      damage: def.damage,
+      launch: def.launch,
+      duration: def.duration,
     })
   }
 
@@ -740,6 +836,7 @@ export class Player {
     this.boltCooldown = Math.max(0, this.boltCooldown - dt)
     this.lungeCooldown = Math.max(0, this.lungeCooldown - dt)
     this.breakerCooldown = Math.max(0, this.breakerCooldown - dt)
+    this.slamCooldown = Math.max(0, this.slamCooldown - dt)
     if (this.shockTimer > 0) {
       this.shockTimer = Math.max(0, this.shockTimer - dt)
       this.vx = 0
@@ -750,6 +847,7 @@ export class Player {
     if (this.isDead) return 'dead'
     if (this.hurtTimer > 0) return 'hurt'
     if (this.isShocking) return SHOCK_MOVES[this.shockStyle]?.animation ?? 'shock'
+    if (this.isSlamming) return 'jumpFall'
     if (this.isRolling) return 'roll'
 
     const wallSliding =

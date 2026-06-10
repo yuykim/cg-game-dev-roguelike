@@ -106,6 +106,50 @@ const ATTACKS = {
     projectile: true,
     projectileSpeed: 12.5,
   },
+  // 보스 슬램: 넓은 범위 + 긴 예고 동작 → 굴러서 회피하고 빈틈을 노린다.
+  bossSlam: {
+    state: 'attackHeavy',
+    damage: 3,
+    windup: 0.62,
+    active: 0.2,
+    recovery: 0.62,
+    cooldown: 1.15,
+    shape: 'circle',
+    radius: 3.1,
+    range: 1.8,
+    vertical: 1.3,
+    lungeSpeed: 1.2,
+  },
+  // 보스 돌진: 먼 거리를 빠르게 좁히는 가로 베기 → 옆이나 점프로 회피.
+  bossDash: {
+    state: 'attackKick',
+    damage: 3,
+    windup: 0.5,
+    active: 0.22,
+    recovery: 0.72,
+    cooldown: 1.3,
+    range: 2.4,
+    vertical: 1.0,
+    lungeSpeed: 15,
+    startRange: 6.5,
+  },
+  // 보스 워프 슬램(변칙): 플레이어 위치에 범위를 미리 표시 → 그 자리로 순간이동해 내려찍는다.
+  // 표시된 원에서 빠져나와야 회피 가능.
+  bossWarp: {
+    state: 'attackHeavy',
+    damage: 3,
+    windup: 0.72,
+    active: 0.2,
+    recovery: 0.55,
+    cooldown: 1.5,
+    shape: 'circle',
+    radius: 2.6,
+    range: 1.6,
+    vertical: 1.3,
+    lungeSpeed: 0,
+    warp: true,
+    startRange: 9.5,
+  },
 }
 
 export const ENEMY_TYPES = {
@@ -200,6 +244,19 @@ export const ENEMY_TYPES = {
     preferredRange: 1.0,
     attack: ATTACKS.smash,
   },
+  // 최종 보스: 거대하고 단단하며 강하게 밀어붙인다.
+  boss: {
+    tint: 0xff5db1,
+    hp: 28,
+    speed: 2.2,
+    scale: 1.9,
+    kbResist: 0.82,
+    jumpForce: 11.8,
+    jumpCooldown: 0.9,
+    preferredRange: 0.9,
+    attack: ATTACKS.bossSlam,
+    isBoss: true,
+  },
 }
 
 export class Enemy {
@@ -217,6 +274,10 @@ export class Enemy {
     this.skirmisher = def.skirmisher ?? false
     this.attackDef = def.attack
     this.grantSkill = def.grantSkill ?? null
+    this.isBoss = def.isBoss ?? false
+    this.warpTargetX = x
+    this.warpTargetY = y
+    this.bossAttackCount = 0
 
     this.x = x
     this.y = y
@@ -379,7 +440,12 @@ export class Enemy {
       this.state = 'dying'
       this.attackPhase = 'idle'
       this.deathTimer = DEATH_DURATION
-    } else {
+      return true
+    }
+
+    // 보스는 공격 모션(예고/발동) 중에는 경직되지 않는다 → 무작정 트레이드 대신 회피를 강요.
+    const hyperArmor = this.isBoss && this.state === 'attacking' && this.attackPhase !== 'recovery'
+    if (!hyperArmor) {
       this.state = 'hurt'
       this.attackPhase = 'idle'
       this.hurtTimer = HURT_DURATION
@@ -439,6 +505,8 @@ export class Enemy {
 
   _tryStartAttack(player, director) {
     if (this.attackCooldown > 0) return
+    // 보스는 거리에 따라 슬램(근접)/돌진(원거리)을 번갈아 골라 회피 패턴을 만든다.
+    if (this.isBoss) this.attackDef = this._selectBossAttack(player)
     if (!this._isPlayerInAttackStartRange(player)) return
     if (director && !director.tryUseAttackSlot()) return
 
@@ -449,6 +517,13 @@ export class Enemy {
     this.facingDir = this.attackDir
     this.attackHasHit = false
     this.vx = 0
+
+    // 워프 슬램: 발동 시점의 플레이어 위치를 표적으로 잡아 그곳에 범위를 예고한다.
+    if (this.attackDef.warp) {
+      this.warpTargetX = player.x
+      this.warpTargetY = player.y
+    }
+
     this._queueAttackTelegraph()
   }
 
@@ -460,24 +535,38 @@ export class Enemy {
       return Math.hypot(dx, dy) <= (this.attackDef.radius ?? this.attackDef.range) + 0.45
     }
 
-    return dx <= this.attackDef.range + 0.38 && dy <= this.attackDef.vertical * 0.85
+    const startRange = this.attackDef.startRange ?? this.attackDef.range
+    return dx <= startRange + 0.38 && dy <= this.attackDef.vertical * 0.85
+  }
+
+  // 보스 공격 선택: 주기적으로 변칙 워프 슬램을 섞고, 그 외엔 거리에 따라 돌진/슬램.
+  _selectBossAttack(player) {
+    this.bossAttackCount += 1
+
+    // 3번에 한 번꼴로 워프 슬램(플레이어 위치로 순간이동). 단, 너무 가까우면 일반 슬램.
+    const dx = Math.abs(player.x - this.x)
+    if (this.bossAttackCount % 3 === 0 && dx > 1.6) return ATTACKS.bossWarp
+    return dx > 3.4 ? ATTACKS.bossDash : ATTACKS.bossSlam
   }
 
   _queueAttackTelegraph() {
     const def = this.attackDef
     const duration = def.windup + def.active
-    const color = def.projectile
-      ? 0xff8c42
-      : def.state === 'attackHeavy'
-        ? 0xb066ff
-        : 0xff4d57
+    const color = def.warp
+      ? 0xff5db1
+      : def.projectile
+        ? 0xff8c42
+        : def.state === 'attackHeavy'
+          ? 0xb066ff
+          : 0xff4d57
 
     if (def.shape === 'circle') {
+      // 워프는 표적(플레이어가 있던 자리)에 예고 범위를 그린다.
       this.events.push({
         type: 'attackTelegraph',
         shape: 'circle',
-        x: this.x,
-        y: this.y + 0.1,
+        x: def.warp ? this.warpTargetX : this.x,
+        y: (def.warp ? this.warpTargetY : this.y) + 0.1,
         radius: def.radius ?? def.range,
         duration,
         color,
@@ -533,6 +622,14 @@ export class Enemy {
     if (this.attackPhase === 'windup') {
       this.vx = 0
       if (this.attackTimer <= 0) {
+        // 워프: 예고했던 표적 위치로 순간이동한 뒤 발동한다.
+        if (this.attackDef.warp) {
+          this.events.push({ type: 'warpFlash', x: this.x, y: this.y + 0.1 })
+          this.x = this.warpTargetX
+          this.attackDir = Math.sign(player.x - this.x) || this.facingDir
+          this.facingDir = this.attackDir
+          this.events.push({ type: 'warpFlash', x: this.x, y: this.y + 0.1 })
+        }
         this.attackPhase = 'active'
         this.attackTimer = this.attackDef.active
         this.attackHasHit = false
