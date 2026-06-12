@@ -40,4 +40,7 @@ export class InputManager {
   get attack(){ return this.isJustPressed('KeyJ') }
   get kick(){ return this.isJustPressed('KeyK') }
   get restart(){ return this.isJustPressed('KeyR') }
+  // ESC: 일시정지 토글 / F: 전체 화면 토글
+  get pause(){ return this.isJustPressed('Escape') }
+  get fullscreen(){ return this.isJustPressed('KeyF') }
 }

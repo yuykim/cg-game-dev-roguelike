@@ -356,6 +356,8 @@ export class Arena {
 
     this.input.flush()
 
+    if (this.input.fullscreen) this._toggleFullscreen()
+
     let simDt = realDt
     if (this.hitstop > 0) {
       this.hitstop = Math.max(0, this.hitstop - realDt)
@@ -372,6 +374,20 @@ export class Arena {
   }
 
   _simulate(dt) {
+    // ESC: 전투 중에만 일시정지/재개를 토글한다.
+    if (this.input.pause && (this.state === 'playing' || this.state === 'paused')) {
+      this._togglePause()
+    }
+
+    if (this.state === 'paused') {
+      // 일시정지 중에는 시뮬레이션을 멈추되, R 재시작은 받는다.
+      if (this.input.restart) {
+        this._syncPauseOverlay(false)
+        this._resetRun()
+      }
+      return
+    }
+
     if (this.state === 'start') {
       this.player.update(dt, this.platforms)
       this._updateHud()
@@ -1169,6 +1185,7 @@ export class Arena {
           </p>
           <div class="arena-intro-actions">
             <button type="button" data-open-howto class="ghost">How to Play</button>
+            <button type="button" data-fullscreen class="ghost">Fullscreen</button>
             <button type="button" data-begin-run>Enter Arena</button>
           </div>
         </div>
@@ -1182,6 +1199,8 @@ export class Arena {
             <div class="arena-howto-row"><kbd>K</kbd><span>Kick / skill inputs (once unlocked)</span></div>
             <div class="arena-howto-row accent"><kbd>Roll → J</kbd><span>Uppercut — launch enemies into the air</span></div>
             <div class="arena-howto-row accent"><kbd>Air + S + J</kbd><span>Air Slam — dive &amp; shockwave (cooldown)</span></div>
+            <div class="arena-howto-row"><kbd>Esc</kbd><span>Pause — review your unlocked tech</span></div>
+            <div class="arena-howto-row"><kbd>F</kbd><span>Toggle fullscreen</span></div>
             <div class="arena-howto-row"><kbd>R</kbd><span>Restart the run</span></div>
           </div>
           <p class="arena-howto-note">
@@ -1191,6 +1210,18 @@ export class Arena {
           <div class="arena-intro-actions">
             <button type="button" class="ghost" data-back-title>Back</button>
             <button type="button" data-begin-run>Enter Arena</button>
+          </div>
+        </div>
+      </section>
+      <section class="arena-pause hidden" data-pause>
+        <div class="arena-pause-panel">
+          <span class="arena-eyebrow">PAUSED</span>
+          <h2 class="arena-pause-title">AVAILABLE TECH</h2>
+          <div data-pause-list class="arena-skill-list arena-pause-list"></div>
+          <p class="arena-pause-note">Esc Resume · F Fullscreen · R Restart</p>
+          <div class="arena-intro-actions">
+            <button type="button" data-toggle-fullscreen class="ghost">Fullscreen</button>
+            <button type="button" data-resume>Resume</button>
           </div>
         </div>
       </section>
@@ -1216,6 +1247,8 @@ export class Arena {
     this.howToScreenEl = this.hud.querySelector('[data-howto-screen]')
     this.hudEl = this.hud.querySelector('.arena-hud')
     this.skillPanelEl = this.hud.querySelector('.arena-skill-panel')
+    this.pauseEl = this.hud.querySelector('[data-pause]')
+    this.pauseListEl = this.hud.querySelector('[data-pause-list]')
 
     this.hud.querySelector('[data-open-howto]').addEventListener('click', () => {
       this.audio.unlock()
@@ -1237,6 +1270,69 @@ export class Arena {
         this._syncIntroOverlay()
       })
     })
+    this.hud.querySelectorAll('[data-fullscreen], [data-toggle-fullscreen]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.audio.uiClick()
+        this._toggleFullscreen()
+      })
+    })
+    this.hud.querySelector('[data-resume]').addEventListener('click', () => {
+      this.audio.uiClick()
+      if (this.state === 'paused') this._togglePause()
+    })
+  }
+
+  _toggleFullscreen() {
+    const target = document.documentElement
+    if (!document.fullscreenElement) {
+      target.requestFullscreen?.().catch(() => {})
+    } else {
+      document.exitFullscreen?.()
+    }
+  }
+
+  _togglePause() {
+    if (this.state === 'playing') {
+      this.state = 'paused'
+      this._renderPauseSkills()
+      this._syncPauseOverlay(true)
+      this.audio.uiClick()
+    } else if (this.state === 'paused') {
+      this.state = 'playing'
+      this._syncPauseOverlay(false)
+      this.audio.uiClick()
+    }
+  }
+
+  _syncPauseOverlay(visible = this.state === 'paused') {
+    if (!this.pauseEl) return
+    this.pauseEl.classList.toggle('hidden', !visible)
+  }
+
+  // 일시정지 화면: 현재 해금된 스킬만 커맨드/쿨다운과 함께 나열한다.
+  _renderPauseSkills() {
+    if (!this.pauseListEl) return
+
+    const unlocked = SKILL_DISPLAY.filter((skill) => skill.isUnlocked(this.player))
+    this.pauseListEl.innerHTML = unlocked.map((skill) => {
+      const cooldown = skill.cooldown?.(this.player) ?? 0
+      const cooling = cooldown > 0.05
+      const status = cooling ? `${cooldown.toFixed(1)}s` : 'READY'
+      const className = ['arena-skill', 'unlocked', cooling ? 'cooling' : 'ready'].join(' ')
+
+      return `
+        <div class="${className}">
+          <div class="arena-skill-main">
+            <b>${skill.name}</b>
+            <kbd>${skill.command}</kbd>
+          </div>
+          <div class="arena-skill-sub">
+            <span>${skill.detail}</span>
+            <strong>${status}</strong>
+          </div>
+        </div>
+      `
+    }).join('')
   }
 
   _updateHud() {
